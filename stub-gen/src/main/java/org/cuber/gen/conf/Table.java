@@ -1,13 +1,19 @@
 package org.cuber.gen.conf;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.cuber.gen.define.TableDefine;
+import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.codegen.mybatis3.IntrospectedTableMyBatis3Impl;
+import org.springframework.beans.BeanUtils;
 
-import java.util.ArrayList;
+import java.beans.PropertyDescriptor;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 public class Table extends IntrospectedTableMyBatis3Impl {
 
@@ -22,6 +28,8 @@ public class Table extends IntrospectedTableMyBatis3Impl {
     private TableDefine tableDefine;
     private boolean version;
     private Column versionColumn;
+
+    private List<Column> allColumns;
 
     public Column getVersionColumn() {
         return versionColumn;
@@ -135,5 +143,56 @@ public class Table extends IntrospectedTableMyBatis3Impl {
 
     public void addColumnType(FullyQualifiedJavaType columnType) {
         allColumnType.add(columnType);
+    }
+
+
+    public boolean isProperties(String name) {
+        List<IntrospectedColumn> allColumn = this.getAllColumns();
+        AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+        allColumn.forEach(introspectedColumn -> {
+            if (introspectedColumn.getJavaProperty().equals(name)) {
+                atomicBoolean.getAndSet(true);
+            }
+        });
+        return atomicBoolean.get();
+    }
+
+    public List<Column> allColumns() {
+        if (allColumns == null) {
+            List<IntrospectedColumn> introspectedColumns = this.getAllColumns();
+            if (CollectionUtils.isNotEmpty(introspectedColumns)) {
+                allColumns = introspectedColumns.stream()
+                        .map(introspectedColumn -> (Column) introspectedColumn)
+                        .collect(Collectors.toList());
+            }
+        }
+        return allColumns;
+    }
+
+    public List<Column> showColumns(String rootClass) {
+        List<Column> showColumns = allColumns();
+        try {
+            if (CollectionUtils.isNotEmpty(showColumns)) {
+                List<PropertyDescriptor> propertyDescriptors = Arrays.asList(BeanUtils.getPropertyDescriptors(Class.forName(rootClass)));
+                showColumns = showColumns.stream()
+                        .filter(column -> !inProperties(column.getJavaProperty(), propertyDescriptors))
+                        .collect(Collectors.toList());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return showColumns;
+    }
+
+    private boolean inProperties(String name, List<PropertyDescriptor> propertyDescriptors) {
+        AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+        if (CollectionUtils.isNotEmpty(propertyDescriptors)) {
+            propertyDescriptors.stream().forEach(propertyDescriptor -> {
+                if (propertyDescriptor.getName().equals(name)) {
+                    atomicBoolean.getAndSet(true);
+                }
+            });
+        }
+        return atomicBoolean.get();
     }
 }

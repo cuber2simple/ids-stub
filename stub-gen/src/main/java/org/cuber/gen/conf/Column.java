@@ -22,5 +22,5 @@ public class Column extends IntrospectedColumn {
     public void setVersion(boolean version) {
         this.version = version;
     }
-
+    
 }

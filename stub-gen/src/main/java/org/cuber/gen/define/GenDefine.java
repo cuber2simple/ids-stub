@@ -8,6 +8,16 @@ public class GenDefine {
 
     private String destPackage;
 
+    private String rootClass;
+
+    public String getRootClass() {
+        return rootClass;
+    }
+
+    public void setRootClass(String rootClass) {
+        this.rootClass = rootClass;
+    }
+
     public String getTemplate() {
         return template;
     }

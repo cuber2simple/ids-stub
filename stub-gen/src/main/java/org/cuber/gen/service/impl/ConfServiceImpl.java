@@ -1,34 +1,73 @@
 package org.cuber.gen.service.impl;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.cuber.gen.conf.Column;
 import org.cuber.gen.conf.Conf;
 import org.cuber.gen.conf.Table;
 import org.cuber.gen.define.TableDefine;
 import org.cuber.gen.service.ConfService;
+import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.JavaTypeResolver;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl;
 import org.mybatis.generator.internal.util.JavaBeansUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.support.JdbcUtils;
+import org.springframework.stereotype.Service;
 
+import javax.sql.DataSource;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Types;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
+@Service
 public class ConfServiceImpl implements ConfService {
 
     private static JavaTypeResolver javaTypeResolver = new JavaTypeResolverDefaultImpl();
 
+    @Autowired
+    private DataSource dataSource;
+
     @Override
-    public Table loadTable(Conf conf, TableDefine tableDefine, DatabaseMetaData databaseMetaData) throws Exception {
-        String realCatalog = fetchDataBaseName(conf.getCatalog(), databaseMetaData);
-        String realSchema = fetchDataBaseName(conf.getSchema(), databaseMetaData);
-        String tableName = fetchDataBaseName(tableDefine.getTableName(), databaseMetaData);
+    public List<Table> dispose(Conf conf) {
+        try {
+            DatabaseMetaData databaseMetaData = dataSource.getConnection().getMetaData();
+            List<TableDefine> tableDefines = conf.getTables();
+            if(CollectionUtils.isNotEmpty(tableDefines)){
+                return tableDefines.parallelStream().map(tableDefine ->
+                   loadTable(conf,tableDefine,databaseMetaData)
+                ).collect(Collectors.toList());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Table loadTable(Conf conf, TableDefine tableDefine, DatabaseMetaData databaseMetaData) {
         Table table = new Table(tableDefine, conf);
-        //
-        retrieveTableDesc(realCatalog, realSchema, tableName, table, databaseMetaData);
+        try {
+            String realCatalog = fetchDataBaseName(conf.getCatalog(), databaseMetaData);
+
+            String realSchema = fetchDataBaseName(conf.getSchema(), databaseMetaData);
+
+            String tableName = fetchDataBaseName(tableDefine.getTableName(), databaseMetaData);
+
+            //
+            retrieveTableDesc(realCatalog, realSchema, tableName, table, databaseMetaData);
+
+            retrieveColumns(realCatalog, realSchema, tableName, table, databaseMetaData);
+
+            addPrimaryKey(realCatalog, realSchema, tableName, table, databaseMetaData);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return table;
     }
@@ -60,6 +99,33 @@ public class ConfServiceImpl implements ConfService {
                 supportsIsGeneratedColumn = true;
             }
         }
+        while (rs.next()) {
+            addColumn(supportsIsAutoIncrement, supportsIsGeneratedColumn, rs, table);
+        }
+        JdbcUtils.closeResultSet(rs);
+    }
+
+    private void addPrimaryKey(String realCatalog, String realSchema, String tableName, Table table, DatabaseMetaData databaseMetaData) throws Exception {
+        ResultSet rs = databaseMetaData.getPrimaryKeys(
+                realCatalog, realSchema, tableName);
+        while (rs.next()) {
+            String columnName = rs.getString("COLUMN_NAME"); //$NON-NLS-1$
+            table.addPrimaryKeyColumn(columnName);
+        }
+        if (CollectionUtils.isNotEmpty(table.getPrimaryKeyColumns())) {
+            for (IntrospectedColumn introspectedColumn : table.getPrimaryKeyColumns()) {
+                introspectedColumn.setIdentity(true);
+            }
+        }
+        if (CollectionUtils.isNotEmpty(table.getPrimaryKeyColumns()) && table.getPrimaryKeyColumns().size() == 1) {
+            IntrospectedColumn introspectedColumn = table.getPrimaryKeyColumns().get(0);
+            if (!introspectedColumn.getFullyQualifiedJavaType().isPrimitive()) {
+                table.setPrimaryJavType(introspectedColumn.getFullyQualifiedJavaType());
+            }
+        }
+
+        JdbcUtils.closeResultSet(rs);
+
     }
 
     private void addColumn(boolean supportsIsAutoIncrement, boolean supportsIsGeneratedColumn, ResultSet rs, Table table) throws Exception {
@@ -81,10 +147,10 @@ public class ConfServiceImpl implements ConfService {
 
         FullyQualifiedJavaType fullyQualifiedJavaType = javaTypeResolver.calculateJavaType(introspectedColumn);
 
-        if (!fullyQualifiedJavaType.isPrimitive() && !fullyQualifiedJavaType.isArray()) {
-
-            table.addColumnType(fullyQualifiedJavaType);
-        }
+//        if (!fullyQualifiedJavaType.isPrimitive() && !fullyQualifiedJavaType.isArray()) {
+//
+//            table.addColumnType(fullyQualifiedJavaType);
+//        }
         introspectedColumn.setFullyQualifiedJavaType(fullyQualifiedJavaType);
 
         introspectedColumn.setJdbcTypeName(javaTypeResolver.calculateJdbcTypeName(introspectedColumn));

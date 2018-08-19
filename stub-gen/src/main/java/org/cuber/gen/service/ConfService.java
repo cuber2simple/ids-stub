@@ -5,9 +5,11 @@ import org.cuber.gen.conf.Table;
 import org.cuber.gen.define.TableDefine;
 
 import java.sql.DatabaseMetaData;
+import java.util.List;
 
 public interface ConfService {
 
-    Table loadTable(Conf conf, TableDefine tableDefine, DatabaseMetaData databaseMetaData) throws Exception;
+    Table loadTable(Conf conf, TableDefine tableDefine, DatabaseMetaData databaseMetaData);
 
+    List<Table> dispose(Conf conf);
 }

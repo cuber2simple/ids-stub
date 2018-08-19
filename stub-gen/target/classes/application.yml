@@ -1,0 +1,44 @@
+spring:
+  datasource:
+    username: upms
+    password: upms
+    url: jdbc:postgresql://127.0.0.1:5432/upms?useUnicode=true&amp;characterEncoding=UTF-8
+    driver-class-name: org.postgresql.Driver
+
+org:
+  cuber:
+    gen:
+      conf:
+        catalog:
+        schema:
+        dto:
+          template:
+          destProject:
+          destPackage:
+        mapper:
+          template:
+          destProject:
+          destPackage:
+        xml:
+          template:
+          destProject:
+          destPackage:
+        vo:
+          template:
+          destProject:
+          destPackage:
+        service:
+          template:
+          destProject:
+          destPackage:
+        ctrl:
+          template:
+          destProject:
+          destPackage:
+        view:
+          template:
+          destProject:
+          destPackage:
+        tables:
+          - tableName:
+            dtoName:

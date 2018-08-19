@@ -62,57 +62,56 @@ public class ConfServiceImpl implements ConfService {
         }
     }
 
-    private void addColumn(boolean supportsIsAutoIncrement,boolean supportsIsGeneratedColumn, ResultSet rs, Table table) throws Exception{
+    private void addColumn(boolean supportsIsAutoIncrement, boolean supportsIsGeneratedColumn, ResultSet rs, Table table) throws Exception {
         Column introspectedColumn = new Column();
+
         introspectedColumn.setJdbcType(rs.getInt("DATA_TYPE")); //$NON-NLS-1$
+
         introspectedColumn.setLength(rs.getInt("COLUMN_SIZE")); //$NON-NLS-1$
+
         introspectedColumn.setActualColumnName(rs.getString("COLUMN_NAME")); //$NON-NLS-1$
-        introspectedColumn
-                .setNullable(rs.getInt("NULLABLE") == DatabaseMetaData.columnNullable); //$NON-NLS-1$
+
+        introspectedColumn.setNullable(rs.getInt("NULLABLE") == DatabaseMetaData.columnNullable); //$NON-NLS-1$
+
         introspectedColumn.setScale(rs.getInt("DECIMAL_DIGITS")); //$NON-NLS-1$
+
         introspectedColumn.setRemarks(rs.getString("REMARKS")); //$NON-NLS-1$
+
         introspectedColumn.setDefaultValue(rs.getString("COLUMN_DEF")); //$NON-NLS-1$
 
         FullyQualifiedJavaType fullyQualifiedJavaType = javaTypeResolver.calculateJavaType(introspectedColumn);
+
         if (!fullyQualifiedJavaType.isPrimitive() && !fullyQualifiedJavaType.isArray()) {
+
             table.addColumnType(fullyQualifiedJavaType);
         }
-        introspectedColumn
-                .setFullyQualifiedJavaType(fullyQualifiedJavaType);
-        introspectedColumn.setJdbcTypeName(javaTypeResolver
-                .calculateJdbcTypeName(introspectedColumn));
+        introspectedColumn.setFullyQualifiedJavaType(fullyQualifiedJavaType);
+
+        introspectedColumn.setJdbcTypeName(javaTypeResolver.calculateJdbcTypeName(introspectedColumn));
+
         introspectedColumn.setJavaProperty(JavaBeansUtil.getCamelCaseString(introspectedColumn.getActualColumnName(), false));
+
         if (supportsIsAutoIncrement) {
-            introspectedColumn.setAutoIncrement(
-                    "YES".equals(rs.getString("IS_AUTOINCREMENT"))); //$NON-NLS-1$ //$NON-NLS-2$
+            introspectedColumn.setAutoIncrement("YES".equals(rs.getString("IS_AUTOINCREMENT"))); //$NON-NLS-1$ //$NON-NLS-2$
         }
+        TableDefine tableDefine = table.getTableDefine();
 
         if (supportsIsGeneratedColumn) {
-            introspectedColumn.setGeneratedColumn(
-                    "YES".equals(rs.getString("IS_GENERATEDCOLUMN"))); //$NON-NLS-1$ //$NON-NLS-2$
+            introspectedColumn.setGeneratedColumn("YES".equals(rs.getString("IS_GENERATEDCOLUMN"))); //$NON-NLS-1$ //$NON-NLS-2$
         }
-//        if (introspectedColumn.getActualColumnName().equals(tableConfig.getVersionColumn())) {
-//            if (Types.NUMERIC == introspectedColumn.getJdbcType() ||
-//                    Types.DECIMAL == introspectedColumn.getJdbcType()) {
-//                introspectedColumn.setVersion(true);
-//                table.setVersion(true);
-//                table.setVersionColumn(introspectedColumn);
-//            } else {
-//                logger.warn("{}.{} 列不是数字类型,将被忽略version属性", tableConfig.getName(), introspectedColumn.getActualColumnName());
-//            }
-//
-//        }
+        if (introspectedColumn.getActualColumnName().equals(tableDefine.getVersion())) {
+            if (Types.NUMERIC == introspectedColumn.getJdbcType() ||
+                    Types.DECIMAL == introspectedColumn.getJdbcType()) {
+                introspectedColumn.setVersion(true);
+                table.setVersion(true);
+                table.setVersionColumn(introspectedColumn);
+            }
+        }
+
         if (Types.TIMESTAMP == introspectedColumn.getJdbcType()) {
             introspectedColumn.setDateTime(true);
         }
-//        if (introspectedColumn.getActualColumnName().equals(tableConfig.getUpdateTimeColumn())) {
-//            if (Types.TIMESTAMP == introspectedColumn.getJdbcType()) {
-//                introspectedColumn.setUpdateDateTime(true);
-//            } else {
-//                logger.warn("{}.{} 列不是timeStamp类型,将被忽略updateTime属性", tableConfig.getName(), introspectedColumn.getActualColumnName());
-//            }
-//        }
-//        columns.add(introspectedColumn);
+
         table.addColumn(introspectedColumn);
     }
 

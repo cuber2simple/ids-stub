@@ -14,6 +14,7 @@ public class Column extends IntrospectedColumn {
     public void setDateTime(boolean dateTime) {
         this.dateTime = dateTime;
     }
+
     public boolean isVersion() {
         return version;
     }

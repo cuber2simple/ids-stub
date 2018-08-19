@@ -20,11 +20,33 @@ public class Table extends IntrospectedTableMyBatis3Impl {
     private FullyQualifiedJavaType serviceImplJavaType;
     private FullyQualifiedJavaType controllerJavaType;
     private TableDefine tableDefine;
+    private boolean version;
+    private Column versionColumn;
+
+    public Column getVersionColumn() {
+        return versionColumn;
+    }
+
+    public void setVersionColumn(Column versionColumn) {
+        this.versionColumn = versionColumn;
+    }
+
+    public boolean isVersion() {
+        return version;
+    }
+
+    public void setVersion(boolean version) {
+        this.version = version;
+    }
+
+    public void setAllColumnType(Set<FullyQualifiedJavaType> allColumnType) {
+        this.allColumnType = allColumnType;
+    }
 
     private Set<FullyQualifiedJavaType> allColumnType = new HashSet<>();
 
 
-    public Table(TableDefine tableDefine,Conf conf) {
+    public Table(TableDefine tableDefine, Conf conf) {
         this.tableDefine = tableDefine;
         this.entityJavaType = new FullyQualifiedJavaType(conf.getDto().getDestPackage() + "." + tableDefine.getDtoName());
         String dtoName = entityJavaType.getShortName();
@@ -111,7 +133,7 @@ public class Table extends IntrospectedTableMyBatis3Impl {
         return allColumnType;
     }
 
-    public void addColumnType(FullyQualifiedJavaType columnType){
+    public void addColumnType(FullyQualifiedJavaType columnType) {
         allColumnType.add(columnType);
     }
 }

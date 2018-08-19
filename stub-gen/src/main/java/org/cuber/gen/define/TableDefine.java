@@ -5,6 +5,16 @@ public class TableDefine {
 
     private String dtoName;
 
+    private String version;
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
     public String getTableName() {
         return tableName;
     }

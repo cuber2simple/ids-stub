@@ -1,0 +1,30 @@
+package  ${@curJava.getPackageName()}
+
+<%for(importStr in importJavas){%>
+import  ${importStr};
+<%}%>
+
+/**
+ *  tableName   ${table.tableDefine.tableName}
+ *  remark      ${table.remarks}
+ */
+public class ${@curJava.getShortName()} <%if(hasFather){%> extends ${fatherName} {
+
+    <%for(property in properties){%>
+    <% var javaType = column.fullyQualifiedJavaType;%>
+    /**
+      *  column_name    ${column.actualColumnName}
+      *  remark         ${column.remarks}
+      */
+    private ${@javaType.getShortName()} ${column.javaProperty};
+
+    <%}%>
+
+    <%for(column in properties){%>
+    ${@column.getMethod()}
+
+    ${@column.setMethod()}
+
+    <%}%>
+
+}

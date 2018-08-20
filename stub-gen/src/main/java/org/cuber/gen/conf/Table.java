@@ -19,7 +19,7 @@ public class Table extends IntrospectedTableMyBatis3Impl {
 
     private Set<FullyQualifiedJavaType> javaTypeList = new HashSet<>();
     private FullyQualifiedJavaType primaryJavType;
-    private FullyQualifiedJavaType entityJavaType;
+    private FullyQualifiedJavaType dtoJavaType;
     private FullyQualifiedJavaType voJavaType;
     private FullyQualifiedJavaType mapperJavaType;
     private FullyQualifiedJavaType serviceJavaType;
@@ -56,8 +56,8 @@ public class Table extends IntrospectedTableMyBatis3Impl {
 
     public Table(TableDefine tableDefine, Conf conf) {
         this.tableDefine = tableDefine;
-        this.entityJavaType = new FullyQualifiedJavaType(conf.getDto().getDestPackage() + "." + tableDefine.getDtoName());
-        String dtoName = entityJavaType.getShortName();
+        this.dtoJavaType = new FullyQualifiedJavaType(conf.getDto().getDestPackage() + "." + tableDefine.getDtoName());
+        String dtoName = dtoJavaType.getShortName();
         this.voJavaType = new FullyQualifiedJavaType(conf.getVo().getDestPackage() + "." + dtoName + "VO");
         this.mapperJavaType = new FullyQualifiedJavaType(conf.getMapper().getDestPackage() + "." + dtoName + "Mapper");
         this.serviceJavaType = new FullyQualifiedJavaType(conf.getService().getDestPackage() + "." + dtoName + "Service");
@@ -97,12 +97,16 @@ public class Table extends IntrospectedTableMyBatis3Impl {
         this.primaryJavType = primaryJavType;
     }
 
-    public FullyQualifiedJavaType getEntityJavaType() {
-        return entityJavaType;
+    public FullyQualifiedJavaType getDtoJavaType() {
+        return dtoJavaType;
     }
 
-    public void setEntityJavaType(FullyQualifiedJavaType entityJavaType) {
-        this.entityJavaType = entityJavaType;
+    public void setDtoJavaType(FullyQualifiedJavaType dtoJavaType) {
+        this.dtoJavaType = dtoJavaType;
+    }
+
+    public void setAllColumns(List<Column> allColumns) {
+        this.allColumns = allColumns;
     }
 
     public FullyQualifiedJavaType getVoJavaType() {

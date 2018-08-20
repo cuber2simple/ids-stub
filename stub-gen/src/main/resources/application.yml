@@ -12,11 +12,11 @@ org:
         catalog:
         schema:
         dto:
-          template:
+          template: /dto.btl
           destProject:
           destPackage:
         mapper:
-          template:
+          template: /mapper.btl
           destProject:
           destPackage:
         xml:

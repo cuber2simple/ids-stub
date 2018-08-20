@@ -16,9 +16,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.beans.PropertyDescriptor;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -44,6 +45,7 @@ public class GenFileCommandRunner implements CommandLineRunner {
     }
 
     private void genFilesByTable(Table table, Conf conf) {
+        genDTOFile(table, conf);
 
     }
 
@@ -52,13 +54,45 @@ public class GenFileCommandRunner implements CommandLineRunner {
             GenDefine dto = conf.getDto();
             Template template = beetlService.getTemplate(dto.getTemplate());
             List<Column> showColumns = table.showColumns(dto.getRootClass());
-
+            template.binding("columns", showColumns);
+            template.binding("table", table);
+            template.binding("properties", showColumns);
+            FullyQualifiedJavaType java = table.getDtoJavaType();
+            template.binding("curJava", java);
+            template.binding("hasFather", false);
+            java.getPackageName();
+            Set<String> importJavas = getImportByColumn(showColumns);
+            if (StringUtils.isNotEmpty(dto.getRootClass())) {
+                importJavas.add(dto.getRootClass());
+                FullyQualifiedJavaType father = new FullyQualifiedJavaType(dto.getRootClass());
+                template.binding("hasFather", true);
+                template.binding("fatherName",father.getShortName());
+            }
+            template.binding("importJavas", importJavas);
+            Path path = getPath(conf.getDto());
+            String fileName = java.getShortName() + ".java";
+            beetlService.genFile(template, path, fileName);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println(Arrays.asList(BeanUtils.getPropertyDescriptors(Column.class)));
+    private Path getPath(GenDefine genDefine) {
+        String packages = StringUtils.join(StringUtils.split(genDefine.getDestPackage(), "."), File.separator);
+        String packageString = genDefine.getDestProject() + File.separator + packages;
+        return Paths.get(packageString);
+    }
+
+    private Set<String> getImportByColumn(List<Column> showColumns) {
+        Set<String> importJavas = new HashSet<>();
+        if (CollectionUtils.isNotEmpty(showColumns)) {
+            showColumns.stream().forEach(column -> {
+                FullyQualifiedJavaType fullyQualifiedJavaType = column.getFullyQualifiedJavaType();
+                if (!fullyQualifiedJavaType.isPrimitive() && !fullyQualifiedJavaType.isArray()) {
+                    importJavas.add(fullyQualifiedJavaType.getFullyQualifiedNameWithoutTypeParameters());
+                }
+            });
+        }
+        return importJavas;
     }
 }

@@ -1,0 +1,58 @@
+package  ${@curJava.getPackageName()}
+
+<%for(importStr in importJavas){%>
+import  ${importStr};
+<%}%>
+
+public class ${@curJava.getShortName()} <%if(hasFather){%> extends ${fatherName}<${@dtoJava.getShortName()},${@primary.getShortName()}> <%}%>{
+    <%if(!hasFather)%>
+    /**
+     * 插入
+     * @param dto
+     * @return
+     */
+    int create(${@dtoJava.getShortName()} dto);
+
+    /**
+     * 按照主键查找
+     * @param key
+     * @return
+     */
+    ${@dtoJava.getShortName()} retrieveById(${${@primary.getShortName()} key);
+
+    /**
+     * 分页查询
+     * @param map
+     * @return
+     */
+    Page<${@dtoJava.getShortName()}> retrievePage(Map map);
+
+    /**
+     * 根据主键更新全部
+     * @param dto
+     * @return
+     */
+    int updateById(${@dtoJava.getShortName()} dto);
+
+    /**
+     * 根据传入的值更新,只要不为空就更新
+     * @param dto
+     * @return
+     */
+    int updateDynamic(${@dtoJava.getShortName()} dto);
+
+    /**
+     * 查询全部
+     * @return
+     */
+    List<${@dtoJava.getShortName()}> retrieveAll();
+
+
+    /**
+     * 根据主键删除
+     * @param dto
+     * @return
+     */
+    int deleteById(${@primary.getShortName()} key);
+    <%}%>
+}

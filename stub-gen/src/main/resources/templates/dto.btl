@@ -8,7 +8,7 @@ import  ${importStr};
  *  tableName   ${table.tableDefine.tableName}
  *  remark      ${table.remarks}
  */
-public class ${@curJava.getShortName()} <%if(hasFather){%> extends ${fatherName} {
+public class ${@curJava.getShortName()} <%if(hasFather){%> extends ${fatherName} <%}%>{
 
     <%for(property in properties){%>
     <% var javaType = column.fullyQualifiedJavaType;%>

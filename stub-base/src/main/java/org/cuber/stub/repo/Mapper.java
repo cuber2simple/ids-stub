@@ -50,8 +50,8 @@ public interface Mapper<DTO,KEY> {
 
     /**
      * 根据主键删除
-     * @param dto
+     * @param key
      * @return
      */
-    int deleteById(DTO dto);
+    int deleteById(KEY key);
 }

@@ -9,6 +9,7 @@ import org.cuber.gen.service.ConfService;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.JavaTypeResolver;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
+import org.mybatis.generator.config.PropertyRegistry;
 import org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl;
 import org.mybatis.generator.internal.util.JavaBeansUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.Types;
 import java.util.List;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,11 +37,15 @@ public class ConfServiceImpl implements ConfService {
     @Override
     public List<Table> dispose(Conf conf) {
         try {
+            Properties properties = new Properties();
+            properties
+                    .setProperty(PropertyRegistry.TYPE_RESOLVER_USE_JSR310_TYPES, "true");
+            javaTypeResolver.addConfigurationProperties(properties);
             DatabaseMetaData databaseMetaData = dataSource.getConnection().getMetaData();
             List<TableDefine> tableDefines = conf.getTables();
-            if(CollectionUtils.isNotEmpty(tableDefines)){
+            if (CollectionUtils.isNotEmpty(tableDefines)) {
                 return tableDefines.parallelStream().map(tableDefine ->
-                   loadTable(conf,tableDefine,databaseMetaData)
+                        loadTable(conf, tableDefine, databaseMetaData)
                 ).collect(Collectors.toList());
             }
         } catch (Exception e) {
@@ -117,12 +123,14 @@ public class ConfServiceImpl implements ConfService {
                 introspectedColumn.setIdentity(true);
             }
         }
+        FullyQualifiedJavaType primaryJavaType = new FullyQualifiedJavaType("java.lang.Object");
         if (CollectionUtils.isNotEmpty(table.getPrimaryKeyColumns()) && table.getPrimaryKeyColumns().size() == 1) {
             IntrospectedColumn introspectedColumn = table.getPrimaryKeyColumns().get(0);
             if (!introspectedColumn.getFullyQualifiedJavaType().isPrimitive()) {
-                table.setPrimaryJavType(introspectedColumn.getFullyQualifiedJavaType());
+                primaryJavaType = introspectedColumn.getFullyQualifiedJavaType();
             }
         }
+        table.setPrimaryJavType(primaryJavaType);
 
         JdbcUtils.closeResultSet(rs);
 

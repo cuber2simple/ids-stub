@@ -52,6 +52,7 @@ public class StubConstant {
 
     /**zookeeper 默认地址*/
     public static final String ZOOKEEPER_ADDRESS_DEFAULT = "127.0.0.1:2181";
+
     /**zookeeper 环境配置初始化地址*/
     public static final String ZOOKEEPER_SUFFIX_PATH = "/ipl/env/";
 }

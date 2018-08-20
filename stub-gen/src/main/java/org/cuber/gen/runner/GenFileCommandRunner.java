@@ -46,7 +46,46 @@ public class GenFileCommandRunner implements CommandLineRunner {
 
     private void genFilesByTable(Table table, Conf conf) {
         genDTOFile(table, conf);
+        genMapper(table, conf);
+        genXml(table, conf);
+    }
 
+    private void genXml(Table table, Conf conf){
+
+    }
+
+    private void genMapper(Table table, Conf conf) {
+        GenDefine mapper = conf.getMapper();
+        Template template = beetlService.getTemplate(mapper.getTemplate());
+        FullyQualifiedJavaType mapperJava = table.getMapperJavaType();
+        FullyQualifiedJavaType dtoJava = table.getDtoJavaType();
+        FullyQualifiedJavaType primary = table.getDtoJavaType();
+        template.binding("curJava", mapperJava);
+        template.binding("dtoJava", dtoJava);
+        template.binding("primary", primary);
+        Set<String> importJavas = new HashSet<>();
+        dealWithFather(mapper, importJavas, template);
+        importJavas.add(dtoJava.getFullyQualifiedNameWithoutTypeParameters());
+        importJavas.add(primary.getFullyQualifiedNameWithoutTypeParameters());
+        if (StringUtils.isEmpty(mapper.getRootClass())) {
+            importJavas.add("com.github.pagehelper.Page");
+            importJavas.add("java.util.List");
+            importJavas.add("java.util.Map");
+        }
+        template.binding("importJavas", importJavas);
+        Path path = getPath(mapper);
+        String fileName = mapperJava.getShortName() + ".java";
+        beetlService.genFile(template, path, fileName);
+    }
+
+    private void dealWithFather(GenDefine define, Set<String> importJavas, Template template) {
+        template.binding("hasFather", false);
+        if (StringUtils.isNotEmpty(define.getRootClass())) {
+            importJavas.add(define.getRootClass());
+            FullyQualifiedJavaType father = new FullyQualifiedJavaType(define.getRootClass());
+            template.binding("hasFather", true);
+            template.binding("fatherName", father.getShortName());
+        }
     }
 
     private void genDTOFile(Table table, Conf conf) {
@@ -59,15 +98,9 @@ public class GenFileCommandRunner implements CommandLineRunner {
             template.binding("properties", showColumns);
             FullyQualifiedJavaType java = table.getDtoJavaType();
             template.binding("curJava", java);
-            template.binding("hasFather", false);
             java.getPackageName();
             Set<String> importJavas = getImportByColumn(showColumns);
-            if (StringUtils.isNotEmpty(dto.getRootClass())) {
-                importJavas.add(dto.getRootClass());
-                FullyQualifiedJavaType father = new FullyQualifiedJavaType(dto.getRootClass());
-                template.binding("hasFather", true);
-                template.binding("fatherName",father.getShortName());
-            }
+            dealWithFather(dto, importJavas, template);
             template.binding("importJavas", importJavas);
             Path path = getPath(conf.getDto());
             String fileName = java.getShortName() + ".java";

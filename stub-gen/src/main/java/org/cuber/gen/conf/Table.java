@@ -1,5 +1,6 @@
 package org.cuber.gen.conf;
 
+import com.google.common.base.Joiner;
 import org.apache.commons.collections4.CollectionUtils;
 import org.cuber.gen.define.TableDefine;
 import org.mybatis.generator.api.IntrospectedColumn;
@@ -30,6 +31,17 @@ public class Table extends IntrospectedTableMyBatis3Impl {
     private Column versionColumn;
 
     private List<Column> allColumns;
+
+    private boolean hasPrimary;
+
+
+    public boolean isHasPrimary() {
+        return hasPrimary;
+    }
+
+    public void setHasPrimary(boolean hasPrimary) {
+        this.hasPrimary = hasPrimary;
+    }
 
     public Column getVersionColumn() {
         return versionColumn;
@@ -198,5 +210,38 @@ public class Table extends IntrospectedTableMyBatis3Impl {
             });
         }
         return atomicBoolean.get();
+    }
+
+    //todo 以后增加方言
+    private String getColumnValue(Column column, String dialect) {
+        if (column.isDateTime()) {
+            return "current_timestamp";
+        } else {
+            return "#{" + column.getJavaProperty() + ", jdbcType = " + column.getJdbcTypeName() + "}";
+        }
+    }
+
+    public String base_Column_List() {
+        return Joiner.on(", ").join(this.getAllColumns().stream().map(introspectedColumn ->
+                introspectedColumn.getActualColumnName().toUpperCase())
+                .collect(Collectors.toList()));
+    }
+
+
+    public String base_insert_value() {
+        return Joiner.on(", ").join(this.getAllColumns().stream().map(introspectedColumn ->
+                getColumnValue((Column) introspectedColumn, null))
+                .collect(Collectors.toList()));
+    }
+
+    public String whereCondition(List<Column> columnList) {
+        if (CollectionUtils.isNotEmpty(columnList)) {
+            return Joiner.on("AND ").join(columnList.stream().map(introspectedColumn ->
+                    introspectedColumn.getActualColumnName() + " = " + getColumnValue(introspectedColumn, null))
+                    .collect(Collectors.toList()));
+        } else {
+            return "";
+        }
+
     }
 }

@@ -125,6 +125,7 @@ public class ConfServiceImpl implements ConfService {
         }
         FullyQualifiedJavaType primaryJavaType = new FullyQualifiedJavaType("java.lang.Object");
         if (CollectionUtils.isNotEmpty(table.getPrimaryKeyColumns()) && table.getPrimaryKeyColumns().size() == 1) {
+            table.setHasPrimary(true);
             IntrospectedColumn introspectedColumn = table.getPrimaryKeyColumns().get(0);
             if (!introspectedColumn.getFullyQualifiedJavaType().isPrimitive()) {
                 primaryJavaType = introspectedColumn.getFullyQualifiedJavaType();

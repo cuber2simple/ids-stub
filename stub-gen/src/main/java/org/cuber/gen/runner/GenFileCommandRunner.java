@@ -52,7 +52,7 @@ public class GenFileCommandRunner implements CommandLineRunner {
 
     }
 
-    private void genXml(Table table, Conf conf){
+    private void genXml(Table table, Conf conf) {
         GenDefine xml = conf.getXml();
         Template template = beetlService.getTemplate(xml.getTemplate());
         FullyQualifiedJavaType mapperJava = table.getMapperJavaType();
@@ -61,6 +61,8 @@ public class GenFileCommandRunner implements CommandLineRunner {
         template.binding("dtoJava", dtoJava);
         template.binding("allColumns", allColumns);
         template.binding("mapperJava", mapperJava);
+        template.binding("table", table);
+
         Path path = getPath(xml);
         String fileName = mapperJava.getShortName() + ".xml";
         beetlService.genFile(template, path, fileName);

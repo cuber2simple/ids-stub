@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<%var tableObj = table.entityJavaType;%>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${@mapperJava.getFullyQualifiedName()}">
+    <resultMap id="BaseResultMap" type="${@dtoJava.getFullyQualifiedName()}">
+    <%for(column in allColumns){%>
+        <%if(column.identity){%>
+        <id column="${strutil.toUpperCase(column.actualColumnName)}" jdbcType="${column.jdbcTypeName}" property="${column.javaProperty}" />
+        <%}else{%>
+        <result column="${strutil.toUpperCase(column.actualColumnName)}" jdbcType="${column.jdbcTypeName}" property="${column.javaProperty}" />
+        <%}%>
+    <%}%>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ${@table.base_Column_List()}
+    </sql>
+
+    <insert id="create" parameterType="${@dtoJava.getFullyQualifiedName()}">
+        insert into ${strutil.toUpperCase(table.tableDefine.tableName)} (
+            <include refid="Base_Column_List" />
+        )
+        values (
+            ${@table.base_insert_value()}
+        )
+    </insert>
+
+    <%if(table.hasPrimary){%>
+    <select id="retrieveById"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from  ${strutil.toUpperCase(table.tableDefine.tableName)}
+        where
+            ${@table.whereCondition(@table.getPrimaryKeyColumns())}
+    </select>
+    <%}%>
+
+    <select id="retrievePage"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from  ${strutil.toUpperCase(table.tableDefine.tableName)}
+        <where>
+            <%for(column in @table.getAllColumns()){%>
+            <if test="${column.javaProperty} != null">
+                and ${strutil.toUpperCase(column.actualColumnName)} = #{${column.javaProperty},jdbcType=${column.jdbcTypeName}}
+            </if>
+            <%}%>
+        </where>
+    </select>
+
+    <update id="updateDynamic" parameterType="${@tableObj.getFullyQualifiedName()}">
+        update ${strutil.toUpperCase(table.tableDefine.tableName)}
+        <set>
+        <%for(column in @table.getAllColumns()){%>
+        <%if(column.version){%>
+            ${strutil.toUpperCase(column.actualColumnName)} = ${strutil.toUpperCase(column.actualColumnName)} +  1,
+        <%}else if(column.dateTime){%>
+            ${strutil.toUpperCase(column.actualColumnName)} = current_timestamp,
+        <%}else{%>
+        <if test="${column.javaProperty} != null">
+            ${strutil.toUpperCase(column.actualColumnName)} = #{${column.javaProperty},jdbcType=${column.jdbcTypeName}},
+        </if>
+        <%}%>
+        <%}%>
+        </set>
+        <where>
+            <%if(table.hasPrimary){%>
+            ${@table.whereCondition(@table.getPrimaryKeyColumns())}
+            <%if(table.version){%>
+            and ${table.versionColumn.actualColumnName} = #{${table.versionColumn.javaProperty},jdbcType=${table.versionColumn.jdbcTypeName}},
+            <%}%>
+            <%}else{%>
+            <%if(table.version){%>
+            ${table.versionColumn.actualColumnName} = #{${table.versionColumn.javaProperty},jdbcType=${table.versionColumn.jdbcTypeName}},
+            <%}%>
+            <%}%>
+        </where>
+    </update>
+
+    <%if(table.hasPrimary){%>
+    <update id="updateById" parameterType="${@tableObj.getFullyQualifiedName()}">
+        update ${strutil.toUpperCase(table.tableDefine.tableName)}
+        <set>
+        <%for(column in @table.getAllColumns()){%>
+        <%if(column.version){%>
+            ${strutil.toUpperCase(column.actualColumnName)} = ${strutil.toUpperCase(column.actualColumnName)} +  1,
+        <%}else if(column.dateTime){%>
+           ${strutil.toUpperCase(column.actualColumnName)} = current_timestamp,
+        <%}else{%>
+           ${strutil.toUpperCase(column.actualColumnName)} = #{${column.javaProperty},jdbcType=${column.jdbcTypeName}},
+        <%}%>
+        <%}%>
+        </set>
+        <where>
+            ${@table.whereCondition(@table.getPrimaryKeyColumns())}
+            <%if(table.version){%>
+            and ${table.versionColumn.actualColumnName} = #{${table.versionColumn.javaProperty},jdbcType=${table.versionColumn.jdbcTypeName}},
+            <%}%>
+        </where>
+    </update>
+    <%}%>
+
+    <select id="retrieveAll"  resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from  ${strutil.toUpperCase(table.tableDefine.tableName)}
+    </select>
+
+    <%if(table.hasPrimary){%>
+    <delete id="deleteById">
+        delete from ${strutil.toUpperCase(table.tableDefine.tableName)}
+        where
+        ${@table.whereCondition(@table.getPrimaryKeyColumns())}
+    </delete>
+    <%}%>
+</mapper>

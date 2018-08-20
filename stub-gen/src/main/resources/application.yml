@@ -20,7 +20,7 @@ org:
           destProject:
           destPackage:
         xml:
-          template:
+          template: /xml.btl
           destProject:
           destPackage:
         vo:

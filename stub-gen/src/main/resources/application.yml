@@ -15,10 +15,12 @@ org:
           template: /dto.btl
           destProject:
           destPackage:
+          rootClass:
         mapper:
           template: /mapper.btl
           destProject:
           destPackage:
+          rootClass: org.cuber.stub.repo.Mapper
         xml:
           template: /xml.btl
           destProject:

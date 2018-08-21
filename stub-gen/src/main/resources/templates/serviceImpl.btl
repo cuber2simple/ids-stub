@@ -1,0 +1,77 @@
+package  ${@curJava.getPackageName()}
+
+<%for(importStr in importJavas){%>
+import  ${importStr};
+<%}%>
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.github.pagehelper.PageHelper;
+
+@Service
+public class ${@curJava.getShortName()} implements ${@serviceJava.getShortName()}{
+
+    @Autowired
+    private ${@mapperJava.getShortName()} mapper;
+
+    @Override
+    public boolean create(${@voJava.getShortName()} vo){
+        ${@dtoJava.getShortName()} dto = new ${@voJava.getShortName()}();
+        /** 到时候可能需要更改 **/
+        BeanUtils.copyProperties(vo,dto);
+        int effectRow = mapper.create(dto);
+        return effectRow == 1;
+    }
+
+    @Override
+    public int update(${@voJava.getShortName()} vo){
+        ${@dtoJava.getShortName()} dto = new ${@dtoJava.getShortName()}();
+        BeanUtils.copyProperties(vo,dto);
+        return mapper.update(dto);
+    }
+
+    @Override
+    public List<${@voJava.getShortName()}> retrieveAll(){
+        List<${@dtoJava.getShortName()}> dtoList = mapper.retrieveAll();
+        if(dtoList != null && dtoList.size() > 0){
+            List<${@voJava.getShortName()}> voList = dtoList.steam().map(dto->{
+                ${@voJava.getShortName()} vo = new ${@voJava.getShortName()}();
+                BeanUtils.copyProperties(dto,vo);
+            }).collect(Collectors.toList());
+        }
+        return null;
+    }
+
+    @Override
+    public ${@voJava.getShortName()} selectById(${@primary.getShortName()} id){
+        ${@dtoJava.getShortName()} dto = mapper.selectById(id);
+        if(null != dto){
+            ${@voJava.getShortName()} vo = new ${@voJava.getShortName()}();
+            BeanUtils.copyProperties(dto,vo);
+            return vo;
+        }
+        return null;
+    }
+
+    @Override
+    public int deleteById(${@primary.getShortName()} id){
+        return mapper.deleteById(id);
+    }
+
+    @Override
+    public PageResp<${@voJava.getShortName()}> pageQuery(${@voJava.getShortName()} search, int pageSize, int pageNum){
+        PageHelper.startPage(pageNum, pageSize);
+        Page<${@dtoJava.getShortName()}> page = mapper.retrievePage(search);
+        PageResp<${@voJava.getShortName()}> pageResp = new PageResp<>(page);
+        List<${@dtoJava.getShortName()}> dtoList = page.getResult();
+        if(dtoList != null && dtoList.size() > 0){
+            List<${@voJava.getShortName()}> voList = dtoList.steam().map(dto->{
+                ${@voJava.getShortName()} vo = new ${@voJava.getShortName()}();
+                BeanUtils.copyProperties(dto,vo);
+            }).collect(Collectors.toList());
+            pageResp.setResult(voList);
+        }
+        return pageResp;
+    }
+
+
+}

@@ -1,0 +1,26 @@
+package  ${@curJava.getPackageName()}
+
+<%for(importStr in importJavas){%>
+import  ${importStr};
+<%}%>
+
+@ApiModel("${table.remarks}")
+public class ${@curJava.getShortName()} <%if(hasFather){%> extends ${fatherName} <%}%>{
+
+    <%var serializableId = org.apache.commons.lang3.RandomUtils.nextLong()%>
+    private static final long serialVersionUID = ${serializableId};
+
+    <%for(property in properties){%>
+    <% var javaType = column.fullyQualifiedJavaType;%>
+    @ApiModelProperty("${column.remarks}")
+    private ${@javaType.getShortName()} ${column.javaProperty};
+    <%}%>
+
+    <%for(column in properties){%>
+    ${@column.getMethod()}
+
+    ${@column.setMethod()}
+
+    <%}%>
+
+}

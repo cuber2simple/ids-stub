@@ -1,0 +1,21 @@
+package  ${@curJava.getPackageName()}
+
+<%for(importStr in importJavas){%>
+import  ${importStr};
+<%}%>
+
+public interface ${@curJava.getShortName()} {
+
+    boolean create(${@voJava.getShortName()} vo);
+
+    int update(${@voJava.getShortName()} vo);
+
+    List<${@voJava.getShortName()}> retrieveAll();
+
+    ${@voJava.getShortName()} selectById(${@primary.getShortName()} id);
+
+    int deleteById(${@primary.getShortName()} id);
+
+    PageResp<${@voJava.getShortName()}> pageQuery(${@voJava.getShortName()} search, int pageSize, int pageNum);
+
+}

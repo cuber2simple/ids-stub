@@ -16,11 +16,10 @@ public class PageResp<T> extends Resp<List<T>>{
     public PageResp() {
     }
 
-    public PageResp(Page<T> page) {
+    public PageResp(Page page) {
         this.pageNum = page.getPageNum();
         this.pageSize = page.getPageSize();
         this.total = page.getTotal();
-        this.setResult(page.getResult());
         this.pages = page.getPages();
     }
 
@@ -55,4 +54,5 @@ public class PageResp<T> extends Resp<List<T>>{
     public void setPages(int pages) {
         this.pages = pages;
     }
+
 }

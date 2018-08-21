@@ -7,6 +7,15 @@ public class Project {
     private String owner;
     private String ownerEmail;
     private String ownerPhone;
+    private String groupName;
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
 
     public String getName() {
         return name;

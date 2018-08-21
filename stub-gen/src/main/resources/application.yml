@@ -26,13 +26,15 @@ org:
           destProject:
           destPackage:
         vo:
-          template:
+          template: /vo.btl
           destProject:
           destPackage:
+          rootClass: org.cuber.stub.vo.StubVO
         service:
-          template:
+          template: /service.btl
           destProject:
           destPackage:
+          templateImpl: /serviceImpl.btl
         ctrl:
           template:
           destProject:

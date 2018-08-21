@@ -1,5 +1,6 @@
 package org.cuber.gen.runner;
 
+import com.github.pagehelper.Page;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.beetl.core.Template;
@@ -10,17 +11,16 @@ import org.cuber.gen.define.GenDefine;
 import org.cuber.gen.service.BeetlService;
 import org.cuber.gen.service.ConfService;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Component
 public class GenFileCommandRunner implements CommandLineRunner {
@@ -48,12 +48,73 @@ public class GenFileCommandRunner implements CommandLineRunner {
         genDTOFile(table, conf);
         genMapper(table, conf);
         genXml(table, conf);
+        genVO(table, conf);
+        genService(table, conf);
+    }
 
+    private void genService(Table table, Conf conf){
+        try{
+            GenDefine service = conf.getService();
+            Template template = beetlService.getTemplate(service.getTemplate());
+            FullyQualifiedJavaType java = table.getServiceJavaType();
+            FullyQualifiedJavaType vo = table.getVoJavaType();
+            Set<String> importJavas = new HashSet<>();
+            importJavas.add(vo.getFullyQualifiedNameWithoutTypeParameters());
+            importJavas.add("java.util.List");
+            importJavas.add("org.cuber.stub.rpc.PageResp");
+            template.binding("curJava", java);
+            template.binding("voJava", vo);
+            template.binding("importJavas", importJavas);
+            FullyQualifiedJavaType primary = table.getDtoJavaType();
+            template.binding("primary", primary);
+            Path path = getPath(service);
+            String fileName = java.getShortName() + ".java";
+            beetlService.genFile(template, path, fileName);
+            Template templateImpl = beetlService.getTemplate(service.getTemplateImpl());
+            FullyQualifiedJavaType javaImpl = table.getServiceImplJavaType();
+            FullyQualifiedJavaType dtoJava = table.getDtoJavaType();
+            FullyQualifiedJavaType mapperJava = table.getMapperJavaType();
+            templateImpl.binding("importJavas",importJavas);
 
+            importJavas.add(dtoJava.getFullyQualifiedNameWithoutTypeParameters());
+            importJavas.add(mapperJava.getFullyQualifiedNameWithoutTypeParameters());
+            importJavas.add("org.springframework.beans.BeanUtils");
+            importJavas.add("org.springframework.beans.BeanUtils");
+            template.binding("primary", primary);
+            templateImpl.binding("curJava",javaImpl);
+            template.binding("voJava", vo);
+            template.binding("dtoJava", dtoJava);
+            template.binding("serviceJava", java);
+            template.binding("mapperJava", mapperJava);
+            Path pathImpl = Paths.get(path + "/impl/");
+            fileName = javaImpl.getShortName() + ".java";
+            beetlService.genFile(templateImpl, pathImpl, fileName);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void genVO(Table table, Conf conf){
-
+        try {
+            GenDefine vo = conf.getVo();
+            Template template = beetlService.getTemplate(vo.getTemplate());
+            List<Column> showColumns = table.showColumns(vo.getRootClass());
+            template.binding("table", table);
+            template.binding("properties", showColumns);
+            FullyQualifiedJavaType java = table.getVoJavaType();
+            template.binding("curJava", java);
+            java.getPackageName();
+            Set<String> importJavas = getImportByColumn(showColumns);
+            dealWithFather(vo, importJavas, template);
+            importJavas.add("io.swagger.annotations.ApiModel");
+            importJavas.add("io.swagger.annotations.ApiModelProperty");
+            template.binding("importJavas", importJavas);
+            Path path = getPath(conf.getVo());
+            String fileName = java.getShortName() + ".java";
+            beetlService.genFile(template, path, fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void genXml(Table table, Conf conf) {
@@ -111,7 +172,6 @@ public class GenFileCommandRunner implements CommandLineRunner {
             GenDefine dto = conf.getDto();
             Template template = beetlService.getTemplate(dto.getTemplate());
             List<Column> showColumns = table.showColumns(dto.getRootClass());
-            template.binding("columns", showColumns);
             template.binding("table", table);
             template.binding("properties", showColumns);
             FullyQualifiedJavaType java = table.getDtoJavaType();

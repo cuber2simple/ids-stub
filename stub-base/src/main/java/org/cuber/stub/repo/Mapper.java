@@ -22,10 +22,10 @@ public interface Mapper<DTO,KEY> {
 
     /**
      * 分页查询
-     * @param map
+     * @param obj
      * @return
      */
-    Page<DTO> retrievePage(Map map);
+    Page<DTO> retrievePage(Object obj);
 
     /**
      * 根据主键更新全部

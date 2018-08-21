@@ -10,6 +10,17 @@ public class GenDefine {
 
     private String rootClass;
 
+    private String templateImpl;
+
+
+    public String getTemplateImpl() {
+        return templateImpl;
+    }
+
+    public void setTemplateImpl(String templateImpl) {
+        this.templateImpl = templateImpl;
+    }
+
     public String getRootClass() {
         return rootClass;
     }

@@ -15,7 +15,7 @@ org:
           template: /dto.btl
           destProject:
           destPackage:
-          rootClass:
+          rootClass: org.cuber.stub.repo.StubDTO
         mapper:
           template: /mapper.btl
           destProject:

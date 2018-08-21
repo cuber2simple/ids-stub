@@ -52,6 +52,10 @@ public class GenFileCommandRunner implements CommandLineRunner {
 
     }
 
+    private void genVO(Table table, Conf conf){
+
+    }
+
     private void genXml(Table table, Conf conf) {
         GenDefine xml = conf.getXml();
         Template template = beetlService.getTemplate(xml.getTemplate());

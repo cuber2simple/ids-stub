@@ -6,6 +6,7 @@ public class GsonHolder {
     private static Gson gson = new Gson();
 
     public static String toJson(Object object){
+        String json  = null;
         return gson.toJson(object);
     }
 

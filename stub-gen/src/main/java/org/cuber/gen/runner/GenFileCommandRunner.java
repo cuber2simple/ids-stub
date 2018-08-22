@@ -1,6 +1,5 @@
 package org.cuber.gen.runner;
 
-import com.github.pagehelper.Page;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.beetl.core.Template;
@@ -50,6 +49,30 @@ public class GenFileCommandRunner implements CommandLineRunner {
         genXml(table, conf);
         genVO(table, conf);
         genService(table, conf);
+        genController(table, conf);
+    }
+
+    private void genController(Table table, Conf conf) {
+        GenDefine ctrl = conf.getCtrl();
+        Template template = beetlService.getTemplate(ctrl.getTemplate());
+        FullyQualifiedJavaType controller = table.getControllerJavaType();
+        FullyQualifiedJavaType vo = table.getVoJavaType();
+        FullyQualifiedJavaType serviceJava = table.getServiceJavaType();
+        FullyQualifiedJavaType primary = table.getPrimaryJavType();
+        template.binding("curJava", controller);
+        template.binding("voJava", vo);
+        template.binding("primary", primary);
+        template.binding("serviceJava", serviceJava);
+        Set<String> importJavas = new HashSet<>();
+        template.binding("table", table);
+        importJavas.add(serviceJava.getFullyQualifiedNameWithoutTypeParameters());
+        importJavas.add(vo.getFullyQualifiedNameWithoutTypeParameters());
+        importJavas.add(primary.getFullyQualifiedNameWithoutTypeParameters());
+        importJavas.add("org.cuber.stub.rpc.PageResp");
+        template.binding("importJavas", importJavas);
+        Path path = getPath(ctrl);
+        String fileName = controller.getShortName() + ".java";
+        beetlService.genFile(template, path, fileName);
     }
 
     private void genService(Table table, Conf conf){

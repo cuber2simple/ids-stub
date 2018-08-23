@@ -45,7 +45,7 @@ public class ${@curJava.getShortName()} {
         return resp;
     }
 
-    @ApiOperation("修改一条记录")
+    @ApiOperation("根据主键得到一条记录")
     @RequestMapping(value = "/get/{id}",method = RequestMethod.GET)
     @ResponseBody
     public Resp<${@voJava.getShortName()}> get(@PathVariable("id") ${@primary.getShortName()} id){
@@ -65,7 +65,7 @@ public class ${@curJava.getShortName()} {
     }
 
     @ApiOperation("分页查询")
-    @RequestMapping(value = "/query/{id}",method = RequestMethod.POST)
+    @RequestMapping(value = "/query,method = RequestMethod.POST)
     @ResponseBody
     public PageResp<${@voJava.getShortName()}> query(@RequestBody ${@voJava.getShortName()} search,
                                                         @Param("pageSize") int pageSize,

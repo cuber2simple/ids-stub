@@ -19,8 +19,19 @@ public class Resp<T> implements Serializable {
     @ApiModelProperty("响应的消息")
     private String resultMsg;
 
-    @ApiModelProperty("是否正常返回")
+    @ApiModelProperty("是否出现异常")
     private boolean abnormal;
+
+    @ApiModelProperty("是否成功")
+    private boolean success;
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
 
     public T getResult() {
         return result;

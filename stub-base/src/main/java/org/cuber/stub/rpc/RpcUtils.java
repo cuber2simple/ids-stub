@@ -8,12 +8,13 @@ public class RpcUtils {
         Resp<T> resp = new Resp<>();
         resp.setResult(result);
         resp.setResultCode(StubConstant.SUCCESS_CODE);
+        resp.setSuccess(true);
         return resp;
     }
 
     public static <T> Resp<T> fail(String resultCode){
         Resp<T> resp = new Resp<>();
-        resp.setAbnormal(true);
+        resp.setSuccess(false);
         resp.setResultCode(resultCode);
         return resp;
     }

@@ -10,11 +10,6 @@ public class StubDTO {
      */
     private LocalDateTime createDateTime;
 
-    /**
-     *  column_name    UPDATE_DATETIME
-     *  remark         更新时间
-     */
-    private LocalDateTime updateDateTime;
 
     public LocalDateTime getCreateDateTime() {
         return createDateTime;
@@ -24,11 +19,4 @@ public class StubDTO {
         this.createDateTime = createDateTime;
     }
 
-    public LocalDateTime getUpdateDateTime() {
-        return updateDateTime;
-    }
-
-    public void setUpdateDateTime(LocalDateTime updateDateTime) {
-        this.updateDateTime = updateDateTime;
-    }
 }

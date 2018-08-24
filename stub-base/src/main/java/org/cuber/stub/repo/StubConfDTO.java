@@ -3,16 +3,16 @@ package org.cuber.stub.repo;
 public class StubConfDTO extends StubDTO{
 
     /**
-     *  column_name    CREATE_OPERATOR
+     *  column_name    CREATE_USER_ID
      *  remark         创建用户
      */
-    private String createOperator;
+    private String createUserId;
 
     /**
-     *  column_name    UPDATE_OPERATOR
+     *  column_name    UPDATE_USER_ID
      *  remark         更新用户
      */
-    private String updateOperator;
+    private String updateUserId;
 
     /**
      *  column_name    STATUS
@@ -20,20 +20,21 @@ public class StubConfDTO extends StubDTO{
      */
     private String status;
 
-    public String getCreateOperator() {
-        return createOperator;
+
+    public String getCreateUserId() {
+        return createUserId;
     }
 
-    public void setCreateOperator(String createOperator) {
-        this.createOperator = createOperator;
+    public void setCreateUserId(String createUserId) {
+        this.createUserId = createUserId;
     }
 
-    public String getUpdateOperator() {
-        return updateOperator;
+    public String getUpdateUserId() {
+        return updateUserId;
     }
 
-    public void setUpdateOperator(String updateOperator) {
-        this.updateOperator = updateOperator;
+    public void setUpdateUserId(String updateUserId) {
+        this.updateUserId = updateUserId;
     }
 
     public String getStatus() {

@@ -11,35 +11,39 @@ public class StubConfVO extends StubVO{
     private static final long serialVersionUID = -7002707055803854973L;
 
     @ApiModelProperty("创建者")
-    private String createOperator;
+    private String createUserId;
 
     @ApiModelProperty("最近修改者")
-    private String updateOperator;
+    private String updateUserId;
 
     @ApiModelProperty("状态")
-    private StatusDTO status;
+    private String status;
 
-    public String getCreateOperator() {
-        return createOperator;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
-    public void setCreateOperator(String createOperator) {
-        this.createOperator = createOperator;
+    public String getCreateUserId() {
+        return createUserId;
     }
 
-    public String getUpdateOperator() {
-        return updateOperator;
+    public void setCreateUserId(String createUserId) {
+        this.createUserId = createUserId;
     }
 
-    public void setUpdateOperator(String updateOperator) {
-        this.updateOperator = updateOperator;
+    public String getUpdateUserId() {
+        return updateUserId;
     }
 
-    public StatusDTO getStatus() {
+    public void setUpdateUserId(String updateUserId) {
+        this.updateUserId = updateUserId;
+    }
+
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(StatusDTO status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 }

@@ -4,6 +4,7 @@ package  ${@curJava.getPackageName()};
 import  ${importStr};
 <%}%>
 import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageHelper;
 import java.util.stream.Collectors;
@@ -38,6 +39,7 @@ public class ${@curJava.getShortName()} implements ${@serviceJava.getShortName()
             List<${@voJava.getShortName()}> voList = dtoList.stream().map(dto->{
                 ${@voJava.getShortName()} vo = new ${@voJava.getShortName()}();
                 BeanUtils.copyProperties(dto,vo);
+                return vo;
             }).collect(Collectors.toList());
         }
         return null;
@@ -62,8 +64,7 @@ public class ${@curJava.getShortName()} implements ${@serviceJava.getShortName()
     @Override
     public PageResp<${@voJava.getShortName()}> pageQuery(${@voJava.getShortName()} search, int pageSize, int pageNum) throws Exception{
         PageHelper.startPage(pageNum, pageSize);
-
-        Page<${@dtoJava.getShortName()}> page = mapper.retrievePage(search);
+        Page<${@dtoJava.getShortName()}> page = mapper.retrievePage(PropertyUtils.describe(search));
         PageResp<${@voJava.getShortName()}> pageResp = new PageResp<>(page);
         List<${@dtoJava.getShortName()}> dtoList = page.getResult();
         if(dtoList != null && dtoList.size() > 0){

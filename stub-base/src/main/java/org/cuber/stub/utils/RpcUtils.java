@@ -19,4 +19,15 @@ public class RpcUtils {
         resp.setResultCode(resultCode);
         return resp;
     }
+
+    public static <T> Resp<T> httpFailed(int httpStatus, String message,String trace) {
+        Resp<T> resp = new Resp<>();
+        resp.setAbnormal(true);
+        resp.setResultCode(StubConstant.HTTP_FAILED_CODE);
+        resp.setHttpStatus(httpStatus);
+        resp.setResultMsg(message);
+        resp.setTrace(trace);
+        return resp;
+    }
+
 }

@@ -25,6 +25,33 @@ public class Resp<T> implements Serializable {
     @ApiModelProperty("是否成功")
     private boolean success;
 
+    @ApiModelProperty("错误轨迹")
+    private String trace;
+
+    @ApiModelProperty("http status code")
+    private int httpStatus;
+
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getTrace() {
+        return trace;
+    }
+
+    public void setTrace(String trace) {
+        this.trace = trace;
+    }
+
+    public int getHttpStatus() {
+        return httpStatus;
+    }
+
+    public void setHttpStatus(int httpStatus) {
+        this.httpStatus = httpStatus;
+    }
+
     public boolean isSuccess() {
         return success;
     }

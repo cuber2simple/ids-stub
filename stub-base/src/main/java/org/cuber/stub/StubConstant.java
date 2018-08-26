@@ -38,6 +38,9 @@ public class StubConstant {
     /**java 项目成功返回的返回号*/
     public static final String SUCCESS_CODE = "00000000";
 
+    /**java 项目成功返回的返回号*/
+    public static final String HTTP_FAILED_CODE = "00009999";
+
     /**java 未知错误*/
     public static final String UNKNOWN_ERR = "99999999";
 

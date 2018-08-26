@@ -44,5 +44,25 @@ org:
           destProject:
           destPackage:
         tables:
+          - tableName: t_login_log
+            dtoName: LoginLog
+          - tableName: t_menu
+            dtoName: UniteMenu
+          - tableName: t_operate
+            dtoName: UniteOperate
+          - tableName: t_operate_log
+            dtoName: OperateLog
+          - tableName: t_permission
+            dtoName: UnitePermission
+          - tableName: t_role
+            dtoName: UniteRole
           - tableName: t_user
             dtoName: UniteUser
+          - tableName: t_user_group
+            dtoName: UniteUserGroup
+          - tableName: tr_role_permission
+            dtoName: RelatedRolePermission
+          - tableName: tr_user_group
+            dtoName: RelatedUserGroup
+          - tableName: tr_user_role
+            dtoName: RelatedUserRole

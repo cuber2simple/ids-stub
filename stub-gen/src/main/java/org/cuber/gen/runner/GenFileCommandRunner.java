@@ -88,7 +88,7 @@ public class GenFileCommandRunner implements CommandLineRunner {
             template.binding("curJava", java);
             template.binding("voJava", vo);
             template.binding("importJavas", importJavas);
-            FullyQualifiedJavaType primary = table.getDtoJavaType();
+            FullyQualifiedJavaType primary = table.getPrimaryJavType();
             template.binding("primary", primary);
             Path path = getPath(service);
             String fileName = java.getShortName() + ".java";
@@ -102,13 +102,14 @@ public class GenFileCommandRunner implements CommandLineRunner {
             importJavas.add(dtoJava.getFullyQualifiedNameWithoutTypeParameters());
             importJavas.add(mapperJava.getFullyQualifiedNameWithoutTypeParameters());
             importJavas.add("org.springframework.beans.BeanUtils");
-            importJavas.add("org.springframework.beans.BeanUtils");
+            importJavas.add(java.getFullyQualifiedNameWithoutTypeParameters());
             template.binding("primary", primary);
             templateImpl.binding("curJava",javaImpl);
-            template.binding("voJava", vo);
-            template.binding("dtoJava", dtoJava);
-            template.binding("serviceJava", java);
-            template.binding("mapperJava", mapperJava);
+            templateImpl.binding("voJava", vo);
+            templateImpl.binding("dtoJava", dtoJava);
+            templateImpl.binding("serviceJava", java);
+            templateImpl.binding("primary", table.getPrimaryJavType());
+            templateImpl.binding("mapperJava", mapperJava);
             Path pathImpl = Paths.get(path + "/impl/");
             fileName = javaImpl.getShortName() + ".java";
             beetlService.genFile(templateImpl, pathImpl, fileName);
@@ -161,7 +162,7 @@ public class GenFileCommandRunner implements CommandLineRunner {
         Template template = beetlService.getTemplate(mapper.getTemplate());
         FullyQualifiedJavaType mapperJava = table.getMapperJavaType();
         FullyQualifiedJavaType dtoJava = table.getDtoJavaType();
-        FullyQualifiedJavaType primary = table.getDtoJavaType();
+        FullyQualifiedJavaType primary = table.getPrimaryJavType();
         template.binding("curJava", mapperJava);
         template.binding("dtoJava", dtoJava);
         template.binding("primary", primary);

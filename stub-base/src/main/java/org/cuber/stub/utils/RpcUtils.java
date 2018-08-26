@@ -1,6 +1,11 @@
-package org.cuber.stub.rpc;
+package org.cuber.stub.utils;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.cuber.stub.StubConstant;
+import org.cuber.stub.conf.Property;
+import org.cuber.stub.rpc.Resp;
+
+import java.util.Map;
 
 public class RpcUtils {
 
@@ -17,5 +22,12 @@ public class RpcUtils {
         resp.setSuccess(false);
         resp.setResultCode(resultCode);
         return resp;
+    }
+
+    public static void main(String[] args) throws Exception{
+        Property property = new Property();
+        property.setName("com.lang");
+        Map map = PropertyUtils.describe(property);
+        System.out.println(map);
     }
 }

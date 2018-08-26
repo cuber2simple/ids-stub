@@ -6,16 +6,18 @@ import  ${importStr};
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageHelper;
+import java.util.stream.Collectors;
+import com.github.pagehelper.Page;
 
 @Service
 public class ${@curJava.getShortName()} implements ${@serviceJava.getShortName()}{
 
-    @Autowired
+    @Autowired(required = false)
     private ${@mapperJava.getShortName()} mapper;
 
     @Override
-    public boolean create(${@voJava.getShortName()} vo){
-        ${@dtoJava.getShortName()} dto = new ${@voJava.getShortName()}();
+    public boolean create(${@voJava.getShortName()} vo) throws Exception{
+        ${@dtoJava.getShortName()} dto = new ${@dtoJava.getShortName()}();
         /** 到时候可能需要更改 **/
         BeanUtils.copyProperties(vo,dto);
         int effectRow = mapper.create(dto);
@@ -23,17 +25,17 @@ public class ${@curJava.getShortName()} implements ${@serviceJava.getShortName()
     }
 
     @Override
-    public int update(${@voJava.getShortName()} vo){
+    public int update(${@voJava.getShortName()} vo) throws Exception {
         ${@dtoJava.getShortName()} dto = new ${@dtoJava.getShortName()}();
         BeanUtils.copyProperties(vo,dto);
-        return mapper.update(dto);
+        return mapper.updateById(dto);
     }
 
     @Override
-    public List<${@voJava.getShortName()}> retrieveAll(){
+    public List<${@voJava.getShortName()}> retrieveAll() throws Exception {
         List<${@dtoJava.getShortName()}> dtoList = mapper.retrieveAll();
         if(dtoList != null && dtoList.size() > 0){
-            List<${@voJava.getShortName()}> voList = dtoList.steam().map(dto->{
+            List<${@voJava.getShortName()}> voList = dtoList.stream().map(dto->{
                 ${@voJava.getShortName()} vo = new ${@voJava.getShortName()}();
                 BeanUtils.copyProperties(dto,vo);
             }).collect(Collectors.toList());
@@ -42,8 +44,8 @@ public class ${@curJava.getShortName()} implements ${@serviceJava.getShortName()
     }
 
     @Override
-    public ${@voJava.getShortName()} selectById(${@primary.getShortName()} id){
-        ${@dtoJava.getShortName()} dto = mapper.selectById(id);
+    public ${@voJava.getShortName()} selectById(${@primary.getShortName()} id) throws Exception{
+        ${@dtoJava.getShortName()} dto = mapper.retrieveById(id);
         if(null != dto){
             ${@voJava.getShortName()} vo = new ${@voJava.getShortName()}();
             BeanUtils.copyProperties(dto,vo);
@@ -53,20 +55,22 @@ public class ${@curJava.getShortName()} implements ${@serviceJava.getShortName()
     }
 
     @Override
-    public int deleteById(${@primary.getShortName()} id){
+    public int deleteById(${@primary.getShortName()} id) throws Exception {
         return mapper.deleteById(id);
     }
 
     @Override
-    public PageResp<${@voJava.getShortName()}> pageQuery(${@voJava.getShortName()} search, int pageSize, int pageNum){
+    public PageResp<${@voJava.getShortName()}> pageQuery(${@voJava.getShortName()} search, int pageSize, int pageNum) throws Exception{
         PageHelper.startPage(pageNum, pageSize);
+
         Page<${@dtoJava.getShortName()}> page = mapper.retrievePage(search);
         PageResp<${@voJava.getShortName()}> pageResp = new PageResp<>(page);
         List<${@dtoJava.getShortName()}> dtoList = page.getResult();
         if(dtoList != null && dtoList.size() > 0){
-            List<${@voJava.getShortName()}> voList = dtoList.steam().map(dto->{
+            List<${@voJava.getShortName()}> voList = dtoList.stream().map(dto->{
                 ${@voJava.getShortName()} vo = new ${@voJava.getShortName()}();
                 BeanUtils.copyProperties(dto,vo);
+                return vo;
             }).collect(Collectors.toList());
             pageResp.setResult(voList);
         }

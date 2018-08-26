@@ -6,16 +6,16 @@ import  ${importStr};
 
 public interface ${@curJava.getShortName()} {
 
-    boolean create(${@voJava.getShortName()} vo);
+    boolean create(${@voJava.getShortName()} vo) throws Exception;
 
-    int update(${@voJava.getShortName()} vo);
+    int update(${@voJava.getShortName()} vo) throws Exception;
 
-    List<${@voJava.getShortName()}> retrieveAll();
+    List<${@voJava.getShortName()}> retrieveAll() throws Exception;
 
-    ${@voJava.getShortName()} selectById(${@primary.getShortName()} id);
+    ${@voJava.getShortName()} selectById(${@primary.getShortName()} id) throws Exception;
 
-    int deleteById(${@primary.getShortName()} id);
+    int deleteById(${@primary.getShortName()} id) throws Exception;
 
-    PageResp<${@voJava.getShortName()}> pageQuery(${@voJava.getShortName()} search, int pageSize, int pageNum);
+    PageResp<${@voJava.getShortName()}> pageQuery(${@voJava.getShortName()} search, int pageSize, int pageNum) throws Exception;
 
 }

@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.cuber.stub.rpc.Resp;
-import org.cuber.stub.rpc.RpcUtils;
+import org.cuber.stub.utils.RpcUtils;
 
 @Api("${table.remarks}")
 @RequestMapping("/api/${table.tableDefine.dtoName}")

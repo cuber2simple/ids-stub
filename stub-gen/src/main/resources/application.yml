@@ -13,36 +13,36 @@ org:
         schema:
         dto:
           template: /dto.btl
-          destProject:
-          destPackage:
+          destProject: D:\project\java\corp\unite-upms\upms-dal\src\main\java
+          destPackage:  org.cuber.upms.dto
           rootClass: org.cuber.stub.repo.StubDTO
         mapper:
           template: /mapper.btl
-          destProject:
-          destPackage:
+          destProject: D:\project\java\corp\unite-upms\upms-dal\src\main\java
+          destPackage: org.cuber.upms.mapper
           rootClass: org.cuber.stub.repo.Mapper
         xml:
           template: /xml.btl
-          destProject:
-          destPackage:
+          destProject: D:\project\java\corp\unite-upms\upms-dal\src\main\resources
+          destPackage:  mapper
         vo:
           template: /vo.btl
-          destProject:
-          destPackage:
+          destProject: D:\project\java\corp\unite-upms\upms-facade\src\main\java
+          destPackage: org.cuber.upms.vo
           rootClass: org.cuber.stub.vo.StubVO
         service:
           template: /service.btl
-          destProject:
-          destPackage:
+          destProject: D:\project\java\corp\unite-upms\upms-biz\src\main\java
+          destPackage: org.cuber.upms.single.service
           templateImpl: /serviceImpl.btl
         ctrl:
           template: /controller.btl
-          destProject:
-          destPackage:
+          destProject: D:\project\java\corp\unite-upms\upms-web\src\main\java
+          destPackage: org.cuber.upms.controller
         view:
           template:
           destProject:
           destPackage:
         tables:
-          - tableName:
-            dtoName:
+          - tableName: t_user
+            dtoName: UniteUser

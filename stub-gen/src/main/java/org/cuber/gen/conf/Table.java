@@ -222,21 +222,51 @@ public class Table extends IntrospectedTableMyBatis3Impl {
     }
 
     public String base_Column_List() {
-        return Joiner.on(", ").join(this.getAllColumns().stream().map(introspectedColumn ->
+        List<String> columns = this.getAllColumns().stream().map(introspectedColumn ->
                 introspectedColumn.getActualColumnName().toUpperCase())
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
+        int count = 0;
+        StringBuilder stringBuilder = new StringBuilder();
+        if (columns != null) {
+            for (int i = 0; i < columns.size(); i++) {
+                String column = columns.get(i);
+                stringBuilder.append(column).append(", ");
+                count = count + column.length() + 2;
+                if (count > 96 && i != columns.size() - 1) {
+                    stringBuilder.append("\n");
+                    count = 0;
+                }
+            }
+            return stringBuilder.substring(0, stringBuilder.length() - 2);
+        }
+        return null;
     }
 
 
     public String base_insert_value() {
-        return Joiner.on(", ").join(this.getAllColumns().stream().map(introspectedColumn ->
-                getColumnValue((Column) introspectedColumn, null))
-                .collect(Collectors.toList()));
+        List<IntrospectedColumn> columns = this.getAllColumns();
+        int count = 0;
+        StringBuilder stringBuilder = new StringBuilder();
+        if (columns != null) {
+            for (int i = 0; i < columns.size(); i++) {
+                IntrospectedColumn column = columns.get(i);
+                String value = getColumnValue((Column) column,null);
+                stringBuilder.append(value).append(", ");
+                count = count + value.length() + 2;
+                if (count > 96 && i != columns.size() - 1) {
+                    stringBuilder.append("\n");
+                    count = 0;
+                }
+            }
+            return stringBuilder.substring(0, stringBuilder.length() - 2);
+        }
+        return null;
+
     }
 
     public String whereCondition(List<Column> columnList) {
         if (CollectionUtils.isNotEmpty(columnList)) {
-            return Joiner.on("AND ").join(columnList.stream().map(introspectedColumn ->
+            return Joiner.on("\nAND ").join(columnList.stream().map(introspectedColumn ->
                     introspectedColumn.getActualColumnName() + " = " + getColumnValue(introspectedColumn, null))
                     .collect(Collectors.toList()));
         } else {

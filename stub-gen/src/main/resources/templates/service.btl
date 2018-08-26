@@ -1,4 +1,4 @@
-package  ${@curJava.getPackageName()}
+package  ${@curJava.getPackageName()};
 
 <%for(importStr in importJavas){%>
 import  ${importStr};

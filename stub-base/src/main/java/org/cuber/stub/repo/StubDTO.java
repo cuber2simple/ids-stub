@@ -8,15 +8,14 @@ public class StubDTO {
      *  column_name    CREATE_DATETIME
      *  remark         创建时间
      */
-    private LocalDateTime createDateTime;
+    private LocalDateTime createDatetime;
 
 
-    public LocalDateTime getCreateDateTime() {
-        return createDateTime;
+    public LocalDateTime getCreateDatetime() {
+        return createDatetime;
     }
 
-    public void setCreateDateTime(LocalDateTime createDateTime) {
-        this.createDateTime = createDateTime;
+    public void setCreateDatetime(LocalDateTime createDatetime) {
+        this.createDatetime = createDatetime;
     }
-
 }

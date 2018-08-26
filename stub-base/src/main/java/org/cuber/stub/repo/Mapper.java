@@ -25,7 +25,7 @@ public interface Mapper<DTO,KEY> {
      * @param obj
      * @return
      */
-    Page<DTO> retrievePage(Object obj);
+    Page<DTO> retrievePage(Map obj);
 
     /**
      * 根据主键更新全部

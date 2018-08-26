@@ -12,24 +12,28 @@ public class StubVO implements Serializable {
     private static final long serialVersionUID = -5279892905408745157L;
 
     @ApiModelProperty("创建时间")
-    private LocalDateTime createDateTime;
+    private LocalDateTime createDatetime;
 
     @ApiModelProperty("更新时间")
-    private LocalDateTime updateDateTime;
+    private LocalDateTime updateDatetime;
 
-    public LocalDateTime getCreateDateTime() {
-        return createDateTime;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
-    public void setCreateDateTime(LocalDateTime createDateTime) {
-        this.createDateTime = createDateTime;
+    public LocalDateTime getCreateDatetime() {
+        return createDatetime;
     }
 
-    public LocalDateTime getUpdateDateTime() {
-        return updateDateTime;
+    public void setCreateDatetime(LocalDateTime createDatetime) {
+        this.createDatetime = createDatetime;
     }
 
-    public void setUpdateDateTime(LocalDateTime updateDateTime) {
-        this.updateDateTime = updateDateTime;
+    public LocalDateTime getUpdateDatetime() {
+        return updateDatetime;
+    }
+
+    public void setUpdateDatetime(LocalDateTime updateDatetime) {
+        this.updateDatetime = updateDatetime;
     }
 }

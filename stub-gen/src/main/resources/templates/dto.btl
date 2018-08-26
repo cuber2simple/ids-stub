@@ -1,4 +1,4 @@
-package  ${@curJava.getPackageName()}
+package  ${@curJava.getPackageName()};
 
 <%for(importStr in importJavas){%>
 import  ${importStr};
@@ -11,12 +11,13 @@ import  ${importStr};
 public class ${@curJava.getShortName()} <%if(hasFather){%> extends ${fatherName} <%}%>{
 
     <%for(property in properties){%>
-    <% var javaType = column.fullyQualifiedJavaType;%>
+
+    <% var javaType = property.fullyQualifiedJavaType;%>
     /**
-      *  column_name    ${column.actualColumnName}
-      *  remark         ${column.remarks}
+      *  column_name    ${property.actualColumnName}
+      *  remark         ${property.remarks}
       */
-    private ${@javaType.getShortName()} ${column.javaProperty};
+    private ${@javaType.getShortName()} ${property.javaProperty};
 
     <%}%>
 

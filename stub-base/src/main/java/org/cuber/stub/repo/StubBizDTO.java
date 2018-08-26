@@ -8,7 +8,7 @@ public class StubBizDTO {
      *  column_name    COMPLETE_DATETIME
      *  remark         完成时间
      */
-    private LocalDateTime completeDateTime;
+    private LocalDateTime completeDatetime;
 
     /**
      *  column_name    BIZ_STATUS
@@ -16,12 +16,12 @@ public class StubBizDTO {
      */
     private String bizStatus;
 
-    public LocalDateTime getCompleteDateTime() {
-        return completeDateTime;
+    public LocalDateTime getCompleteDatetime() {
+        return completeDatetime;
     }
 
-    public void setCompleteDateTime(LocalDateTime completeDateTime) {
-        this.completeDateTime = completeDateTime;
+    public void setCompleteDatetime(LocalDateTime completeDatetime) {
+        this.completeDatetime = completeDatetime;
     }
 
     public String getBizStatus() {

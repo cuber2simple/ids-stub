@@ -22,7 +22,7 @@ public class BeetlServiceImpl implements BeetlService {
 
     @PostConstruct
     public void init() throws Exception {
-        ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("/template");
+        ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("/templates");
         Configuration cfg = Configuration.defaultConfiguration();
         gt = new GroupTemplate(resourceLoader, cfg);
     }

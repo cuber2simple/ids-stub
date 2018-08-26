@@ -11,6 +11,7 @@
     <modules>
         <module>stub-base</module>
         <module>stub-gen</module>
+        <module>stub-starter</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -86,6 +87,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
         </dependency>
 
         <dependency>

@@ -1,0 +1,1 @@
+loggerInvokerFilter=com.ipaylinks.config.starter.filter.DubboFilter

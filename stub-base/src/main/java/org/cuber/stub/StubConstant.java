@@ -58,4 +58,8 @@ public class StubConstant {
 
     /**zookeeper 环境配置初始化地址*/
     public static final String ZOOKEEPER_SUFFIX_PATH = "/ipl/env/";
+
+    public static final String DOMAIN = "x-domain";
+
+    public static final String DOMAIN_DEFAULT = "poss";
 }

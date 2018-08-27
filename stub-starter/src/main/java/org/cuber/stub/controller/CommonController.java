@@ -1,6 +1,7 @@
 package org.cuber.stub.controller;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cuber.stub.StubConstant;
 import org.cuber.stub.rpc.Resp;
 import org.cuber.stub.utils.RpcUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,7 @@ public class CommonController implements ErrorController {
     }
 
     @RequestMapping("/login.htm")
-    public void login(@RequestHeader("domain") String domain,
+    public void login(@RequestHeader(value = StubConstant.DOMAIN,defaultValue = StubConstant.DOMAIN_DEFAULT) String domain,
                       HttpServletRequest req,
                       HttpServletResponse resp) throws Exception {
         String template = domain + "/login";
@@ -83,7 +84,7 @@ public class CommonController implements ErrorController {
         String message = "";
         String trace = "";
         if (!StringUtils.isEmpty(path)) {
-            message = String.format("Requested path %s with result %s", path, messageFound);
+            message = String.format("Requested path [%s] with result [%s]", path, messageFound);
         }
         if (includeStackTrace) {
             trace = (String) errorAttributes.get("trace");

@@ -14,7 +14,7 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.authorizeRequests().antMatchers("/login.htm").anonymous().and()
                 .authorizeRequests().antMatchers("/error/**").anonymous().and()
-                .authorizeRequests().antMatchers("/sso.htm").anonymous().and()
+                .authorizeRequests().antMatchers("/").anonymous().and()
                 .authorizeRequests().antMatchers("/js/**").anonymous().and()
                 .authorizeRequests().antMatchers("/plugins/**").anonymous().and()
                 .authorizeRequests().antMatchers("/dist/**").anonymous().and()
@@ -22,7 +22,7 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/css/**").anonymous().and()
                 .authorizeRequests().antMatchers("/register.htm").anonymous().and()
                 .formLogin()
-                .loginPage("/login.htm")
+                .loginPage("/")
                 .loginProcessingUrl("/login")  //very import add
                 .failureUrl("/login/error.htm");
     }

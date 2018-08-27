@@ -21,9 +21,9 @@ public class CommonController extends BaseController implements ErrorController 
     @Autowired
     private ErrorAttributes errorAttributes;
 
-    @RequestMapping("/login.htm")
+    @RequestMapping("/")
     public String login() {
-        return StubConstant.REDIRECT + this.env + "/sso/sso.htm";
+        return StubConstant.REDIRECT + this.env + "/sso/login.htm";
     }
 
     private Map<String, Object> getErrorAttributes(WebRequest request, boolean includeStackTrace) {

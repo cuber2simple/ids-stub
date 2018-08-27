@@ -62,4 +62,6 @@ public class StubConstant {
     public static final String DOMAIN = "x-domain";
 
     public static final String DOMAIN_DEFAULT = "poss";
+
+    public static final String REDIRECT = "redirect:";
 }

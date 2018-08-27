@@ -12,14 +12,15 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-        http.authorizeRequests().antMatchers("/login.htm").anonymous().and()
+        http.authorizeRequests().antMatchers("/xlogin").anonymous().and()
                 .authorizeRequests().antMatchers("/error/**").anonymous().and()
+                .authorizeRequests().antMatchers("/ssologin").anonymous().and()
                 .authorizeRequests().antMatchers("/static/**").anonymous().and()
-                .authorizeRequests().antMatchers("/register.htm/**").anonymous().and()
+                .authorizeRequests().antMatchers("/register").anonymous().and()
                 .authorizeRequests().anyRequest().authenticated().and()
                 .formLogin()
-                .loginPage("/login.htm")
+                .loginPage("/xlogin")
                 .loginProcessingUrl("/login")  //very import add
-                .failureUrl("/.htm");
+                .failureUrl("/errlogin");
     }
 }

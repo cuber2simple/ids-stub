@@ -8,22 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.Map;
 
-@RestController
+@Controller
 public class CommonController extends BaseController implements ErrorController {
 
     @Autowired
     private ErrorAttributes errorAttributes;
 
-    @RequestMapping("/login")
+    @RequestMapping("/login.htm")
     public String login() {
-        return StubConstant.REDIRECT + this.env + "/sso/ssologin";
+        return StubConstant.REDIRECT + this.env + "/sso/sso.htm";
     }
 
     private Map<String, Object> getErrorAttributes(WebRequest request, boolean includeStackTrace) {

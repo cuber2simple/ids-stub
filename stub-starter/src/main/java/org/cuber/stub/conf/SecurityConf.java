@@ -12,15 +12,19 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-        http.authorizeRequests().antMatchers("/xlogin").anonymous().and()
+        http.authorizeRequests().antMatchers("/login.htm").anonymous().and()
                 .authorizeRequests().antMatchers("/error/**").anonymous().and()
-                .authorizeRequests().antMatchers("/ssologin").anonymous().and()
-                .authorizeRequests().antMatchers("/static/**").anonymous().and()
-                .authorizeRequests().antMatchers("/register").anonymous().and()
+                .authorizeRequests().antMatchers("/sso.htm").anonymous().and()
+                .authorizeRequests().antMatchers("/js/**").anonymous().and()
+                .authorizeRequests().antMatchers("/plugins/**").anonymous().and()
+                .authorizeRequests().antMatchers("/dist/**").anonymous().and()
+                .authorizeRequests().antMatchers("/img/**").anonymous().and()
+                .authorizeRequests().antMatchers("/css/**").anonymous().and()
+                .authorizeRequests().antMatchers("/register.htm").anonymous().and()
                 .authorizeRequests().anyRequest().authenticated().and()
                 .formLogin()
-                .loginPage("/xlogin")
+                .loginPage("/login.htm")
                 .loginProcessingUrl("/login")  //very import add
-                .failureUrl("/errlogin");
+                .failureUrl("/login/error.htm");
     }
 }

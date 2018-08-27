@@ -30,10 +30,10 @@ import java.util.Map;
 @RestController
 public class CommonController implements ErrorController {
 
-    @Value("org.cuber.front.nginx:http://127.0.0.1")
+    @Value("${org.cuber.front.nginx:http://127.0.0.1}")
     private String env;
 
-    @Value("org.cuber.product:false")
+    @Value("${org.cuber.product:false}")
     private boolean isProduct;
 
     @Autowired(required = false)
@@ -73,7 +73,7 @@ public class CommonController implements ErrorController {
     @RequestMapping(value = "/error",  produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public Resp error(WebRequest webRequest){
-        return buildBody(webRequest,isProduct);
+        return buildBody(webRequest,!isProduct);
     }
     private Resp buildBody(WebRequest webRequest, boolean includeStackTrace) {
         Map<String, Object> errorAttributes = getErrorAttributes(webRequest, includeStackTrace);
@@ -88,7 +88,6 @@ public class CommonController implements ErrorController {
         if (includeStackTrace) {
             trace = (String) errorAttributes.get("trace");
         }
-
         return RpcUtils.httpFailed(status, message, trace);
     }
 

@@ -21,7 +21,6 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/img/**").anonymous().and()
                 .authorizeRequests().antMatchers("/css/**").anonymous().and()
                 .authorizeRequests().antMatchers("/register.htm").anonymous().and()
-                .authorizeRequests().anyRequest().authenticated().and()
                 .formLogin()
                 .loginPage("/login.htm")
                 .loginProcessingUrl("/login")  //very import add

@@ -13,7 +13,7 @@ import org.cuber.stub.utils.RpcUtils;
 
 @Api("${table.remarks}")
 @RequestMapping("/api/${table.tableDefine.dtoName}")
-@RestController
+@Controller
 public class ${@curJava.getShortName()} {
     @Autowired
     private ${@serviceJava.getShortName()} service;

@@ -22,6 +22,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
+import org.thymeleaf.templateresolver.UrlTemplateResolver;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -47,8 +48,7 @@ public class CommonController implements ErrorController {
 
     @EventListener
     public void ApplicationReady(ApplicationReadyEvent readyEvent) {
-        ServletContextTemplateResolver templateResolver =
-                new ServletContextTemplateResolver(servletContext);
+        UrlTemplateResolver templateResolver = new UrlTemplateResolver();
         templateResolver.setTemplateMode(TemplateMode.HTML);
         String nginxTemplates = env + "/templates/";
         templateResolver.setPrefix(nginxTemplates);

@@ -63,6 +63,7 @@ public class CommonController implements ErrorController {
                       HttpServletRequest req,
                       HttpServletResponse resp) throws Exception {
         String template = domain + "/login";
+        req.setAttribute("env",env);
         WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
         templateEngine.process(template, ctx, resp.getWriter());
     }

@@ -10,23 +10,21 @@ import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
-public class Rsa4jsUtils {
+public class Rsa4JsUtils {
     public static final String RSA_ECB_PKCS1_PADDING = "RSA/ECB/PKCS1Padding";
 
     public static final int KEY_SIZE_2048 = 2048;
     public static final int KEY_SIZE_1024 = 1024;
 
-    private static final String RSA_ALGORITHM = "RSA";
+    private static final String ALGORITHM = "RSA";
 
-    private static final String RSA_256 = "RSA";
-
-    public static KeyPair generateKeyPair(String algorithm) {
-        return generateKeyPair(KEY_SIZE_2048, algorithm);
+    public static KeyPair generateKeyPair() {
+        return generateKeyPair(KEY_SIZE_2048);
     }
 
-    public static KeyPair generateKeyPair(int keySize, String algorithm) {
+    public static KeyPair generateKeyPair(int keySize) {
         try {
-            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(algorithm);
+            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(ALGORITHM);
             keyPairGenerator.initialize(keySize);
             return keyPairGenerator.generateKeyPair();
         } catch (NoSuchAlgorithmException e) {
@@ -34,10 +32,10 @@ public class Rsa4jsUtils {
         }
     }
 
-    public static PublicKey getPublicKey(String base64PublicKey, String algorithm) {
+    public static PublicKey getPublicKey(String base64PublicKey) {
         try {
             X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64.decodeBase64(base64PublicKey));
-            KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
+            KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM);
             PublicKey publicKey = keyFactory.generatePublic(keySpec);
             return publicKey;
         } catch (Exception e) {
@@ -45,9 +43,9 @@ public class Rsa4jsUtils {
         }
     }
 
-    public static PublicKey getPublicKey(BigInteger modulus, BigInteger exponent, String algorithm) {
+    public static PublicKey getPublicKey(BigInteger modulus, BigInteger exponent) {
         try {
-            KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
+            KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM);
             RSAPublicKeySpec keySpec = new RSAPublicKeySpec(modulus, exponent);
             return keyFactory.generatePublic(keySpec);
         } catch (Exception e) {
@@ -59,10 +57,10 @@ public class Rsa4jsUtils {
         return Base64.encodeBase64String(publicKey.getEncoded());
     }
 
-    public static PrivateKey getPrivateKey(String base64PrivateKey, String algorithm) {
+    public static PrivateKey getPrivateKey(String base64PrivateKey) {
         try {
             PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(Base64.decodeBase64(base64PrivateKey));
-            KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
+            KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM);
             PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
             return privateKey;
         } catch (Exception e) {
@@ -70,9 +68,9 @@ public class Rsa4jsUtils {
         }
     }
 
-    public static PrivateKey getPrivateKey(BigInteger modulus, BigInteger exponent, String algorithm) {
+    public static PrivateKey getPrivateKey(BigInteger modulus, BigInteger exponent) {
         try {
-            KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
+            KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM);
             RSAPrivateKeySpec keySpec = new RSAPrivateKeySpec(modulus, exponent);
             return keyFactory.generatePrivate(keySpec);
         } catch (Exception e) {
@@ -94,16 +92,16 @@ public class Rsa4jsUtils {
         }
     }
 
-    public static byte[] encryptAsByteArray(String data, String base64PublicKey, String algorithm) {
-        return encryptAsByteArray(data, getPublicKey(base64PublicKey, algorithm));
+    public static byte[] encryptAsByteArray(String data, String base64PublicKey) {
+        return encryptAsByteArray(data, getPublicKey(base64PublicKey));
     }
 
     public static String encryptAsString(String data, PublicKey publicKey) {
         return Base64.encodeBase64String(encryptAsByteArray(data, publicKey));
     }
 
-    public static String encryptAsString(String data, String base64PublicKey, String algorithm) {
-        return Base64.encodeBase64String(encryptAsByteArray(data, getPublicKey(base64PublicKey, algorithm)));
+    public static String encryptAsString(String data, String base64PublicKey) {
+        return Base64.encodeBase64String(encryptAsByteArray(data, getPublicKey(base64PublicKey)));
     }
 
     public static String decrypt(byte[] data, PrivateKey privateKey) {
@@ -116,15 +114,15 @@ public class Rsa4jsUtils {
         }
     }
 
-    public static String decrypt(byte[] data, String base64PrivateKey, String algorithm) {
-        return decrypt(data, getPrivateKey(base64PrivateKey, algorithm));
+    public static String decrypt(byte[] data, String base64PrivateKey) {
+        return decrypt(data, getPrivateKey(base64PrivateKey));
     }
 
     public static String decrypt(String data, PrivateKey privateKey) {
         return decrypt(Base64.decodeBase64(data), privateKey);
     }
 
-    public static String decrypt(String data, String base64PrivateKey, String algorithm) {
-        return decrypt(Base64.decodeBase64(data), getPrivateKey(base64PrivateKey, algorithm));
+    public static String decrypt(String data, String base64PrivateKey) {
+        return decrypt(Base64.decodeBase64(data), getPrivateKey(base64PrivateKey));
     }
 }

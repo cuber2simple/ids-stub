@@ -73,6 +73,11 @@ public class StubConstant {
     public static final String UNKNOWN_ERR = "99999999";
 
     /**
+     * 校验错误
+     */
+    public static final String VERIFY_ERR = "00000001";
+
+    /**
      * 默认分页页码
      */
     public static final Integer DEFAULT_PAGE_NUM = 1;

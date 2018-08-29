@@ -12,6 +12,7 @@
         <module>stub-base</module>
         <module>stub-gen</module>
         <module>stub-starter</module>
+        <module>stub-zk-redis</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

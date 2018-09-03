@@ -116,7 +116,7 @@ public class StubConstant {
 
     public static final String PRODUCT = "product";
 
-    public static final String DOMAIN_DEFAULT = "poss";
+    public static final String DOMAIN_DEFAULT = "x";
 
     public static final String REDIRECT = "redirect:";
 }

@@ -79,4 +79,9 @@ public class PasswordEncoderConf {
             return prefixEncodedPassword.substring(start + 1, end);
         }
     }
+
+    public static void main(String[] args) {
+        PasswordEncoder passwordEncoder = new RandomPasswordEncoder();
+        System.out.println(passwordEncoder.encode("jimbo"));
+    }
 }

@@ -1,6 +1,9 @@
 package org.cuber.stub.session;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
+import java.util.Objects;
 
 public class SSOUserGroup implements Serializable {
 
@@ -44,5 +47,29 @@ public class SSOUserGroup implements Serializable {
 
     public void setGroupType(String groupType) {
         this.groupType = groupType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.isNull(userGroupId) ? -1 : userGroupId.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        // 如果传入的对象为空,则返回false
+        if (obj == null) {
+            return false;
+        }
+
+        // 如果两者属于不同的类型,不能相等
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+
+        SSOUserGroup ssoUserGroup = (SSOUserGroup) obj;
+        return StringUtils.equals(ssoUserGroup.getUserGroupId(), userGroupId);
     }
 }

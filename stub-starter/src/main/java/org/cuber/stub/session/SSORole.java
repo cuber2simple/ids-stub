@@ -1,7 +1,9 @@
 package org.cuber.stub.session;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.Objects;
 import java.util.Set;
 
 public class SSORole implements GrantedAuthority {
@@ -53,8 +55,33 @@ public class SSORole implements GrantedAuthority {
     public void setResources(Set<SSOResource> resources) {
         this.resources = resources;
     }
+
     @Override
     public String getAuthority() {
         return roleName;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.isNull(roleId) ? -1 : roleId.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        // 如果传入的对象为空,则返回false
+        if (obj == null) {
+            return false;
+        }
+
+        // 如果两者属于不同的类型,不能相等
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+
+        SSORole role = (SSORole) obj;
+        return StringUtils.equals(role.getRoleId(), roleId);
     }
 }

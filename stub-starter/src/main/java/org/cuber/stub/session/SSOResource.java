@@ -1,6 +1,9 @@
 package org.cuber.stub.session;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
+import java.util.Objects;
 
 public class SSOResource implements Serializable {
 
@@ -168,5 +171,29 @@ public class SSOResource implements Serializable {
 
     public void setTreeLevel(Short treeLevel) {
         this.treeLevel = treeLevel;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        // 如果传入的对象为空,则返回false
+        if (obj == null) {
+            return false;
+        }
+
+        // 如果两者属于不同的类型,不能相等
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+
+        SSOResource resource = (SSOResource) obj;
+        return StringUtils.equals(resource.getPermissionId(), permissionId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.isNull(permissionId) ? -1 : permissionId.hashCode();
     }
 }

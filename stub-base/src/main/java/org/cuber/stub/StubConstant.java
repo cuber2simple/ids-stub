@@ -96,6 +96,14 @@ public class StubConstant {
      * zookeeper 默认地址
      */
     public static final String ZOOKEEPER_ADDRESS_DEFAULT = "127.0.0.1:2181";
+    /**
+     * 默认数据中心
+     */
+    public static final String CENTER_PATH = "/CENTER";
+
+    public static final String PATH_SPLIT = "/";
+
+    public static final String NORMAL_SPLIT = "-";
 
     /**
      * zookeeper 环境配置初始化地址

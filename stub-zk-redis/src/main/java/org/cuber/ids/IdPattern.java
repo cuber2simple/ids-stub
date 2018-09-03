@@ -2,28 +2,31 @@ package org.cuber.ids;
 
 import java.io.Serializable;
 
-public class IdPattern implements Serializable {
+public class IdPattern<T> implements Serializable {
 
     private static final long serialVersionUID = 9042671291171356833L;
 
     private String namespace;
 
-    private String center;
+    private String appName;
 
-    private String bizCode;
+    private int bizCode;
 
-    private String timePattern;
-
-    private int seqLength;
+    private Class<T> dtoClass;
 
     private String desc;
 
-    public String getDesc() {
-        return desc;
+
+    public int getBizCode() {
+        return bizCode;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setBizCode(int bizCode) {
+        this.bizCode = bizCode;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     public String getNamespace() {
@@ -34,60 +37,27 @@ public class IdPattern implements Serializable {
         this.namespace = namespace;
     }
 
-    public String getCenter() {
-        return center;
+    public String getAppName() {
+        return appName;
     }
 
-    public void setCenter(String center) {
-        this.center = center;
+    public void setAppName(String appName) {
+        this.appName = appName;
     }
 
-    public String getBizCode() {
-        return bizCode;
+    public Class<T> getDtoClass() {
+        return dtoClass;
     }
 
-    public void setBizCode(String bizCode) {
-        this.bizCode = bizCode;
+    public void setDtoClass(Class<T> dtoClass) {
+        this.dtoClass = dtoClass;
     }
 
-    public String getTimePattern() {
-        return timePattern;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setTimePattern(String timePattern) {
-        this.timePattern = timePattern;
-    }
-
-    public int getSeqLength() {
-        return seqLength;
-    }
-
-    public void setSeqLength(int seqLength) {
-        this.seqLength = seqLength;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        IdPattern other = (IdPattern) obj;
-        return this.getSignal().equals(other.getSignal());
-    }
-
-    private String getSignal(){
-        StringBuilder sb = new StringBuilder();
-        sb.append(namespace).append("-").append(center).append("-")
-                .append(bizCode).append("-").append(timePattern).append("-")
-                .append(seqLength);
-        return sb.toString();
-    }
-
-    @Override
-    public int hashCode() {
-        return getSignal().hashCode();
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }

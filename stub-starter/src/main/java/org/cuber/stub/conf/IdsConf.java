@@ -21,7 +21,7 @@ public class IdsConf {
 
     @EventListener
     public void ready(ApplicationReadyEvent readyEvent){
-        if(Objects.isNull(idsProperties)){
+        if(Objects.nonNull(idsProperties)){
             logger.info("初始化ID生成:{}",idsProperties.getPatterns());
             IdGeneratorFactory.load(idsProperties.getPatterns());
         }

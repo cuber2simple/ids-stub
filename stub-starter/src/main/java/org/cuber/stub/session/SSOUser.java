@@ -31,6 +31,8 @@ public class SSOUser implements UserDetails {
 
     private String dingOpenId;
 
+    private String domain;
+
     private String loginId;
 
     private String status;
@@ -190,5 +192,17 @@ public class SSOUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 }

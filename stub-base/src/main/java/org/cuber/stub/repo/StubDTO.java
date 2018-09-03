@@ -10,6 +10,19 @@ public class StubDTO {
      */
     private LocalDateTime createDatetime;
 
+    /**
+     *  column_name    ID
+     *  remark         主键
+     */
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public LocalDateTime getCreateDatetime() {
         return createDatetime;

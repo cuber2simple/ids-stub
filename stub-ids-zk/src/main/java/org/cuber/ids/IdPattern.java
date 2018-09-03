@@ -6,16 +6,15 @@ public class IdPattern<T> implements Serializable {
 
     private static final long serialVersionUID = 9042671291171356833L;
 
-    private String namespace;
-
     private String appName;
 
     private int bizCode;
 
+    private String prefix;
+
     private Class<T> dtoClass;
 
     private String desc;
-
 
     public int getBizCode() {
         return bizCode;
@@ -27,14 +26,6 @@ public class IdPattern<T> implements Serializable {
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
-    }
-
-    public String getNamespace() {
-        return namespace;
-    }
-
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
     }
 
     public String getAppName() {
@@ -51,6 +42,14 @@ public class IdPattern<T> implements Serializable {
 
     public void setDtoClass(Class<T> dtoClass) {
         this.dtoClass = dtoClass;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
     }
 
     public String getDesc() {

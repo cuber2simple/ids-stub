@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>stub-zk-redis</artifactId>
+    <artifactId>stub-ids-zk</artifactId>
 
     <dependencies>
         <dependency>

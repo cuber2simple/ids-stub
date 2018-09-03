@@ -13,6 +13,21 @@ public class StubBizVO extends StubVO{
     @ApiModelProperty("完成时间")
     private LocalDateTime completeDateTime;
 
+    @ApiModelProperty("主键")
+    private String id;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public LocalDateTime getCompleteDateTime() {
         return completeDateTime;
     }

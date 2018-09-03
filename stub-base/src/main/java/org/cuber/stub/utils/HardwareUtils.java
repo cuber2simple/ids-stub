@@ -23,8 +23,4 @@ public class HardwareUtils {
         return StringUtils.replace(signatureLocal, StubConstant.PATH_SPLIT, StubConstant.NORMAL_SPLIT);
     }
 
-    public static void main(String[] args) throws Exception{
-        System.out.println(signatureLocal());
-    }
-
 }

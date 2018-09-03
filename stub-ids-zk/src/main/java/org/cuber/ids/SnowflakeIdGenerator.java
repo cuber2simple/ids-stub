@@ -1,10 +1,5 @@
 package org.cuber.ids;
 
-import org.apache.zookeeper.CreateMode;
-import org.cuber.zk.XCuratorFramework;
-
-import java.util.List;
-
 public class SnowflakeIdGenerator {
     //================================================Algorithm's Parameter=============================================
     // 系统开始时间截 (UTC 2017-06-28 00:00:00)
@@ -109,20 +104,4 @@ public class SnowflakeIdGenerator {
         return System.currentTimeMillis();
     }
 
-    //====================================================Test Case=====================================================
-    public static void main(String[] args) throws Exception{
-
-        String stat = XCuratorFramework
-                .getCuratorFramework().create().creatingParentContainersIfNeeded().withMode(CreateMode.PERSISTENT_SEQUENTIAL)
-                .forPath("/ids/abc",null);
-        List<String> stats = XCuratorFramework
-                .getCuratorFramework().getChildren().forPath("/ids");
-        System.out.println(stats);
-        SnowflakeIdGenerator idWorker = new SnowflakeIdGenerator(0, 0);
-        for (int i = 0; i < 100; i++) {
-            long id = idWorker.nextId();
-            //System.out.println(Long.toBinaryString(id));
-            System.out.println(id);
-        }
-    }
 }

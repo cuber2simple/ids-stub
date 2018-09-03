@@ -131,9 +131,4 @@ public class XCuratorFramework {
         long returnValue = Long.parseLong(StringUtils.remove(target, LOCAL_SIGNATURE_WITHOUT_PREFIX));
         return returnValue;
     }
-
-    public static void main(String[] args) throws Exception {
-        System.out.println(getLocalId());
-    }
-
 }

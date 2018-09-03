@@ -12,7 +12,7 @@
         <module>stub-base</module>
         <module>stub-gen</module>
         <module>stub-starter</module>
-        <module>stub-zk-redis</module>
+        <module>stub-ids-zk</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -231,6 +231,12 @@
             <dependency>
                 <groupId>org.cuber</groupId>
                 <artifactId>stub-base</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.cuber</groupId>
+                <artifactId>stub-ids-zk</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

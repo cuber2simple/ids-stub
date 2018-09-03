@@ -17,6 +17,19 @@ public class StubVO implements Serializable {
     @ApiModelProperty("更新时间")
     private LocalDateTime updateDatetime;
 
+    @ApiModelProperty("主键")
+    private String id;
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }

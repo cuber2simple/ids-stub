@@ -50,6 +50,9 @@ public class SSORole implements GrantedAuthority {
         this.roleType = roleType;
     }
 
+    public void setResources(Set<SSOResource> resources) {
+        this.resources = resources;
+    }
     @Override
     public String getAuthority() {
         return roleName;

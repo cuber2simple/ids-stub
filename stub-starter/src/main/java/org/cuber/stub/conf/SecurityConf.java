@@ -15,38 +15,40 @@ import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.util.AntPathMatcher;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConf extends WebSecurityConfigurerAdapter {
+    private List<String> anonymousString = Arrays.asList("/login.htm", "/error/**", "/captcha", "/j_spring_security_check",
+            "/js/**", "/plugins/**", "/dist/**", "/img/**", "/css/**", "/register.htm", "/verifyCaptcha", "/");
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        super.configure(http);
         http.csrf().disable();
-        http.authorizeRequests().antMatchers("/login.htm").anonymous().and()
-                .authorizeRequests().antMatchers("/error/**").anonymous().and()
-                .authorizeRequests().antMatchers("/").anonymous().and()
-                .authorizeRequests().antMatchers("/js/**").anonymous().and()
-                .authorizeRequests().antMatchers("/plugins/**").anonymous().and()
-                .authorizeRequests().antMatchers("/dist/**").anonymous().and()
-                .authorizeRequests().antMatchers("/img/**").anonymous().and()
-                .authorizeRequests().antMatchers("/css/**").anonymous().and()
-                .authorizeRequests().antMatchers("/register.htm").anonymous().and()
-                .authorizeRequests().antMatchers("/verifyCaptcha").anonymous().and()
+        http.authorizeRequests().and()
                 .formLogin()
                 .loginPage("/")
-                .loginProcessingUrl("/login")  //very import add
-                .failureUrl("/login")
-                .successForwardUrl("/main");
+                .loginProcessingUrl("/j_spring_security_check")
+                .successForwardUrl("/main")
+                .and()
+                .logout().logoutSuccessUrl("/login.htm")
+                .and()
+                .rememberMe();
+
 
         http.authorizeRequests().anyRequest().authenticated().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
             @Override
@@ -62,8 +64,13 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
 
         @Override
         public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
-            ConfigAttribute conf = new SecurityConfig(StubConstant.WAIT_4_DECIDED_ROLE);
-            return Arrays.asList(conf);
+            String url = ((FilterInvocation) object).getRequestUrl();
+            String grantEntity = StringUtils.substringBeforeLast(url, "?");
+            if (!anonymousString.stream().anyMatch(str -> new AntPathMatcher().match(str, grantEntity))) {
+                ConfigAttribute conf = new SecurityConfig(StubConstant.WAIT_4_DECIDED_ROLE);
+                return Arrays.asList(conf);
+            }
+            return null;
         }
 
         @Override

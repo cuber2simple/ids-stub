@@ -61,6 +61,10 @@ public class SSORole implements GrantedAuthority {
         return roleName;
     }
 
+    public Set<SSOResource> getResources() {
+        return resources;
+    }
+
     @Override
     public int hashCode() {
         return Objects.isNull(roleId) ? -1 : roleId.hashCode();

@@ -119,4 +119,8 @@ public class StubConstant {
     public static final String DOMAIN_DEFAULT = "x";
 
     public static final String REDIRECT = "redirect:";
+
+    public static final String RSA_PRIVATE_KEY = "_private_key";
+
+    public static final String RSA_PUBLIC_KEY = "_public_key";
 }

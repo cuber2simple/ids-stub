@@ -125,4 +125,8 @@ public class StubConstant {
     public static final String RSA_PUBLIC_KEY = "_public_key";
 
     public static final String WAIT_4_DECIDED_ROLE = "_wait_4_decided_role";
+
+    public static final String AUTH_FAILED = "AUTH_FAILED";
+
+    public static final String LOGOUT = "LOGOUT";
 }

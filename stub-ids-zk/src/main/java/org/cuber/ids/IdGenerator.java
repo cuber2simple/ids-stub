@@ -1,5 +1,8 @@
 package org.cuber.ids;
 
-public interface IdGenerator<T> {
+import java.time.LocalDateTime;
+
+public interface IdGenerator {
     String nextId();
+    LocalDateTime findIdTime(String ids);
 }

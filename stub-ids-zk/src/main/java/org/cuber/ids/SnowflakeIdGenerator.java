@@ -1,5 +1,9 @@
 package org.cuber.ids;
 
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+
 public class SnowflakeIdGenerator {
     //================================================Algorithm's Parameter=============================================
     // 系统开始时间截 (UTC 2017-06-28 00:00:00)
@@ -104,4 +108,21 @@ public class SnowflakeIdGenerator {
         return System.currentTimeMillis();
     }
 
+    //====================================================Test Case=====================================================
+    public static void main(String[] args) {
+        SnowflakeIdGenerator idWorker = new SnowflakeIdGenerator(12, 12);
+        for (int i = 0; i < 100; i++) {
+            long id = idWorker.nextId();
+            //System.out.println(Long.toBinaryString(id));
+            System.out.println(id);
+        }
+        LocalDateTime localDateTime = idWorker.findIdTime(157732059255193616l);
+        System.out.println(localDateTime);
+
+    }
+
+    public LocalDateTime findIdTime(long id) {
+        long time = (id >> timestampMoveBits) + startTime;
+        return LocalDateTime.ofEpochSecond(time / 1000, 0, OffsetDateTime.now ().getOffset());
+    }
 }

@@ -6,7 +6,9 @@ import org.cuber.ids.IdGeneratorFactory;
 import org.cuber.ids.IdPattern;
 import org.cuber.ids.SnowflakeIdGenerator;
 
-public class ZkIdGenerator<T> implements IdGenerator<T> {
+import java.time.LocalDateTime;
+
+public class ZkIdGenerator<T> implements IdGenerator{
     private SnowflakeIdGenerator snowflakeIdGenerator;
     private IdPattern<T> idPattern;
     private String prefix;
@@ -22,5 +24,15 @@ public class ZkIdGenerator<T> implements IdGenerator<T> {
     public String nextId(){
         long seq = snowflakeIdGenerator.nextId();
         return prefix + seq;
+    }
+
+    public LocalDateTime findIdTime(String ids){
+        long id = Long.parseLong(StringUtils.substringAfter(ids, prefix));
+        return snowflakeIdGenerator.findIdTime(id);
+    }
+
+    public static void main(String[] args) {
+        long id = Long.parseLong(StringUtils.substringAfter("157732102452330508", ""));
+        System.out.println(id);
     }
 }

@@ -6,6 +6,7 @@ import org.cuber.stub.StubConstant;
 import org.cuber.stub.session.SSOResource;
 import org.cuber.stub.session.SSORole;
 import org.cuber.stub.session.SSOUser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
@@ -50,11 +51,11 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().and()
                 .formLogin()
                 .loginPage("/")
-                .loginProcessingUrl("/j_spring_security_check")
-                .failureHandler(new LoginFailureHandler())
+                .loginProcessingUrl("/login")
+                .failureHandler(new LoginFailureHandler()).failureUrl("/login.htm")
                 .successForwardUrl("/main")
                 .and()
-                .logout().logoutSuccessHandler(new LogoutHandler())
+                .logout().logoutSuccessHandler(new LogoutHandler()).logoutSuccessUrl("/login.htm")
                 .and()
                 .rememberMe();
 
@@ -136,25 +137,25 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
 
         @Override
         public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-            httpServletResponse.sendRedirect("/login.htm?type=" + StubConstant.AUTH_FAILED + "&msg=" + e.getLocalizedMessage());
+            httpServletRequest.getSession().setAttribute(StubConstant.TYPE, StubConstant.AUTH_FAILED);
+            httpServletRequest.getSession().setAttribute(StubConstant.LOGIN_PAGE_MSG, e.getLocalizedMessage());
         }
     }
 
-    class LogoutHandler implements LogoutSuccessHandler {
+    class LogoutHandler implements LogoutSuccessHandler{
 
         @Override
         public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
             String logoutMsg = "[%s] 已成功登出";
             Object principal = authentication.getPrincipal();
-            if (principal instanceof SSOUser) {
+            if(principal instanceof SSOUser){
                 SSOUser user = (SSOUser) principal;
                 logoutMsg = String.format(logoutMsg, user.getUserName());
-            } else {
+            }else{
                 logoutMsg = String.format(logoutMsg, authentication.getName());
             }
-            httpServletRequest.setAttribute("msg", logoutMsg);
-            httpServletRequest.setAttribute("type", StubConstant.LOGOUT);
-            httpServletResponse.sendRedirect("/login.htm?type=" + StubConstant.LOGOUT + "&msg=" + logoutMsg);
+            httpServletRequest.getSession().setAttribute(StubConstant.TYPE, StubConstant.LOGOUT);
+            httpServletRequest.getSession().setAttribute(StubConstant.LOGIN_PAGE_MSG, logoutMsg);
         }
     }
 }

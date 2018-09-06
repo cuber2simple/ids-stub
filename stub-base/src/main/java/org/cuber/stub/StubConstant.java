@@ -129,4 +129,8 @@ public class StubConstant {
     public static final String AUTH_FAILED = "AUTH_FAILED";
 
     public static final String LOGOUT = "LOGOUT";
+
+    public static final String TYPE = "type";
+
+    public static final String LOGIN_PAGE_MSG = "_login_page_msg";
 }

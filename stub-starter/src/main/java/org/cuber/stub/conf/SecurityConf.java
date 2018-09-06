@@ -5,8 +5,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.cuber.stub.StubConstant;
 import org.cuber.stub.session.SSOResource;
 import org.cuber.stub.session.SSORole;
-import org.cuber.stub.session.SSOUser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
@@ -18,20 +16,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -52,10 +42,10 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/")
                 .loginProcessingUrl("/login")
-                .failureHandler(new LoginFailureHandler()).failureUrl("/login.htm")
+                .failureUrl("/login.htm")
                 .successForwardUrl("/main")
                 .and()
-                .logout().logoutSuccessHandler(new LogoutHandler()).logoutSuccessUrl("/login.htm")
+                .logout().logoutSuccessUrl("/login.htm")
                 .and()
                 .rememberMe();
 
@@ -129,33 +119,6 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
         @Override
         public boolean supports(Class<?> clazz) {
             return true;
-        }
-    }
-
-    @Component
-    class LoginFailureHandler implements AuthenticationFailureHandler {
-
-        @Override
-        public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-            httpServletRequest.getSession().setAttribute(StubConstant.TYPE, StubConstant.AUTH_FAILED);
-            httpServletRequest.getSession().setAttribute(StubConstant.LOGIN_PAGE_MSG, e.getLocalizedMessage());
-        }
-    }
-
-    class LogoutHandler implements LogoutSuccessHandler{
-
-        @Override
-        public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-            String logoutMsg = "[%s] 已成功登出";
-            Object principal = authentication.getPrincipal();
-            if(principal instanceof SSOUser){
-                SSOUser user = (SSOUser) principal;
-                logoutMsg = String.format(logoutMsg, user.getUserName());
-            }else{
-                logoutMsg = String.format(logoutMsg, authentication.getName());
-            }
-            httpServletRequest.getSession().setAttribute(StubConstant.TYPE, StubConstant.LOGOUT);
-            httpServletRequest.getSession().setAttribute(StubConstant.LOGIN_PAGE_MSG, logoutMsg);
         }
     }
 }

@@ -6,7 +6,6 @@ import org.cuber.stub.StubConstant;
 import org.cuber.stub.session.SSOResource;
 import org.cuber.stub.session.SSORole;
 import org.cuber.stub.session.SSOUser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
@@ -137,27 +136,25 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
 
         @Override
         public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-            httpServletRequest.setAttribute("msg", e.getLocalizedMessage());
-            httpServletRequest.setAttribute("type", StubConstant.AUTH_FAILED);
-            httpServletRequest.getRequestDispatcher("/login.htm").forward(httpServletRequest, httpServletResponse);
+            httpServletResponse.sendRedirect("/login.htm?type=" + StubConstant.AUTH_FAILED + "&msg=" + e.getLocalizedMessage());
         }
     }
 
-    class LogoutHandler implements LogoutSuccessHandler{
+    class LogoutHandler implements LogoutSuccessHandler {
 
         @Override
         public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
             String logoutMsg = "[%s] 已成功登出";
             Object principal = authentication.getPrincipal();
-            if(principal instanceof SSOUser){
+            if (principal instanceof SSOUser) {
                 SSOUser user = (SSOUser) principal;
                 logoutMsg = String.format(logoutMsg, user.getUserName());
-            }else{
+            } else {
                 logoutMsg = String.format(logoutMsg, authentication.getName());
             }
             httpServletRequest.setAttribute("msg", logoutMsg);
             httpServletRequest.setAttribute("type", StubConstant.LOGOUT);
-            httpServletRequest.getRequestDispatcher("/login.htm").forward(httpServletRequest, httpServletResponse);
+            httpServletResponse.sendRedirect("/login.htm?type=" + StubConstant.LOGOUT + "&msg=" + logoutMsg);
         }
     }
 }

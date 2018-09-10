@@ -1,8 +1,8 @@
 spring:
   datasource:
-    username: upms
-    password: upms
-    url: jdbc:postgresql://127.0.0.1:5432/upms?useUnicode=true&amp;characterEncoding=UTF-8
+    username: foundation
+    password: foundation
+    url: jdbc:postgresql://127.0.0.1:5432/foundation?useUnicode=true&amp;characterEncoding=UTF-8
     driver-class-name: org.postgresql.Driver
 
 org:
@@ -13,56 +13,44 @@ org:
         schema:
         dto:
           template: /dto.btl
-          destProject: D:\project\java\corp\unite-upms\upms-dal\src\main\java
-          destPackage:  org.cuber.upms.dto
+          destProject: D:\project\java\corp\old\unite-foundation\foundation-dal\src\main\java
+          destPackage:  org.cuber.foundation.dto
           rootClass: org.cuber.stub.repo.StubDTO
         mapper:
           template: /mapper.btl
-          destProject: D:\project\java\corp\unite-upms\upms-dal\src\main\java
-          destPackage: org.cuber.upms.mapper
+          destProject: D:\project\java\corp\old\unite-foundation\foundation-dal\src\main\java
+          destPackage: org.cuber.foundation.mapper
           rootClass: org.cuber.stub.repo.Mapper
         xml:
           template: /xml.btl
-          destProject: D:\project\java\corp\unite-upms\upms-dal\src\main\resources
+          destProject: D:\project\java\corp\old\unite-foundation\foundation-dal\src\main\resources
           destPackage:  mapper
         vo:
           template: /vo.btl
-          destProject: D:\project\java\corp\unite-upms\upms-facade\src\main\java
-          destPackage: org.cuber.upms.vo
+          destProject: D:\project\java\corp\old\unite-foundation\foundation-facade\src\main\java
+          destPackage: org.cuber.foundation.vo
           rootClass: org.cuber.stub.vo.StubVO
         service:
           template: /service.btl
-          destProject: D:\project\java\corp\unite-upms\upms-biz\src\main\java
-          destPackage: org.cuber.upms.single.service
+          destProject: D:\project\java\corp\old\unite-foundation\foundation-biz\src\main\java
+          destPackage: org.cuber.foundation.single.service
           templateImpl: /serviceImpl.btl
         ctrl:
           template: /controller.btl
-          destProject: D:\project\java\corp\unite-upms\upms-web\src\main\java
-          destPackage: org.cuber.upms.controller
+          destProject: D:\project\java\corp\old\unite-foundation\foundation-web\src\main\java
+          destPackage: org.cuber.foundation.controller
         view:
           template:
           destProject:
           destPackage:
         tables:
-          - tableName: t_login_log
-            dtoName: LoginLog
-          - tableName: t_menu
-            dtoName: UniteMenu
-          - tableName: t_operate
-            dtoName: UniteOperate
-          - tableName: t_operate_log
-            dtoName: OperateLog
-          - tableName: t_permission
-            dtoName: UnitePermission
-          - tableName: t_role
-            dtoName: UniteRole
-          - tableName: t_user
-            dtoName: UniteUser
-          - tableName: t_user_group
-            dtoName: UniteUserGroup
-          - tableName: tr_role_permission
-            dtoName: RelatedRolePermission
-          - tableName: tr_user_group
-            dtoName: RelatedUserGroup
-          - tableName: tr_user_role
-            dtoName: RelatedUserRole
+          - tableName: t_sub_table_conf
+            dtoName: SubTableConf
+          - tableName: t_country_3166
+            dtoName: Country
+          - tableName: t_currency_4217
+            dtoName: Currency
+          - tableName: t_dict_data
+            dtoName: DictData
+          - tableName: t_dict_type
+            dtoName: DictType

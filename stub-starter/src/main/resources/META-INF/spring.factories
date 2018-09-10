@@ -5,5 +5,4 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration =\
   org.cuber.stub.conf.MvcConf,\
   org.cuber.stub.conf.SecurityConf,\
   org.cuber.stub.conf.PasswordEncoderConf,\
-  org.cuber.stub.conf.IdsProperties,\
-  org.cuber.stub.conf.MapperAop
+  org.cuber.stub.conf.IdsProperties

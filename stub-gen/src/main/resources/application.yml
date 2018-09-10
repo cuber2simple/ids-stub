@@ -45,7 +45,7 @@ org:
           destPackage:
         tables:
           - tableName: t_sub_table_conf
-            dtoName: SubTableConf
+            dtoName: DSubTableConf
           - tableName: t_country_3166
             dtoName: Country
           - tableName: t_currency_4217

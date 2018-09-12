@@ -1,5 +1,6 @@
 package org.cuber.gen.runner;
 
+import com.opencsv.CSVParser;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.beetl.core.Template;
@@ -14,12 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 @Component
 public class GenFileCommandRunner implements CommandLineRunner {
@@ -229,5 +231,36 @@ public class GenFileCommandRunner implements CommandLineRunner {
             });
         }
         return importJavas;
+    }
+    private static final CSVParser csvParser = new CSVParser();
+    public static void main(String[] args) throws Exception{
+        String csvFile = "/work/home_work/country.csv";
+        String insertSql = "INSERT INTO t_country_3166(id,alpha_code_2,alpha_code_3,number_code,ISO3166_2,\n" +
+                "i18n_key,name,region,sub_region,intermediate_region,region_code,sub_region_code,intermediate_region_code,\n" +
+                "status,update_user_id,create_user_id,update_datetime,create_datetime) values(";
+        FileInputStream infile = new FileInputStream(csvFile);
+        final Reader decorator = new InputStreamReader(infile, "utf-8");
+        BufferedReader reader = new BufferedReader(decorator);
+        Stream<String> lines = reader.lines();
+        lines.forEach(line ->{
+            try {
+                String[] data = csvParser.parseLine(line);
+                if(data!= null && data.length >= 11){
+                    StringBuilder stringBuilder = new StringBuilder(insertSql);
+                    stringBuilder.append("nextval('SEQ_COUNTRY_3166'),'").append(data[1]).append("','")
+                            .append(data[2]).append("','").append(data[3]).append("','")
+                            .append(data[4]).append("',null,'").append(data[0]).append("','")
+                            .append(data[5]).append("','").append(data[6]).append("','").append(data[7]).append("','")
+                            .append(data[8]).append("','").append(data[9]).append("','").append(data[10])
+                            .append("','1','1','1',current_timestamp,current_timestamp);");
+                    System.out.println(stringBuilder);
+                    System.out.println();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 }

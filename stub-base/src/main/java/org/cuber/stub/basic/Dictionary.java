@@ -9,6 +9,7 @@ import java.util.List;
 
 @ApiModel("数据字典")
 public class Dictionary extends StubConfVO {
+
     private static final long serialVersionUID = 7161010203775977559L;
 
     @ApiModelProperty("字典名称")
@@ -71,7 +72,7 @@ public class Dictionary extends StubConfVO {
         return GsonHolder.toJson(this);
     }
 
-    public static class DictionaryData extends StubConfVO{
+    public static class DictionaryData extends StubConfVO {
 
         private static final long serialVersionUID = -3231691927352870712L;
 

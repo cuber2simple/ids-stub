@@ -7,6 +7,8 @@ import org.cuber.stub.json.GsonHolder;
 import org.cuber.stub.vo.StubConfVO;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 @ApiModel("缓存对象")
 public class CacheDef<T> extends StubConfVO {
@@ -27,6 +29,10 @@ public class CacheDef<T> extends StubConfVO {
 
     @ApiModelProperty("缓存的对象名称")
     private Class<T> cacheInsClass;
+
+    private Class bridgeClass;
+
+    private Set<List<String>> fieldKeys;
 
     @ApiModelProperty("是否全局缓存")
     private boolean global;
@@ -111,6 +117,22 @@ public class CacheDef<T> extends StubConfVO {
 
     public void setLastLoadDatetime(LocalDateTime lastLoadDatetime) {
         this.lastLoadDatetime = lastLoadDatetime;
+    }
+
+    public Class getBridgeClass() {
+        return bridgeClass;
+    }
+
+    public void setBridgeClass(Class bridgeClass) {
+        this.bridgeClass = bridgeClass;
+    }
+
+    public Set<List<String>> getFieldKeys() {
+        return fieldKeys;
+    }
+
+    public void setFieldKeys(Set<List<String>> fieldKeys) {
+        this.fieldKeys = fieldKeys;
     }
 
     @Override

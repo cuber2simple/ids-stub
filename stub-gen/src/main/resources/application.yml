@@ -44,17 +44,5 @@ org:
           destProject:
           destPackage:
         tables:
-          - tableName: t_app_def
-            dtoName: AppDefEntity
           - tableName: t_cache_def
             dtoName: CacheDefEntity
-          - tableName: t_biz_table_def
-            dtoName: BizTableDefEntity
-          - tableName: t_country_3166
-            dtoName: CountryEntity
-          - tableName: t_currency_4217
-            dtoName: CurrencyEntity
-          - tableName: t_dict_data
-            dtoName: DictDataEntity
-          - tableName: t_dict_type
-            dtoName: DictTypeEntity

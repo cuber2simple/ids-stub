@@ -97,8 +97,8 @@ public class Dictionary extends StubConfVO {
         @ApiModelProperty("字典值")
         private String dictValue;
 
-        @ApiModelProperty("字典类型")
-        private String dictType;
+        @ApiModelProperty("字典")
+        private String dictName;
 
         @ApiModelProperty("字典标识")
         private String dictTag;
@@ -171,12 +171,12 @@ public class Dictionary extends StubConfVO {
             this.dictValue = dictValue;
         }
 
-        public String getDictType() {
-            return dictType;
+        public String getDictName() {
+            return dictName;
         }
 
-        public void setDictType(String dictType) {
-            this.dictType = dictType;
+        public void setDictName(String dictName) {
+            this.dictName = dictName;
         }
 
         public String getDictTag() {

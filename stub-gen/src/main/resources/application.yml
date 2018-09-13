@@ -1,8 +1,8 @@
 spring:
   datasource:
-    username: foundation
-    password: foundation
-    url: jdbc:postgresql://127.0.0.1:5432/foundation?useUnicode=true&amp;characterEncoding=UTF-8
+    username: basic
+    password: basic
+    url: jdbc:postgresql://127.0.0.1:5432/basic?useUnicode=true&amp;characterEncoding=UTF-8
     driver-class-name: org.postgresql.Driver
 
 org:
@@ -13,44 +13,48 @@ org:
         schema:
         dto:
           template: /dto.btl
-          destProject: D:\project\java\corp\old\unite-foundation\foundation-dal\src\main\java
-          destPackage:  org.cuber.foundation.dto
-          rootClass: org.cuber.stub.repo.StubDTO
+          destProject: D:\project\java\corp\old\basic-service\basic-dal\src\main\java
+          destPackage:  org.cuber.basic.dto
+          rootClass: org.cuber.stub.repo.StubConfDTO
         mapper:
           template: /mapper.btl
-          destProject: D:\project\java\corp\old\unite-foundation\foundation-dal\src\main\java
-          destPackage: org.cuber.foundation.mapper
+          destProject: D:\project\java\corp\old\basic-service\basic-dal\src\main\java
+          destPackage: org.cuber.basic.mapper
           rootClass: org.cuber.stub.repo.Mapper
         xml:
           template: /xml.btl
-          destProject: D:\project\java\corp\old\unite-foundation\foundation-dal\src\main\resources
+          destProject: D:\project\java\corp\old\basic-service\basic-dal\src\main\resources
           destPackage:  mapper
         vo:
           template: /vo.btl
-          destProject: D:\project\java\corp\old\unite-foundation\foundation-facade\src\main\java
-          destPackage: org.cuber.foundation.vo
-          rootClass: org.cuber.stub.vo.StubVO
+          destProject: D:\project\java\corp\old\basic-service\basic-facade\src\main\java
+          destPackage: org.cuber.basic.vo
+          rootClass: org.cuber.stub.vo.StubConfVO
         service:
           template: /service.btl
-          destProject: D:\project\java\corp\old\unite-foundation\foundation-biz\src\main\java
-          destPackage: org.cuber.foundation.single.service
+          destProject: D:\project\java\corp\old\basic-service\basic-biz\src\main\java
+          destPackage: org.cuber.basic.single.service
           templateImpl: /serviceImpl.btl
         ctrl:
           template: /controller.btl
-          destProject: D:\project\java\corp\old\unite-foundation\foundation-web\src\main\java
+          destProject: D:\project\java\corp\old\basic-service\basic-web\src\main\java
           destPackage: org.cuber.foundation.controller
         view:
           template:
           destProject:
           destPackage:
         tables:
-          - tableName: t_sub_table_conf
-            dtoName: DSubTableConf
+          - tableName: t_app_def
+            dtoName: AppDefEntity
+          - tableName: t_cache_def
+            dtoName: CacheDefEntity
+          - tableName: t_biz_table_def
+            dtoName: BizTableDefEntity
           - tableName: t_country_3166
-            dtoName: Country
+            dtoName: CountryEntity
           - tableName: t_currency_4217
-            dtoName: Currency
+            dtoName: CurrencyEntity
           - tableName: t_dict_data
-            dtoName: DictData
+            dtoName: DictDataEntity
           - tableName: t_dict_type
-            dtoName: DictType
+            dtoName: DictTypeEntity

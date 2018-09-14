@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 @ApiModel("缓存对象")
-public class CacheDef<T> extends StubConfVO {
+public class CacheDef<T extends StubConfVO> extends StubConfVO {
 
     private static final long serialVersionUID = 6105163070414008562L;
 
@@ -30,8 +30,10 @@ public class CacheDef<T> extends StubConfVO {
     @ApiModelProperty("缓存的对象名称")
     private Class<T> cacheInsClass;
 
+    @ApiModelProperty("远程调用提供的接口类")
     private Class bridgeClass;
 
+    @ApiModelProperty("远程调用提供的接口类")
     private Set<List<String>> fieldKeys;
 
     @ApiModelProperty("是否全局缓存")

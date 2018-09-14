@@ -133,4 +133,6 @@ public class StubConstant {
     public static final String TYPE = "type";
 
     public static final String LOGIN_PAGE_MSG = "_login_page_msg";
+
+    public static final String EMPTY = "_empty";
 }

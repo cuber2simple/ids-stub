@@ -1,32 +1,26 @@
-package org.cuber.cache;
+package org.cuber.cache.bridge;
 
 import com.github.benmanes.caffeine.cache.CacheWriter;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.github.benmanes.caffeine.cache.RemovalCause;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.cuber.stub.basic.CacheDef;
+import org.cuber.cache.CacheDefUtils;
+import org.cuber.cache.CommonCache;
+import org.cuber.stub.rpc.Req;
+import org.cuber.stub.rpc.Resp;
 import org.cuber.stub.vo.StubConfVO;
 import org.springframework.context.annotation.Description;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Description("虽然是可以传入Object,但是缓存的key 默认使用String")
-public class CaffeineBridgeContainer<T extends StubConfVO> {
-
-    private LoadingCache<String, T> cache;
-
-    private CacheDef<T> def;
-
-    private GlobalCacheBridge<T> bridge;
+public class CaffeineBridgeContainer<T extends StubConfVO> extends CommonCache<T> {
 
     private ConcurrentHashMap<String, T> settleCaches = new ConcurrentHashMap<>();
 
-    public CaffeineBridgeContainer(GlobalCacheBridge<T> bridge) {
-        this.bridge = bridge;
+    public CaffeineBridgeContainer(ICacheBridge<T> bridge) {
+        super(bridge);
         cache = Caffeine.newBuilder()
                 .writer(new CacheWriter<String, T>() {
                     @Override
@@ -44,13 +38,20 @@ public class CaffeineBridgeContainer<T extends StubConfVO> {
                         invalidateCache(key, cacheIns);
                     }
                 })
-                .build(key -> bridge.loadByKey(key));
+                .build(key -> loadByBridge(key, bridge));
 
     }
 
-    public T loadByKey(Object... keys) {
-        String key = StringUtils.join(keys, CacheDefUtils.CACHE_FIELD_SPLIT);
-        return cache.get(key);
+    private T loadByBridge(String key, ICacheBridge<T> bridge) {
+        T searchIns = CacheDefUtils.makeSearchIns(key, loadCacheDef());
+        T result = null;
+        if (searchIns != null) {
+            Resp<T> resp = bridge.loadByKey(new Req<>(searchIns));
+            if (resp.isSuccess()) {
+                result = resp.getResult();
+            }
+        }
+        return result;
     }
 
     private void loadOtherField(String key, T cacheIns) {
@@ -77,13 +78,6 @@ public class CaffeineBridgeContainer<T extends StubConfVO> {
                 });
             }
         }
-    }
-
-    private synchronized CacheDef<T> loadCacheDef() {
-        if (Objects.isNull(def)) {
-            def = bridge.cacheDef();
-        }
-        return def;
     }
 
 }

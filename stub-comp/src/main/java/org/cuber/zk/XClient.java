@@ -5,6 +5,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.framework.recipes.cache.NodeCache;
+import org.apache.curator.framework.recipes.cache.NodeCacheListener;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.data.Stat;
@@ -25,6 +27,7 @@ public class XClient {
     private static AtomicBoolean connect = new AtomicBoolean(false);
     private static String LOCAL_SIGNATURE_WITHOUT_PREFIX;
     private static String LOCAL_SIGNATURE;
+
     static {
         try {
             LOCAL_SIGNATURE_WITHOUT_PREFIX = HardwareUtils.signatureLocal();
@@ -34,6 +37,7 @@ public class XClient {
             LOCAL_SIGNATURE_WITHOUT_PREFIX = null;
         }
     }
+
     public static CuratorFramework getCuratorFramework() {
         if (Objects.isNull(curatorFramework)) {
             synchronized (logger) {
@@ -60,9 +64,11 @@ public class XClient {
         }
         return curatorFramework;
     }
+
     public static boolean isConnect() {
         return connect.get();
     }
+
     public static <T> T readPath(String path, Class<T> tClass) {
         try {
             Stat stat = getCuratorFramework().checkExists().forPath(path);
@@ -76,6 +82,7 @@ public class XClient {
         }
         return null;
     }
+
     public static List<String> readSubPath(String path) {
         try {
             Stat stat = getCuratorFramework().checkExists().forPath(path);
@@ -87,6 +94,7 @@ public class XClient {
         }
         return null;
     }
+
     public static void writePath(String path, Object obj) {
         try {
             Stat stat = getCuratorFramework().checkExists().forPath(path);
@@ -119,5 +127,10 @@ public class XClient {
         }
         long returnValue = Long.parseLong(StringUtils.remove(target, LOCAL_SIGNATURE_WITHOUT_PREFIX));
         return returnValue;
+    }
+
+    public static void addChangeListener(String path, NodeCacheListener listener) {
+        NodeCache nodeCache = new NodeCache(getCuratorFramework(), path, false);
+        nodeCache.getListenable().addListener(listener);
     }
 }

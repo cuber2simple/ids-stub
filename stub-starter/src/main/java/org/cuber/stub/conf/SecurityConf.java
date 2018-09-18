@@ -3,8 +3,8 @@ package org.cuber.stub.conf;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cuber.stub.StubConstant;
-import org.cuber.stub.session.SSOResource;
-import org.cuber.stub.session.SSORole;
+import org.cuber.stub.sso.SSOResource;
+import org.cuber.stub.sso.SSORole;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
@@ -104,7 +104,7 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
                 Set<SSOResource> resources = ssoRole.getResources();
                 if (CollectionUtils.isNotEmpty(resources)) {
                     return resources.stream().anyMatch(ssoResource ->
-                            ssoResource.getMenuUrl().equals(grantEntity)
+                            ssoResource.getResourceUrl().equals(grantEntity)
                     );
                 }
             }

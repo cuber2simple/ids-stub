@@ -58,7 +58,7 @@ public class CommonCache<T extends StubConfVO> implements NodeCacheListener {
         return key;
     }
 
-    public T loadByKey(T searchIns) {
+    public T fetchBySearchIns(T searchIns) {
         if (Objects.nonNull(searchIns)) {
             return cache.get(findFirstPopKey(searchIns));
         }

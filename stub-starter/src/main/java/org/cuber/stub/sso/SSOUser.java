@@ -1,4 +1,4 @@
-package org.cuber.stub.session;
+package org.cuber.stub.sso;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

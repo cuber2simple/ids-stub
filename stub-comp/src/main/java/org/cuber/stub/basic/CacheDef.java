@@ -33,6 +33,9 @@ public class CacheDef<T extends StubConfVO> extends StubConfVO {
     @ApiModelProperty("远程调用提供的接口类")
     private Class bridgeClass;
 
+    @ApiModelProperty("本地加载缓存的类")
+    private Class carrierClass;
+
     @ApiModelProperty("远程调用提供的接口类")
     private Set<List<String>> fieldKeys;
 
@@ -135,6 +138,14 @@ public class CacheDef<T extends StubConfVO> extends StubConfVO {
 
     public void setFieldKeys(Set<List<String>> fieldKeys) {
         this.fieldKeys = fieldKeys;
+    }
+
+    public Class getCarrierClass() {
+        return carrierClass;
+    }
+
+    public void setCarrierClass(Class carrierClass) {
+        this.carrierClass = carrierClass;
     }
 
     @Override

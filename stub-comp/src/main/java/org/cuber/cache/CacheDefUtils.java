@@ -71,6 +71,7 @@ public class CacheDefUtils {
                     if (pair != null && pair.length == 2) {
                         Field field = ReflectionUtils.findField(def.getCacheInsClass(), pair[0]);
                         ReflectionUtils.makeAccessible(field);
+
                         ReflectionUtils.setField(field, search, pair[1]);
                     }
                 }

@@ -18,8 +18,9 @@ public class BizTableDef<T> extends StubConfVO {
     @ApiModelProperty("所属服务")
     private String appName;
 
-    @ApiModelProperty("所属服务")
+    @ApiModelProperty("分表对象")
     private Class<T> tClass;
+
 
     @ApiModelProperty("分表模式 yyyy_MM, yyyy_MM_dd")
     private String pattern;

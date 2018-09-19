@@ -41,14 +41,7 @@ public class XClient {
     public static CuratorFramework getCuratorFramework() {
         if (Objects.isNull(curatorFramework)) {
             synchronized (logger) {
-                String zkAddress = System.getenv(StubConstant.ZOOKEEPER_ADDRESS);
-                if (StringUtils.isEmpty(zkAddress)) {
-                    zkAddress = System.getProperty(StubConstant.ZOOKEEPER_ADDRESS);
-                    if (StringUtils.isEmpty(zkAddress)) {
-                        logger.warn("在环境配置中没有[{}]配置,将使用默认[{}]", StubConstant.ZOOKEEPER_ADDRESS, StubConstant.ZOOKEEPER_ADDRESS_DEFAULT);
-                    }
-                    zkAddress = StubConstant.ZOOKEEPER_ADDRESS_DEFAULT;
-                }
+                String zkAddress = getZkConnectString();
                 RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
                 curatorFramework = CuratorFrameworkFactory.builder()
                         .connectString(zkAddress)
@@ -63,6 +56,18 @@ public class XClient {
             }
         }
         return curatorFramework;
+    }
+
+    public static String getZkConnectString(){
+        String zkAddress = System.getenv(StubConstant.ZOOKEEPER_ADDRESS);
+        if (StringUtils.isEmpty(zkAddress)) {
+            zkAddress = System.getProperty(StubConstant.ZOOKEEPER_ADDRESS);
+            if (StringUtils.isEmpty(zkAddress)) {
+                logger.warn("在环境配置中没有[{}]配置,将使用默认[{}]", StubConstant.ZOOKEEPER_ADDRESS, StubConstant.ZOOKEEPER_ADDRESS_DEFAULT);
+            }
+            zkAddress = StubConstant.ZOOKEEPER_ADDRESS_DEFAULT;
+        }
+        return zkAddress;
     }
 
     public static boolean isConnect() {

@@ -135,4 +135,8 @@ public class StubConstant {
     public static final String LOGIN_PAGE_MSG = "_login_page_msg";
 
     public static final String EMPTY = "_empty";
+
+    public static final String BASIC_SERVICE = "basic-service";
+
+    public static final String WITHOUT_BASIC_WARN = "basic服务没启动,或者本服务没有引用basic dubbo服务";
 }

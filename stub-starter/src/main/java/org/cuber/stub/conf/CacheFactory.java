@@ -7,6 +7,7 @@ import org.cuber.cache.bridge.CaffeineBridgeContainer;
 import org.cuber.cache.bridge.ICacheBridge;
 import org.cuber.cache.storage.CaffeineRedisStorage;
 import org.cuber.cache.storage.ICacheCarrier;
+import org.cuber.stub.StubConstant;
 import org.cuber.stub.basic.CacheDef;
 import org.cuber.stub.rpc.Req;
 import org.cuber.stub.rpc.Resp;
@@ -50,7 +51,7 @@ public class CacheFactory {
                 }
             }
         } else {
-            logger.warn("basic服务没启动,或者本服务没有引用basic dubbo服务");
+            logger.warn(StubConstant.WITHOUT_BASIC_WARN);
         }
     }
 

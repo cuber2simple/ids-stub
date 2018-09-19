@@ -11,6 +11,7 @@ import org.cuber.stub.StubConstant;
 import org.cuber.stub.basic.CacheDef;
 import org.cuber.stub.rpc.Req;
 import org.cuber.stub.rpc.Resp;
+import org.cuber.stub.util.RpcUtils;
 import org.cuber.stub.vo.StubConfVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +45,7 @@ public class CacheFactory {
         if (Objects.nonNull(cacheDefBridge)) {
             Resp<List<CacheDef>> resp = cacheDefBridge.loadCacheByAppName(
                     new Req<>(applicationContext.getApplicationName()));
-            if (resp.isSuccess()) {
+            if (RpcUtils.isSuccess(resp)) {
                 List<CacheDef> result = resp.getResult();
                 if (CollectionUtils.isNotEmpty(result)) {
                     result.forEach(cacheDef -> consumerCacheDef(cacheDef));
@@ -79,7 +80,7 @@ public class CacheFactory {
         if (Objects.nonNull(commonCache)) {
             result = (T) commonCache.fetchBySearchIns(t);
         } else {
-            logger.warn("{} 没有缓存bridge", tClass);
+            logger.warn("{} 没有缓存", tClass);
         }
         return result;
     }

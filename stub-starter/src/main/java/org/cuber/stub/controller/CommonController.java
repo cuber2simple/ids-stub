@@ -3,7 +3,7 @@ package org.cuber.stub.controller;
 import org.apache.commons.lang3.StringUtils;
 import org.cuber.stub.StubConstant;
 import org.cuber.stub.rpc.Resp;
-import org.cuber.stub.utils.RpcUtils;
+import org.cuber.stub.util.RpcUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;

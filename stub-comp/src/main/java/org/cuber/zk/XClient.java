@@ -12,7 +12,7 @@ import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.data.Stat;
 import org.cuber.stub.StubConstant;
 import org.cuber.stub.json.GsonHolder;
-import org.cuber.stub.utils.HardwareUtils;
+import org.cuber.stub.util.HardwareUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

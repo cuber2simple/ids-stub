@@ -1,4 +1,4 @@
-package org.cuber.stub.utils;
+package org.cuber.stub.util;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.StringUtils;

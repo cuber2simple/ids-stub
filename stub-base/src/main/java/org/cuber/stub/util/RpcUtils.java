@@ -1,4 +1,4 @@
-package org.cuber.stub.utils;
+package org.cuber.stub.util;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cuber.stub.StubConstant;
@@ -66,5 +66,9 @@ public class RpcUtils {
         if(Objects.isNull(req.getReq())){
             throw stubException;
         }
+    }
+
+    public static boolean isSuccess(Resp resp){
+        return Objects.nonNull(resp) && resp.isSuccess();
     }
 }

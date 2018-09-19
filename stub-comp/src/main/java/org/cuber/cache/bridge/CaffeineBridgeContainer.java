@@ -8,10 +8,12 @@ import org.cuber.cache.CacheDefUtils;
 import org.cuber.cache.CommonCache;
 import org.cuber.stub.rpc.Req;
 import org.cuber.stub.rpc.Resp;
+import org.cuber.stub.util.RpcUtils;
 import org.cuber.stub.vo.StubConfVO;
 import org.springframework.context.annotation.Description;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Description("虽然是可以传入Object,但是缓存的key 默认使用String")
@@ -47,7 +49,7 @@ public class CaffeineBridgeContainer<T extends StubConfVO> extends CommonCache<T
         T result = null;
         if (searchIns != null) {
             Resp<T> resp = bridge.loadByKey(new Req<>(searchIns));
-            if (resp.isSuccess()) {
+            if (RpcUtils.isSuccess(resp)) {
                 result = resp.getResult();
             }
         }

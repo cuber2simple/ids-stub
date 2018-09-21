@@ -14,12 +14,12 @@ org:
         dto:
           template: /dto.btl
           destProject: D:\project\java\corp\old\basic-service\basic-dal\src\main\java
-          destPackage:  org.cuber.stub.basic.dto
+          destPackage:  org.cuber.basic.dto
           rootClass: org.cuber.stub.repo.StubConfDTO
         mapper:
           template: /mapper.btl
           destProject: D:\project\java\corp\old\basic-service\basic-dal\src\main\java
-          destPackage: org.cuber.stub.basic.mapper
+          destPackage: org.cuber.basic.mapper
           rootClass: org.cuber.stub.repo.Mapper
         xml:
           template: /xml.btl
@@ -28,17 +28,17 @@ org:
         vo:
           template: /vo.btl
           destProject: D:\project\java\corp\old\basic-service\basic-facade\src\main\java
-          destPackage: org.cuber.stub.basic.vo
+          destPackage: org.cuber.basic.vo
           rootClass: org.cuber.stub.vo.StubConfVO
         service:
           template: /service.btl
           destProject: D:\project\java\corp\old\basic-service\basic-biz\src\main\java
-          destPackage: org.cuber.stub.basic.single.service
+          destPackage: org.cuber.basic.single.service
           templateImpl: /serviceImpl.btl
         ctrl:
           template: /controller.btl
           destProject: D:\project\java\corp\old\basic-service\basic-web\src\main\java
-          destPackage: org.cuber.foundation.controller
+          destPackage: org.cuber.basic.controller
         view:
           template:
           destProject:

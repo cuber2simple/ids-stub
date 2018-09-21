@@ -152,4 +152,5 @@ public class CacheDef<T extends StubConfVO> extends StubConfVO {
     public String toString() {
         return GsonHolder.toJson(this);
     }
+
 }

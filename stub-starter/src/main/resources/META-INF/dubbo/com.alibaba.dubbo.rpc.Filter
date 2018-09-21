@@ -1,1 +1,1 @@
-loggerInvokerFilter=com.ipaylinks.config.starter.filter.DubboFilter
+loggerInvokerFilter=org.cuber.stub.filter.DubboFilter

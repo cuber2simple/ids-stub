@@ -1,6 +1,7 @@
 package org.cuber.stub.sso;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cuber.stub.json.JacksonHolder;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -71,5 +72,10 @@ public class SSOUserGroup implements Serializable {
 
         SSOUserGroup ssoUserGroup = (SSOUserGroup) obj;
         return StringUtils.equals(ssoUserGroup.getUserGroupId(), userGroupId);
+    }
+
+    @Override
+    public String toString() {
+        return JacksonHolder.toJackson(this);
     }
 }

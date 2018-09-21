@@ -1,5 +1,7 @@
 package org.cuber.stub.sso;
 
+import org.cuber.stub.json.JacksonHolder;
+
 public class SSOMenu extends SSOResource{
     private static final long serialVersionUID = -4014962413439164653L;
 
@@ -69,5 +71,10 @@ public class SSOMenu extends SSOResource{
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return JacksonHolder.toJackson(this);
     }
 }

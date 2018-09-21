@@ -2,6 +2,7 @@ package org.cuber.stub.rpc;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.cuber.stub.json.JacksonHolder;
 
 import java.io.Serializable;
 
@@ -90,5 +91,11 @@ public class Resp<T> implements Serializable {
 
     public void setAbnormal(boolean abnormal) {
         this.abnormal = abnormal;
+    }
+
+
+    @Override
+    public String toString() {
+        return JacksonHolder.toJackson(this);
     }
 }

@@ -1,5 +1,6 @@
 package org.cuber.stub.sso;
 
+import org.cuber.stub.json.JacksonHolder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -204,5 +205,10 @@ public class SSOUser implements UserDetails {
 
     public void setDomain(String domain) {
         this.domain = domain;
+    }
+
+    @Override
+    public String toString() {
+        return JacksonHolder.toJackson(this);
     }
 }

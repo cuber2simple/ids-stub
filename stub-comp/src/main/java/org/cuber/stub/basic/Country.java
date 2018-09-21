@@ -3,6 +3,7 @@ package org.cuber.stub.basic;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.cuber.stub.json.GsonHolder;
+import org.cuber.stub.json.JacksonHolder;
 import org.cuber.stub.vo.StubConfVO;
 
 @ApiModel("国家对象")
@@ -144,6 +145,6 @@ public class Country extends StubConfVO {
 
     @Override
     public String toString() {
-        return GsonHolder.toJson(this);
+        return JacksonHolder.toJackson(this);
     }
 }

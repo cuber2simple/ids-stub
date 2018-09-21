@@ -1,5 +1,7 @@
 package org.cuber.stub.repo;
 
+import org.cuber.stub.json.JacksonHolder;
+
 public class StubConfDTO extends StubDTO{
 
     /**
@@ -43,5 +45,10 @@ public class StubConfDTO extends StubDTO{
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return JacksonHolder.toJackson(this);
     }
 }

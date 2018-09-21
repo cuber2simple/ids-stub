@@ -3,6 +3,7 @@ package org.cuber.stub.basic;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.cuber.stub.json.GsonHolder;
+import org.cuber.stub.json.JacksonHolder;
 import org.cuber.stub.vo.StubConfVO;
 
 import java.util.List;
@@ -65,11 +66,6 @@ public class Dictionary extends StubConfVO {
 
     public void setSys(boolean sys) {
         this.sys = sys;
-    }
-
-    @Override
-    public String toString() {
-        return GsonHolder.toJson(this);
     }
 
     public static class DictionaryData extends StubConfVO {
@@ -221,7 +217,12 @@ public class Dictionary extends StubConfVO {
 
         @Override
         public String toString() {
-            return GsonHolder.toJson(this);
+            return JacksonHolder.toJackson(this);
         }
+    }
+
+    @Override
+    public String toString() {
+        return JacksonHolder.toJackson(this);
     }
 }

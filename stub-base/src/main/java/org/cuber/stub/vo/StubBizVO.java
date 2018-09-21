@@ -2,6 +2,7 @@ package org.cuber.stub.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.cuber.stub.json.JacksonHolder;
 
 import java.time.LocalDateTime;
 
@@ -23,5 +24,10 @@ public class StubBizVO extends StubVO{
 
     public void setCompleteDateTime(LocalDateTime completeDateTime) {
         this.completeDateTime = completeDateTime;
+    }
+
+    @Override
+    public String toString() {
+        return JacksonHolder.toJackson(this);
     }
 }

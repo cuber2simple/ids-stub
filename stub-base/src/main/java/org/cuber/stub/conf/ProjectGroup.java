@@ -1,5 +1,7 @@
 package org.cuber.stub.conf;
 
+import org.cuber.stub.json.GsonHolder;
+
 public class ProjectGroup {
     private String name;
     private String desc;
@@ -18,5 +20,10 @@ public class ProjectGroup {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    @Override
+    public String toString() {
+        return GsonHolder.toJson(this);
     }
 }

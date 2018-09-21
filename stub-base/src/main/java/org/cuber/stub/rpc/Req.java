@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.ThreadContext;
 import org.cuber.stub.StubConstant;
+import org.cuber.stub.json.JacksonHolder;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -70,5 +71,10 @@ public class Req<T> implements Serializable {
 
     public void setCenter(String center) {
         this.center = center;
+    }
+
+    @Override
+    public String toString() {
+        return JacksonHolder.toJackson(this);
     }
 }

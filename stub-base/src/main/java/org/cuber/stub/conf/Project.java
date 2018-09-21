@@ -1,5 +1,7 @@
 package org.cuber.stub.conf;
 
+import org.cuber.stub.json.GsonHolder;
+
 public class Project {
     private String name;
     private String code;
@@ -63,5 +65,10 @@ public class Project {
 
     public void setOwnerPhone(String ownerPhone) {
         this.ownerPhone = ownerPhone;
+    }
+
+    @Override
+    public String toString() {
+        return GsonHolder.toJson(this);
     }
 }

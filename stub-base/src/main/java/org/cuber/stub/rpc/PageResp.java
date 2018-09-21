@@ -1,6 +1,7 @@
 package org.cuber.stub.rpc;
 
 import com.github.pagehelper.Page;
+import org.cuber.stub.json.JacksonHolder;
 
 import java.util.List;
 
@@ -55,4 +56,8 @@ public class PageResp<T> extends Resp<List<T>>{
         this.pages = pages;
     }
 
+    @Override
+    public String toString() {
+        return JacksonHolder.toJackson(this);
+    }
 }

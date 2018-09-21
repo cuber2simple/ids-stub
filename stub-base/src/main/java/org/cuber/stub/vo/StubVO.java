@@ -2,6 +2,7 @@ package org.cuber.stub.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.cuber.stub.json.JacksonHolder;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -48,5 +49,10 @@ public class StubVO implements Serializable {
 
     public void setUpdateDatetime(LocalDateTime updateDatetime) {
         this.updateDatetime = updateDatetime;
+    }
+
+    @Override
+    public String toString() {
+        return JacksonHolder.toJackson(this);
     }
 }

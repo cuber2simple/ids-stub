@@ -40,10 +40,4 @@ public class DatePUtils {
                 date.get(Calendar.YEAR) == other.get(Calendar.YEAR);
     }
 
-    public static void main(String[] args) {
-        Date date = new Date();
-        Date date1 = DateUtils.addDays(date, -1);
-        System.out.println(isSameMonth(date,date1));
-    }
-
 }

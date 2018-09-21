@@ -1,5 +1,7 @@
 package org.cuber.stub.repo;
 
+import org.cuber.stub.json.JacksonHolder;
+
 import java.time.LocalDateTime;
 
 public class StubBizDTO {
@@ -30,5 +32,10 @@ public class StubBizDTO {
 
     public void setBizStatus(String bizStatus) {
         this.bizStatus = bizStatus;
+    }
+
+    @Override
+    public String toString() {
+        return JacksonHolder.toJackson(this);
     }
 }

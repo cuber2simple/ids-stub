@@ -4,6 +4,7 @@ package org.cuber.stub.basic;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.cuber.stub.json.GsonHolder;
+import org.cuber.stub.json.JacksonHolder;
 import org.cuber.stub.vo.StubConfVO;
 
 import java.time.LocalDateTime;
@@ -150,7 +151,6 @@ public class CacheDef<T extends StubConfVO> extends StubConfVO {
 
     @Override
     public String toString() {
-        return GsonHolder.toJson(this);
+        return JacksonHolder.toJackson(this);
     }
-
 }

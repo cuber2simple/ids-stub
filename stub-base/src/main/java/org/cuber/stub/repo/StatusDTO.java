@@ -1,5 +1,7 @@
 package org.cuber.stub.repo;
 
+import org.cuber.stub.json.JacksonHolder;
+
 public enum StatusDTO {
     ini("0","初始化"),
     eff("1","有效"),
@@ -28,5 +30,10 @@ public enum StatusDTO {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    @Override
+    public String toString() {
+        return JacksonHolder.toJackson(this);
     }
 }

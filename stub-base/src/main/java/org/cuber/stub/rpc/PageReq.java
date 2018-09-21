@@ -3,6 +3,7 @@ package org.cuber.stub.rpc;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.cuber.stub.StubConstant;
+import org.cuber.stub.json.JacksonHolder;
 
 @ApiModel("分页请求对象")
 public class PageReq<T> extends Req<T>{
@@ -53,5 +54,10 @@ public class PageReq<T> extends Req<T>{
 
     public void setPageNum(int pageNum) {
         this.pageNum = pageNum;
+    }
+
+    @Override
+    public String toString() {
+        return JacksonHolder.toJackson(this);
     }
 }

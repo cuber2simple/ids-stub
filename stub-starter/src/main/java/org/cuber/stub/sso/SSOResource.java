@@ -1,6 +1,7 @@
 package org.cuber.stub.sso;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cuber.stub.json.JacksonHolder;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -107,5 +108,10 @@ public class SSOResource implements Serializable {
     @Override
     public int hashCode() {
         return Objects.isNull(resourceId) ? -1 : resourceId.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return JacksonHolder.toJackson(this);
     }
 }

@@ -1,6 +1,7 @@
 package org.cuber.stub.sso;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cuber.stub.json.JacksonHolder;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Objects;
@@ -87,5 +88,10 @@ public class SSORole implements GrantedAuthority {
 
         SSORole role = (SSORole) obj;
         return StringUtils.equals(role.getRoleId(), roleId);
+    }
+
+    @Override
+    public String toString() {
+        return JacksonHolder.toJackson(this);
     }
 }

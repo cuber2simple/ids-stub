@@ -3,6 +3,7 @@ package org.cuber.stub.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.cuber.stub.json.JacksonHolder;
 import org.cuber.stub.repo.StatusDTO;
 
 @ApiModel("配置父类")
@@ -45,5 +46,10 @@ public class StubConfVO extends StubVO{
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return JacksonHolder.toJackson(this);
     }
 }

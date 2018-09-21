@@ -17,11 +17,11 @@ public class TransUtils {
     private static Logger logger = LoggerFactory.getLogger(TransUtils.class);
 
 
-    public static <T extends StubVO> T dto2Vo(StubDTO dto, Class<T> voClass) {
+    public static <T> T copyP(Object bean, Class<T> voClass) {
         T t = null;
-        if (Objects.nonNull(dto) && Objects.nonNull(voClass)) {
+        if (Objects.nonNull(bean) && Objects.nonNull(voClass)) {
             try {
-                Map<String, Object> dtoProperties = PropertyUtils.describe(dto);
+                Map<String, Object> dtoProperties = PropertyUtils.describe(bean);
                 MapPropertySource mapPropertySource = new MapPropertySource("dto", dtoProperties);
                 t = new Binder(ConfigurationPropertySources.from(mapPropertySource))
                         .bind("", voClass).get();

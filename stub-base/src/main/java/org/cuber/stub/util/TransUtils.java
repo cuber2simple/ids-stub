@@ -1,8 +1,6 @@
 package org.cuber.stub.util;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.cuber.stub.repo.StubDTO;
-import org.cuber.stub.vo.StubVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.bind.Binder;
@@ -15,7 +13,6 @@ import java.util.Objects;
 public class TransUtils {
 
     private static Logger logger = LoggerFactory.getLogger(TransUtils.class);
-
 
     public static <T> T copyP(Object bean, Class<T> voClass) {
         T t = null;
@@ -31,6 +28,5 @@ public class TransUtils {
         }
         return t;
     }
-
 
 }

@@ -9,11 +9,27 @@ public @interface TableSplitStrategy {
 
     SplitStrategy strategy() default SplitStrategy.current;
 
+    /**
+     * 应该返回LocalDataTime
+     * @return
+     */
     String expl() default "";
 
+    /**
+     * 应该返回LocalDataTime
+     * @return
+     */
     String bottomExpl() default "";
 
+    /**
+     * 应该返回LocalDataTime
+     * @return
+     */
     String topExpl() default "";
 
+    /**
+     * 应该返回LocalDataTime
+     * @return
+     */
     String[] splitTables();
 }

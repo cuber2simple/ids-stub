@@ -109,7 +109,7 @@ public class SnowflakeIdGenerator {
 
     public LocalDateTime findIdTime(long id) {
         long time = (id >> timestampMoveBits) + startTime;
-        return LocalDateTime.ofEpochSecond(time / 1000, 0, OffsetDateTime.now ().getOffset());
+        return LocalDateTime.ofEpochSecond(time / 1000, 0, OffsetDateTime.now().getOffset());
     }
 
     //====================================================Test Case=====================================================

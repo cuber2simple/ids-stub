@@ -7,7 +7,13 @@ import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
+import org.cuber.stub.conf.SplitTableConf;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 @Intercepts(
         {
@@ -18,6 +24,8 @@ import java.util.Properties;
 public class TrapParamInterceptor implements Interceptor {
 
     private static final ThreadLocal<Object> paramLocal = new ThreadLocal<>();
+    private static Logger logger = LoggerFactory.getLogger(MybatisTableSplitInterceptor.class);
+
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
         Object[] args = invocation.getArgs();
@@ -43,5 +51,25 @@ public class TrapParamInterceptor implements Interceptor {
     @Override
     public void setProperties(Properties properties) {
 
+    }
+
+    public static StandardEvaluationContext build(){
+        try{
+            StandardEvaluationContext standardEvaluationContext = new StandardEvaluationContext(TrapParamInterceptor.findParam());
+            DateTimeFormatter yyyy_MM_dd = DateTimeFormatter.ofPattern("yyyy_MM_dd");
+            DateTimeFormatter yyyy_MM = DateTimeFormatter.ofPattern("yyyy_MM");
+            standardEvaluationContext.setVariable("yyyy_MM_dd", yyyy_MM_dd);
+            standardEvaluationContext.setVariable("yyyy_MM", yyyy_MM);
+            standardEvaluationContext.registerFunction("findIdTime",
+                    SplitTableConf.class.getDeclaredMethod("findIdTime", new Class[]{String.class,String.class}));
+            standardEvaluationContext.registerFunction("findIdTimeC",
+                    SplitTableConf.class.getDeclaredMethod("findIdTime", new Class[]{Class.class,String.class}));
+            standardEvaluationContext.registerFunction("ldt_parse",
+                    LocalDateTime.class.getDeclaredMethod("parse", CharSequence.class, DateTimeFormatter.class));
+            return standardEvaluationContext;
+        }catch (Exception e){
+            logger.error("生成IP执行出错");
+        }
+        return null;
     }
 }

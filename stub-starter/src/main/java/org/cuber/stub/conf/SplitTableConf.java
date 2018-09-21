@@ -2,12 +2,15 @@ package org.cuber.stub.conf;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.cuber.anno.TableSplitStrategy;
 import org.cuber.basic.facade.bridge.BizTableDefBridge;
 import org.cuber.stub.StubConstant;
 import org.cuber.stub.basic.BizTableDef;
 import org.cuber.stub.ids.ZkIdGenerator;
+import org.cuber.stub.interceptor.TrapParamInterceptor;
 import org.cuber.stub.rpc.Req;
 import org.cuber.stub.rpc.Resp;
+import org.cuber.stub.util.DatePUtils;
 import org.cuber.stub.util.RpcUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +19,13 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,6 +38,8 @@ public class SplitTableConf {
     private ApplicationContext applicationContext;
 
     private static final ConcurrentHashMap<Object, ZkIdGenerator> idGenerators = new ConcurrentHashMap<>();
+
+    public static final String YYYY_MM = "yyyy_MM";
 
     @EventListener
     public void cachePrepare(ApplicationReadyEvent applicationReadyEvent) {
@@ -105,4 +115,48 @@ public class SplitTableConf {
         ZkIdGenerator zkIdGenerator = findByTClass(tClass);
         return zkIdGenerator.getSplitPattern();
     }
+
+    public static boolean verify(TableSplitStrategy tableSplitStrategy) {
+        boolean verify = false;
+        if (Objects.nonNull(tableSplitStrategy)) {
+            String[] tables = tableSplitStrategy.splitTables();
+            verify = Arrays.stream(tables)
+                    .anyMatch(table -> containsTable(table) && YYYY_MM.equals(getSplitPattern(table)));
+        }
+        return verify;
+    }
+
+    public static Date[] startAndEnd(TableSplitStrategy tableSplitStrategy) {
+        StandardEvaluationContext standardEvaluationContext = TrapParamInterceptor.build();
+        ExpressionParser parser = new SpelExpressionParser();
+        Date date = new Date();
+        Date[] startAndEnd = new Date[]{date, date};
+        switch (tableSplitStrategy.strategy()) {
+            case equals:
+                LocalDateTime thatTime = parser.parseExpression(tableSplitStrategy.expl()).getValue(standardEvaluationContext, LocalDateTime.class);
+                startAndEnd[0] = DatePUtils.trans2Date(thatTime);
+                startAndEnd[1] = startAndEnd[0];
+                break;
+            case between:
+                LocalDateTime begin = parser.parseExpression(tableSplitStrategy.bottomExpl()).getValue(standardEvaluationContext, LocalDateTime.class);
+                LocalDateTime end = parser.parseExpression(tableSplitStrategy.topExpl()).getValue(standardEvaluationContext, LocalDateTime.class);
+                startAndEnd[0] = DatePUtils.trans2Date(begin);
+                startAndEnd[1] = DatePUtils.trans2Date(end);
+                break;
+            case untilNow:
+                LocalDateTime backThen = parser.parseExpression(tableSplitStrategy.bottomExpl()).getValue(standardEvaluationContext, LocalDateTime.class);
+                startAndEnd[0] = DatePUtils.trans2Date(backThen);
+                break;
+            default:
+                break;
+        }
+
+        return startAndEnd;
+    }
+
+    public static void main(String[] args) {
+
+    }
+
+
 }

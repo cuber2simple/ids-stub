@@ -1,20 +1,27 @@
 package org.cuber.stub.interceptor;
 
+import com.github.pagehelper.util.MetaObjectUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.plugin.*;
+import org.apache.ibatis.reflection.MetaObject;
 import org.cuber.anno.TableSplitStrategy;
+import org.cuber.stub.conf.SplitTableConf;
+import org.cuber.stub.util.DatePUtils;
 import org.cuber.stub.util.RefUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.Connection;
-import java.util.Objects;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Intercepts({
@@ -42,11 +49,44 @@ public class MybatisTableSplitInterceptor implements Interceptor {
     private void rebuild(StatementHandler statementHandler, TableSplitStrategy splitStrategy) {
         BoundSql boundSql = statementHandler.getBoundSql();
         String sql = boundSql.getSql();
-        MappedStatement mappedStatement = findMappedStatement(statementHandler);
-
+        if (SplitTableConf.verify(splitStrategy)) {
+            try {
+                Date[] startAndEnd = SplitTableConf.startAndEnd(splitStrategy);
+                boolean continueFlag = true;
+                List<String> sqlList = new ArrayList<>();
+                List<ParameterMapping> newParameterMappings = new ArrayList<>();
+                while (continueFlag) {
+                    String pattern = DateFormatUtils.format(startAndEnd[0], SplitTableConf.YYYY_MM);
+                    String[] tables = splitStrategy.splitTables();
+                    String sqlTmp = sql;
+                    for (String table : tables
+                            ) {
+                        String tmp = StringUtils.upperCase(table);
+                        String replaceTmp = tmp + "_" + pattern;
+                        sqlTmp = sqlTmp.replaceAll(tmp, replaceTmp);
+                    }
+                    sqlList.add(sqlTmp);
+                    continueFlag = startAndEnd[0].before(startAndEnd[1]) && !DatePUtils.isSameMonth(startAndEnd[0], startAndEnd[1]);
+                    if (boundSql != null && boundSql.getParameterMappings() != null) {
+                        newParameterMappings.addAll(boundSql.getParameterMappings());
+                    }
+                    startAndEnd[0] = DateUtils.addMonths(startAndEnd[0], 1);
+                }
+                String newSql = StringUtils.join(sqlList, " union all ");
+                Field field = ReflectionUtils.findField(BoundSql.class, "sql");
+                ReflectionUtils.makeAccessible(field);
+                ReflectionUtils.setField(field, boundSql, newSql);
+                MetaObject metaObject = MetaObjectUtil.forObject(boundSql);
+                metaObject.setValue("parameterMappings", newParameterMappings);
+            } catch (Exception e) {
+                logger.error("发生错误", e);
+                logger.warn("发生错误,将不变更SQL执行下去");
+            }
+        }
     }
 
-    public static boolean isSplit(MappedStatement mappedStatement){
+
+    public static boolean isSplit(MappedStatement mappedStatement) {
         MybatisTableSplitStrategy tableSplitStrategy = findTableStrategy(mappedStatement);
         return Objects.nonNull(tableSplitStrategy) && tableSplitStrategy.isSplit();
     }
@@ -131,5 +171,23 @@ public class MybatisTableSplitInterceptor implements Interceptor {
     @Override
     public void setProperties(Properties properties) {
 
+    }
+
+    public static void main(String[] args) {
+        Date date = new Date();
+        Date other = DateUtils.addMonths(date, 1);
+        System.out.println(DateFormatUtils.format(other, "yyyy_MM"));
+        List<String> add = new ArrayList<>();
+        while (true) {
+            add.add(DateFormatUtils.format(date, "yyyy_MM"));
+            if (date.after(other)) {
+                break;
+            }
+            if (DatePUtils.isSameMonth(date, other)) {
+                break;
+            }
+            date = DateUtils.addMonths(date, 1);
+        }
+        System.out.println(add);
     }
 }

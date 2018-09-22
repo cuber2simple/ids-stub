@@ -3,7 +3,6 @@ package org.cuber.stub.basic;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.cuber.stub.json.GsonHolder;
 import org.cuber.stub.json.JacksonHolder;
 import org.cuber.stub.vo.StubConfVO;
 
@@ -12,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 @ApiModel("缓存对象")
-public class CacheDef<T extends StubConfVO> extends StubConfVO {
+public class CacheDef extends StubConfVO {
 
     private static final long serialVersionUID = 6105163070414008562L;
 
@@ -29,13 +28,13 @@ public class CacheDef<T extends StubConfVO> extends StubConfVO {
     private String cacheRedisKey;
 
     @ApiModelProperty("缓存的对象名称")
-    private Class<T> cacheInsClass;
+    private String cacheInsClass;
 
     @ApiModelProperty("远程调用提供的接口类")
-    private Class bridgeClass;
+    private String bridgeClass;
 
     @ApiModelProperty("本地加载缓存的类")
-    private Class carrierClass;
+    private String carrierClass;
 
     @ApiModelProperty("远程调用提供的接口类")
     private Set<List<String>> fieldKeys;
@@ -85,13 +84,6 @@ public class CacheDef<T extends StubConfVO> extends StubConfVO {
         this.cacheRedisKey = cacheRedisKey;
     }
 
-    public Class<T> getCacheInsClass() {
-        return cacheInsClass;
-    }
-
-    public void setCacheInsClass(Class<T> cacheInsClass) {
-        this.cacheInsClass = cacheInsClass;
-    }
 
     public boolean isGlobal() {
         return global;
@@ -125,13 +117,7 @@ public class CacheDef<T extends StubConfVO> extends StubConfVO {
         this.lastLoadDatetime = lastLoadDatetime;
     }
 
-    public Class getBridgeClass() {
-        return bridgeClass;
-    }
 
-    public void setBridgeClass(Class bridgeClass) {
-        this.bridgeClass = bridgeClass;
-    }
 
     public Set<List<String>> getFieldKeys() {
         return fieldKeys;
@@ -141,11 +127,32 @@ public class CacheDef<T extends StubConfVO> extends StubConfVO {
         this.fieldKeys = fieldKeys;
     }
 
-    public Class getCarrierClass() {
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getCacheInsClass() {
+        return cacheInsClass;
+    }
+
+    public void setCacheInsClass(String cacheInsClass) {
+        this.cacheInsClass = cacheInsClass;
+    }
+
+    public String getBridgeClass() {
+        return bridgeClass;
+    }
+
+    public void setBridgeClass(String bridgeClass) {
+        this.bridgeClass = bridgeClass;
+    }
+
+    public String getCarrierClass() {
         return carrierClass;
     }
 
-    public void setCarrierClass(Class carrierClass) {
+    public void setCarrierClass(String carrierClass) {
         this.carrierClass = carrierClass;
     }
 

@@ -22,7 +22,7 @@ public class CacheDefUtils {
 
     private static Logger logger = LoggerFactory.getLogger(CacheDefUtils.class);
 
-    public static <T extends StubConfVO> List<String> findKeys(T cacheIns, CacheDef<T> cacheDef) {
+    public static <T extends StubConfVO> List<String> findKeys(T cacheIns, CacheDef cacheDef) {
         Set<List<String>> fields = cacheDef.getFieldKeys();
         List<String> keys = null;
         if (fields != null) {
@@ -59,17 +59,17 @@ public class CacheDefUtils {
         return fields.stream().allMatch(field -> Objects.nonNull(fieldValue(searchIns, field)));
     }
 
-    public static <T extends StubConfVO> T makeSearchIns(String key, CacheDef<T> def) {
+    public static <T extends StubConfVO> T makeSearchIns(String key, CacheDef def, Class<T> tClass) {
         T search = null;
         String[] fieldValuePairs = org.springframework.util.StringUtils.split(key, CacheDefUtils.CACHE_FIELD_SPLIT);
         if (fieldValuePairs != null && fieldValuePairs.length > 0) {
             try {
-                search = def.getCacheInsClass().newInstance();
+                search = tClass.newInstance();
                 for (int i = 0; i < fieldValuePairs.length; i++) {
                     String fieldAndValue = fieldValuePairs[i];
                     String[] pair = org.springframework.util.StringUtils.split(fieldAndValue, CacheDefUtils.FIELD_SPLIT_VALUE);
                     if (pair != null && pair.length == 2) {
-                        Field field = ReflectionUtils.findField(def.getCacheInsClass(), pair[0]);
+                        Field field = ReflectionUtils.findField(tClass, pair[0]);
                         ReflectionUtils.makeAccessible(field);
 
                         ReflectionUtils.setField(field, search, pair[1]);

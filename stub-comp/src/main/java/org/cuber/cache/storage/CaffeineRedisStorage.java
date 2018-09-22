@@ -16,7 +16,7 @@ public class CaffeineRedisStorage<T extends StubConfVO> extends CommonCache<T> {
 
     private RedisTemplate<String, String> redisTemplate;
 
-    public CaffeineRedisStorage(RedisTemplate<String, String> redisTemplate, ICacheCarrier<T> carrier) {
+    public CaffeineRedisStorage(RedisTemplate<String, String> redisTemplate, ICacheCarrier<T> carrier, Class<T> tClass) {
         super(carrier);
         this.redisTemplate = redisTemplate;
         def = this.loadCacheDef();
@@ -24,19 +24,19 @@ public class CaffeineRedisStorage<T extends StubConfVO> extends CommonCache<T> {
         if (!def.isDurable()) {
             caffeine.expireAfterWrite(Duration.ofMinutes(def.getDurationOfMinutes()));
         }
-        cache = caffeine.build(key -> findKeyWithRedisFirst(key, carrier));
+        cache = caffeine.build(key -> findKeyWithRedisFirst(key, carrier, tClass));
     }
 
-    private T findKeyWithRedisFirst(String key, ICacheCarrier<T> carrier) {
-        CacheDef<T> cacheDef = loadCacheDef();
+    private T findKeyWithRedisFirst(String key, ICacheCarrier<T> carrier, Class<T> tClass) {
+        CacheDef cacheDef = loadCacheDef();
         String redisKey = cacheDef.getCacheRedisKey();
         String objectJson = (String) redisTemplate.opsForHash().get(redisKey, key);
         T t = null;
         if (StringUtils.isEmpty(objectJson)) {
-            t = JacksonHolder.instance(objectJson, cacheDef.getCacheInsClass());
+            t = JacksonHolder.instance(objectJson, tClass);
         }
         if (Objects.isNull(t)) {
-            T searchIns = CacheDefUtils.makeSearchIns(key, cacheDef);
+            T searchIns = CacheDefUtils.makeSearchIns(key, cacheDef, tClass);
             t = carrier.carryByKey(searchIns);
             if (Objects.nonNull(t)) {
                 objectJson = JacksonHolder.toJackson(t);

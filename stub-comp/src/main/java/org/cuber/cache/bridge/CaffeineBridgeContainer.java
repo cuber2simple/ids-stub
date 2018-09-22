@@ -13,7 +13,6 @@ import org.cuber.stub.vo.StubConfVO;
 import org.springframework.context.annotation.Description;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Description("虽然是可以传入Object,但是缓存的key 默认使用String")
@@ -21,7 +20,7 @@ public class CaffeineBridgeContainer<T extends StubConfVO> extends CommonCache<T
 
     private ConcurrentHashMap<String, T> settleCaches = new ConcurrentHashMap<>();
 
-    public CaffeineBridgeContainer(ICacheBridge<T> bridge) {
+    public CaffeineBridgeContainer(ICacheBridge<T> bridge, Class<T> tClass) {
         super(bridge);
         cache = Caffeine.newBuilder()
                 .writer(new CacheWriter<String, T>() {
@@ -40,12 +39,12 @@ public class CaffeineBridgeContainer<T extends StubConfVO> extends CommonCache<T
                         invalidateCache(key, cacheIns);
                     }
                 })
-                .build(key -> loadByBridge(key, bridge));
+                .build(key -> loadByBridge(key, bridge, tClass));
 
     }
 
-    private T loadByBridge(String key, ICacheBridge<T> bridge) {
-        T searchIns = CacheDefUtils.makeSearchIns(key, loadCacheDef());
+    private T loadByBridge(String key, ICacheBridge<T> bridge, Class<T> tClass) {
+        T searchIns = CacheDefUtils.makeSearchIns(key, loadCacheDef(), tClass);
         T result = null;
         if (searchIns != null) {
             Resp<T> resp = bridge.loadByKey(new Req<>(searchIns));

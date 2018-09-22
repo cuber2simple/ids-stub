@@ -57,21 +57,27 @@ public class CacheFactory {
     }
 
     private void consumerCacheDef(CacheDef def) {
-        if (def.isGlobal() && !def.getAppName().equals(applicationContext.getApplicationName())) {
-            ICacheBridge bridge = (ICacheBridge) applicationContext.getBean(def.getBridgeClass());
-            if (Objects.nonNull(bridge)) {
-                CaffeineBridgeContainer caffeineBridgeContainer = new CaffeineBridgeContainer(bridge);
-                bridgeFactory.putIfAbsent(def.getCacheInsClass(), caffeineBridgeContainer);
-                logger.info("{} bridge缓存已建立", def.getCacheName());
+        try {
+            Class cacheInsClass = Class.forName(def.getCacheInsClass());
+            if (def.isGlobal() && !def.getAppName().equals(applicationContext.getApplicationName())) {
+                ICacheBridge bridge = (ICacheBridge) applicationContext.getBean(def.getBridgeClass());
+                if (Objects.nonNull(bridge)) {
+                    CaffeineBridgeContainer caffeineBridgeContainer = new CaffeineBridgeContainer(bridge, cacheInsClass);
+                    bridgeFactory.putIfAbsent(cacheInsClass, caffeineBridgeContainer);
+                    logger.info("{} bridge缓存已建立", def.getCacheName());
+                }
+            } else if (def.getAppName().equals(applicationContext.getApplicationName())) {
+                ICacheCarrier cacheCarrier = (ICacheCarrier) applicationContext.getBean(def.getCarrierClass());
+                if (Objects.nonNull(cacheCarrier)) {
+                    CaffeineRedisStorage caffeineRedisStorage = new CaffeineRedisStorage(redisTemplate, cacheCarrier, cacheInsClass);
+                    bridgeFactory.putIfAbsent(cacheInsClass, caffeineRedisStorage);
+                    logger.info("{} 本地缓存已建立", def.getCacheName());
+                }
             }
-        } else if (def.getAppName().equals(applicationContext.getApplicationName())) {
-            ICacheCarrier cacheCarrier = (ICacheCarrier) applicationContext.getBean(def.getCarrierClass());
-            if (Objects.nonNull(cacheCarrier)) {
-                CaffeineRedisStorage caffeineRedisStorage = new CaffeineRedisStorage(redisTemplate, cacheCarrier);
-                bridgeFactory.putIfAbsent(def.getCacheInsClass(), caffeineRedisStorage);
-                logger.info("{} 本地缓存已建立", def.getCacheName());
-            }
+        } catch (Exception e) {
+            logger.error("keep ignore", e);
         }
+
     }
 
     public static <T extends StubConfVO> T findBySearch(T t, Class<T> tClass) {

@@ -17,7 +17,7 @@ public class CommonCache<T extends StubConfVO> implements NodeCacheListener {
     protected LoadingCache<String, T> cache;
 
 
-    protected CacheDef<T> def;
+    protected CacheDef def;
 
     protected ITopCache<T> tiTopCache;
 
@@ -25,7 +25,7 @@ public class CommonCache<T extends StubConfVO> implements NodeCacheListener {
         this.tiTopCache = tiTopCache;
     }
 
-    protected synchronized CacheDef<T> loadCacheDef() {
+    protected synchronized CacheDef loadCacheDef() {
         if (Objects.isNull(def)) {
             def = tiTopCache.loadDef();
             /**
@@ -42,7 +42,7 @@ public class CommonCache<T extends StubConfVO> implements NodeCacheListener {
     }
 
     protected String findFirstPopKey(T searchIns) {
-        CacheDef<T> def = loadCacheDef();
+        CacheDef def = loadCacheDef();
         Set<List<String>> fields = def.getFieldKeys();
         String key = null;
         if (CollectionUtils.isNotEmpty(fields) && Objects.nonNull(searchIns)) {

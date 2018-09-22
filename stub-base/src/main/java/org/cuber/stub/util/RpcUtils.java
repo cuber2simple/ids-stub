@@ -53,7 +53,7 @@ public class RpcUtils {
             verify = false;
             stubException.setMessage("基本请求对象不能为空");
         }
-        if (verify) {
+        if (!verify) {
             throw stubException;
         }
     }

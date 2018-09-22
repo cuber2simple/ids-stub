@@ -2,12 +2,11 @@ package org.cuber.stub.basic;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.cuber.stub.json.GsonHolder;
 import org.cuber.stub.json.JacksonHolder;
 import org.cuber.stub.vo.StubConfVO;
 
 @ApiModel("业务对象")
-public class BizTableDef<T> extends StubConfVO {
+public class BizTableDef extends StubConfVO {
     private static final long serialVersionUID = -189860677921334237L;
 
     @ApiModelProperty("表名")
@@ -20,8 +19,7 @@ public class BizTableDef<T> extends StubConfVO {
     private String appName;
 
     @ApiModelProperty("分表对象")
-    private Class<T> tClass;
-
+    private String tClass;
 
     @ApiModelProperty("分表模式 yyyy_MM, yyyy_MM_dd")
     private String pattern;
@@ -62,11 +60,11 @@ public class BizTableDef<T> extends StubConfVO {
         this.appName = appName;
     }
 
-    public Class<T> gettClass() {
+    public String getTClass() {
         return tClass;
     }
 
-    public void settClass(Class<T> tClass) {
+    public void setTClass(String tClass) {
         this.tClass = tClass;
     }
 

@@ -54,9 +54,14 @@ public class SplitTableConf {
                             ZkIdGenerator zkIdGenerator = new ZkIdGenerator(bizTableDef);
                             String tableName = bizTableDef.getTableName();
                             tableName = StringUtils.upperCase(StringUtils.trimToEmpty(tableName));
-                            Class tClass = bizTableDef.gettClass();
+                            try {
+                                Class tClass = Class.forName(bizTableDef.getTClass());
+                                idGenerators.putIfAbsent(tClass, zkIdGenerator);
+                            } catch (ClassNotFoundException e) {
+                                e.printStackTrace();
+                            }
                             idGenerators.putIfAbsent(tableName, zkIdGenerator);
-                            idGenerators.putIfAbsent(tClass, zkIdGenerator);
+
                         });
                     }
                 }

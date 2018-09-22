@@ -4,6 +4,8 @@ import com.alibaba.dubbo.rpc.*;
 import org.apache.logging.log4j.ThreadContext;
 import org.cuber.stub.StubConstant;
 import org.cuber.stub.rpc.Req;
+import org.cuber.stub.rpc.Resp;
+import org.cuber.stub.rpc.StubException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +34,22 @@ public class DubboFilter implements Filter {
         } catch (Exception e) {
             logger.error("dubbo调用失败:[" + srvPath + "]", e);
             if (filterRespClass.contains(srvPath) && figureOutClass(invoker, invocation, srvPath)) {
+                try {
+                    if (Resp.class.isAssignableFrom(filterRespClass.get(srvPath))) {
+                        Resp resp = (Resp) filterRespClass.get(srvPath).newInstance();
+                        resp.setAbnormal(true);
+                        if (e instanceof StubException) {
+                            StubException stubException = (StubException) e;
+                            resp.setResultCode(stubException.getCode());
+                        } else {
+                            resp.setResultCode(StubConstant.UNKNOWN_ERR);
+                        }
+                        resp.setResultMsg(e.getMessage());
+                        result = new RpcResult(resp);
+                    }
+                } catch (Exception e1) {
+                    logger.error("没有提供空的构造方法", e1);
+                }
 
             }
         } finally {

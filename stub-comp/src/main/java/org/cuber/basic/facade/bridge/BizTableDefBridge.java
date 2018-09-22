@@ -2,14 +2,13 @@ package org.cuber.basic.facade.bridge;
 
 import org.cuber.cache.bridge.ICacheBridge;
 import org.cuber.stub.basic.BizTableDef;
-import org.cuber.stub.basic.CacheDef;
 import org.cuber.stub.rpc.Req;
 import org.cuber.stub.rpc.Resp;
 import org.cuber.stub.rpc.StubException;
 
 import java.util.List;
 
-public interface BizTableDefBridge extends ICacheBridge<CacheDef> {
+public interface BizTableDefBridge extends ICacheBridge<BizTableDef> {
 
     /**
      * 根据服务名查找缓存的分表信息

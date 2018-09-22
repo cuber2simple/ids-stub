@@ -17,5 +17,5 @@ public interface BizTableDefBridge extends ICacheBridge<CacheDef> {
      * @param req 本服务名
      * @return 缓存列表
      */
-    Resp<List<BizTableDef>> loadCacheByAppName(Req<String> req) throws StubException;
+    Resp<List<BizTableDef>> loadCacheByAppName(Req req) throws StubException;
 }

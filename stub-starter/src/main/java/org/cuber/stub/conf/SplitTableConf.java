@@ -47,7 +47,7 @@ public class SplitTableConf {
             if (!StubConstant.BASIC_SERVICE.equals(applicationContext.getApplicationName())) {
                 BizTableDefBridge bizTableDefBridge = applicationContext.getBean(BizTableDefBridge.class);
                 if (Objects.nonNull(bizTableDefBridge)) {
-                    Resp<List<BizTableDef>> resp = bizTableDefBridge.loadCacheByAppName(new Req<>(applicationContext.getApplicationName()));
+                    Resp<List<BizTableDef>> resp = bizTableDefBridge.loadCacheByAppName(new Req());
                     if (RpcUtils.isSuccess(resp)) {
                         List<BizTableDef> result = resp.getResult();
                         if (CollectionUtils.isNotEmpty(result)) {

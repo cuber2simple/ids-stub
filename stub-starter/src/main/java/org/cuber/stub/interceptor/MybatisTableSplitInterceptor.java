@@ -173,21 +173,4 @@ public class MybatisTableSplitInterceptor implements Interceptor {
 
     }
 
-    public static void main(String[] args) {
-        Date date = new Date();
-        Date other = DateUtils.addMonths(date, 1);
-        System.out.println(DateFormatUtils.format(other, "yyyy_MM"));
-        List<String> add = new ArrayList<>();
-        while (true) {
-            add.add(DateFormatUtils.format(date, "yyyy_MM"));
-            if (date.after(other)) {
-                break;
-            }
-            if (DatePUtils.isSameMonth(date, other)) {
-                break;
-            }
-            date = DateUtils.addMonths(date, 1);
-        }
-        System.out.println(add);
-    }
 }

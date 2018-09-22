@@ -43,32 +43,37 @@ public class SplitTableConf {
 
     @EventListener
     public void cachePrepare(ApplicationReadyEvent applicationReadyEvent) {
-        if (!StubConstant.BASIC_SERVICE.equals(applicationContext.getApplicationName())) {
-            BizTableDefBridge bizTableDefBridge = applicationContext.getBean(BizTableDefBridge.class);
-            if (Objects.nonNull(bizTableDefBridge)) {
-                Resp<List<BizTableDef>> resp = bizTableDefBridge.loadCacheByAppName(new Req<>(applicationContext.getApplicationName()));
-                if (RpcUtils.isSuccess(resp)) {
-                    List<BizTableDef> result = resp.getResult();
-                    if (CollectionUtils.isNotEmpty(result)) {
-                        result.forEach(bizTableDef -> {
-                            ZkIdGenerator zkIdGenerator = new ZkIdGenerator(bizTableDef);
-                            String tableName = bizTableDef.getTableName();
-                            tableName = StringUtils.upperCase(StringUtils.trimToEmpty(tableName));
-                            try {
-                                Class tClass = Class.forName(bizTableDef.getTClass());
-                                idGenerators.putIfAbsent(tClass, zkIdGenerator);
-                            } catch (ClassNotFoundException e) {
-                                e.printStackTrace();
-                            }
-                            idGenerators.putIfAbsent(tableName, zkIdGenerator);
+        try {
+            if (!StubConstant.BASIC_SERVICE.equals(applicationContext.getApplicationName())) {
+                BizTableDefBridge bizTableDefBridge = applicationContext.getBean(BizTableDefBridge.class);
+                if (Objects.nonNull(bizTableDefBridge)) {
+                    Resp<List<BizTableDef>> resp = bizTableDefBridge.loadCacheByAppName(new Req<>(applicationContext.getApplicationName()));
+                    if (RpcUtils.isSuccess(resp)) {
+                        List<BizTableDef> result = resp.getResult();
+                        if (CollectionUtils.isNotEmpty(result)) {
+                            result.forEach(bizTableDef -> {
+                                ZkIdGenerator zkIdGenerator = new ZkIdGenerator(bizTableDef);
+                                String tableName = bizTableDef.getTableName();
+                                tableName = StringUtils.upperCase(StringUtils.trimToEmpty(tableName));
+                                try {
+                                    Class tClass = Class.forName(bizTableDef.getTClass());
+                                    idGenerators.putIfAbsent(tClass, zkIdGenerator);
+                                } catch (ClassNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+                                idGenerators.putIfAbsent(tableName, zkIdGenerator);
 
-                        });
+                            });
+                        }
                     }
+                } else {
+                    logger.warn(StubConstant.WITHOUT_BASIC_WARN);
                 }
-            } else {
-                logger.warn(StubConstant.WITHOUT_BASIC_WARN);
             }
+        } catch (Exception e) {
+            logger.error("基本不会出错", e);
         }
+
     }
 
     public static String nextId(String tableName) {

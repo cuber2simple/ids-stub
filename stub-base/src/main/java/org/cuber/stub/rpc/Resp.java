@@ -32,6 +32,12 @@ public class Resp<T> implements Serializable {
     @ApiModelProperty("http status code")
     private int httpStatus;
 
+    public Resp() {
+    }
+
+    public Resp(T result) {
+        this.result = result;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

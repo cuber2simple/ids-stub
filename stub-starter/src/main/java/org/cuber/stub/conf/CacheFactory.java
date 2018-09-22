@@ -41,19 +41,24 @@ public class CacheFactory {
 
     @EventListener
     public void cachePrepare(ApplicationReadyEvent applicationReadyEvent) {
-        CacheDefBridge cacheDefBridge = applicationContext.getBean(CacheDefBridge.class);
-        if (Objects.nonNull(cacheDefBridge)) {
-            Resp<List<CacheDef>> resp = cacheDefBridge.loadCacheByAppName(
-                    new Req<>(applicationContext.getApplicationName()));
-            if (RpcUtils.isSuccess(resp)) {
-                List<CacheDef> result = resp.getResult();
-                if (CollectionUtils.isNotEmpty(result)) {
-                    result.forEach(cacheDef -> consumerCacheDef(cacheDef));
+        try {
+            CacheDefBridge cacheDefBridge = applicationContext.getBean(CacheDefBridge.class);
+            if (Objects.nonNull(cacheDefBridge)) {
+                Resp<List<CacheDef>> resp = cacheDefBridge.loadCacheByAppName(
+                        new Req<>(applicationContext.getApplicationName()));
+                if (RpcUtils.isSuccess(resp)) {
+                    List<CacheDef> result = resp.getResult();
+                    if (CollectionUtils.isNotEmpty(result)) {
+                        result.forEach(cacheDef -> consumerCacheDef(cacheDef));
+                    }
                 }
+            } else {
+                logger.warn(StubConstant.WITHOUT_BASIC_WARN);
             }
-        } else {
-            logger.warn(StubConstant.WITHOUT_BASIC_WARN);
+        } catch (Exception e) {
+            logger.error("基本不会出错", e);
         }
+
     }
 
     private void consumerCacheDef(CacheDef def) {

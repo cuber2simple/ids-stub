@@ -64,15 +64,18 @@ public class CacheFactory {
     private void consumerCacheDef(CacheDef def) {
         try {
             Class cacheInsClass = Class.forName(def.getCacheInsClass());
-            if (def.isGlobal() && !def.getAppName().equals(applicationContext.getApplicationName())) {
-                ICacheBridge bridge = (ICacheBridge) applicationContext.getBean(def.getBridgeClass());
+            String appName = applicationContext.getId();
+            Class classIns = Class.forName(def.getBridgeClass());
+            if (def.isGlobal() && !def.getAppName().equals(appName)) {
+                ICacheBridge bridge = (ICacheBridge) applicationContext.getBean(classIns);
                 if (Objects.nonNull(bridge)) {
                     CaffeineBridgeContainer caffeineBridgeContainer = new CaffeineBridgeContainer(bridge, cacheInsClass);
                     bridgeFactory.putIfAbsent(cacheInsClass, caffeineBridgeContainer);
                     logger.info("{} bridge缓存已建立", def.getCacheName());
                 }
-            } else if (def.getAppName().equals(applicationContext.getApplicationName())) {
-                ICacheCarrier cacheCarrier = (ICacheCarrier) applicationContext.getBean(def.getCarrierClass());
+            } else if (def.getAppName().equals(appName)) {
+                classIns = Class.forName(def.getCarrierClass());
+                ICacheCarrier cacheCarrier = (ICacheCarrier) applicationContext.getBean(classIns);
                 if (Objects.nonNull(cacheCarrier)) {
                     CaffeineRedisStorage caffeineRedisStorage = new CaffeineRedisStorage(redisTemplate, cacheCarrier, cacheInsClass);
                     bridgeFactory.putIfAbsent(cacheInsClass, caffeineRedisStorage);

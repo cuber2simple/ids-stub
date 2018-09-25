@@ -35,7 +35,7 @@ public class PropertyFactory {
     public static MapPropertySource loadFormZk(String appName) {
 
         String appPath = ENV_ROOT_PATH + PATH_SPLIT + appName;
-        boolean isSelf = StubConstant.COMMON.equals(appName);
+        boolean isSelf = !StubConstant.COMMON.equals(appName);
         MapPropertySource mapPropertySource = null;
         try {
             CuratorFramework zkClient = XClient.getCuratorFramework();

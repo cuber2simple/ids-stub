@@ -143,4 +143,18 @@ public class StubConstant {
     public static final String Y_IS_TRUE = "Y";
 
     public static final String N_IS_FALSE = "N";
+
+    public static final String APP_FIXED_GROUP = "app.fixed.group";
+
+    public static final String APP_FIXED_USERID = "app.fixed.userId";
+
+    public static final String APP_FIXED_SERVER_PORT = "server.port";
+
+    public static final String APP_FIXED_DUBBO_PORT = "dubbo.port";
+
+    public static final String APP_FIXED_KAFKA_TOPIC = "app.fixed.kafka.topic";
+
+    public static final String APP_FIXED_CONTEXT_PATH = "server.servlet.context-path";
+
+    public static final String APP_FIXED_DESC = "app.fixed.desc";
 }

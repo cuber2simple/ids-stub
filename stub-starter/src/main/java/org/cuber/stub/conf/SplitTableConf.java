@@ -164,9 +164,4 @@ public class SplitTableConf {
         return startAndEnd;
     }
 
-    public static void main(String[] args) {
-
-    }
-
-
 }

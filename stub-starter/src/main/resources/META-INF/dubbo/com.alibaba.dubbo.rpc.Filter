@@ -1,1 +1,1 @@
-loggerInvokerFilter=org.cuber.stub.filter.DubboFilter
+loggerFilter=org.cuber.stub.filter.DubboFilter

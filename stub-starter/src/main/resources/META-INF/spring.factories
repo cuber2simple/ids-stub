@@ -1,3 +1,5 @@
+org.springframework.context.ApplicationContextInitializer=\
+  org.cuber.stub.initializer.AutoZkInitializer
 org.springframework.boot.autoconfigure.EnableAutoConfiguration =\
   org.cuber.stub.controller.CommonController,\
   org.cuber.stub.conf.RedisCacheConf,\
@@ -7,4 +9,6 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration =\
   org.cuber.stub.conf.PasswordEncoderConf,\
   org.cuber.stub.conf.CacheFactory,\
   org.cuber.stub.conf.SplitTableConf,\
-  org.cuber.stub.conf.MapperConf
+  org.cuber.stub.conf.MapperConf,\
+  org.cuber.stub.conf.DynamicConf,\
+  org.cuber.stub.conf.DubboConf

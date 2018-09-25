@@ -63,7 +63,7 @@ public class MybatisTableSplitInterceptor implements Interceptor {
                             ) {
                         String tmp = StringUtils.upperCase(table);
                         String replaceTmp = tmp + "_" + pattern;
-                        sqlTmp = sqlTmp.replaceAll(tmp, replaceTmp);
+                        sqlTmp = sql.replaceAll(tmp, replaceTmp);
                     }
                     sqlList.add(sqlTmp);
                     continueFlag = startAndEnd[0].before(startAndEnd[1]) && !DatePUtils.isSameMonth(startAndEnd[0], startAndEnd[1]);

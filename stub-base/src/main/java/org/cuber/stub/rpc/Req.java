@@ -28,11 +28,11 @@ public class Req<T> implements Serializable {
     private T req;
 
     public Req() {
-        center = System.getProperty(StubConstant.CENTER,StubConstant.CENTER);
-        appName = System.getProperty(StubConstant.APP_NAME,StubConstant.DEFAULT_APP);
-        traceId =  ThreadContext.get(StubConstant.TRACE_ID);
-        if(StringUtils.isEmpty(traceId)){
-            traceId = UUID.randomUUID().toString().replace("-", "");
+        center = System.getProperty(StubConstant.CENTER, StubConstant.CENTER);
+        appName = System.getProperty(StubConstant.APP_NAME, StubConstant.DEFAULT_APP);
+        traceId = ThreadContext.get(StubConstant.TRACE_ID);
+        if (StringUtils.isEmpty(traceId)) {
+            traceId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
         }
     }
 

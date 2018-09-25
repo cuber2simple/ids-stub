@@ -4,7 +4,7 @@ import org.cuber.stub.json.JacksonHolder;
 
 import java.time.LocalDateTime;
 
-public class StubBizDTO {
+public class StubBizDTO extends StubDTO{
 
     /**
      *  column_name    COMPLETE_DATETIME

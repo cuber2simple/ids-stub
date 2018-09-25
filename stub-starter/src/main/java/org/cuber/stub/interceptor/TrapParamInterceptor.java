@@ -10,6 +10,8 @@ import org.apache.ibatis.session.RowBounds;
 import org.cuber.stub.conf.SplitTableConf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import java.time.LocalDateTime;

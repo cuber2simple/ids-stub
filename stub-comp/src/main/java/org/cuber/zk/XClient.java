@@ -108,7 +108,7 @@ public class XClient {
                 getCuratorFramework().setData()
                         .forPath(path, json.getBytes("utf-8"));
             } else {
-                getCuratorFramework().create()
+                getCuratorFramework().create().creatingParentsIfNeeded()
                         .withMode(CreateMode.PERSISTENT)
                         .forPath(path, json.getBytes("utf-8"));
             }

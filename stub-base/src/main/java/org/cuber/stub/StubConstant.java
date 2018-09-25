@@ -157,4 +157,10 @@ public class StubConstant {
     public static final String APP_FIXED_CONTEXT_PATH = "server.servlet.context-path";
 
     public static final String APP_FIXED_DESC = "app.fixed.desc";
+
+    public static class STATUS {
+        public static final String VALID = "1";
+        public static final String INVALID = "0";
+        public static final String TBC = "9";
+    }
 }

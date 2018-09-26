@@ -4,7 +4,7 @@ import org.cuber.stub.json.JacksonHolder;
 
 import java.util.List;
 
-public class SSOMenu extends SSOResource {
+public class SSOMenu extends SSOResource implements Comparable<SSOMenu> {
     private static final long serialVersionUID = -4014962413439164653L;
 
     private String parentId;
@@ -97,5 +97,10 @@ public class SSOMenu extends SSOResource {
     @Override
     public String toString() {
         return JacksonHolder.toJackson(this);
+    }
+
+    @Override
+    public int compareTo(SSOMenu o) {
+        return this.treeLevel - o.getTreeLevel();
     }
 }

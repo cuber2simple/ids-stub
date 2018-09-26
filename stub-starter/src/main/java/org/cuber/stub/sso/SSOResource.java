@@ -24,6 +24,16 @@ public class SSOResource implements Serializable {
 
     private String i18nKey;
 
+    private Type resourceType;
+
+
+    public Type getResourceType() {
+        return resourceType;
+    }
+
+    public void setResourceType(Type resourceType) {
+        this.resourceType = resourceType;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -113,5 +123,10 @@ public class SSOResource implements Serializable {
     @Override
     public String toString() {
         return JacksonHolder.toJackson(this);
+    }
+
+    public enum Type {
+        menu,
+        element;
     }
 }

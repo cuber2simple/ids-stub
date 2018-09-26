@@ -28,7 +28,7 @@ public class TransformUtils {
                 t = new Binder(ConfigurationPropertySources.from(mapPropertySource))
                         .bind("", tClass).get();
             } catch (Exception e) {
-
+                logger.error("赋值失败", e);
             }
         }
         return t;

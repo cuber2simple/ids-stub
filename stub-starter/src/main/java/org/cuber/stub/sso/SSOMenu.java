@@ -2,6 +2,8 @@ package org.cuber.stub.sso;
 
 import org.cuber.stub.json.JacksonHolder;
 
+import java.util.List;
+
 public class SSOMenu extends SSOResource {
     private static final long serialVersionUID = -4014962413439164653L;
 
@@ -12,6 +14,15 @@ public class SSOMenu extends SSOResource {
     private String domain;
     private boolean sys;
     private String status;
+    private List<SSOMenu> subMenus;
+
+    public List<SSOMenu> getSubMenus() {
+        return subMenus;
+    }
+
+    public void setSubMenus(List<SSOMenu> subMenus) {
+        this.subMenus = subMenus;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

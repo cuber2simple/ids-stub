@@ -44,15 +44,14 @@ public class SSOUser implements UserDetails {
 
     private Set<SSORole> roles;
 
-    private Set<SSOMenu> menus;
+    private SSOMenu suitMenu;
 
-
-    public Set<SSOMenu> getMenus() {
-        return menus;
+    public SSOMenu getSuitMenu() {
+        return suitMenu;
     }
 
-    public void setMenus(Set<SSOMenu> menus) {
-        this.menus = menus;
+    public void setSuitMenu(SSOMenu suitMenu) {
+        this.suitMenu = suitMenu;
     }
 
     public String getUserId() {

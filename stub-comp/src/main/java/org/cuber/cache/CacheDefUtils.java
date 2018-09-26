@@ -61,13 +61,13 @@ public class CacheDefUtils {
 
     public static <T extends StubConfVO> T makeSearchIns(String key, CacheDef def, Class<T> tClass) {
         T search = null;
-        String[] fieldValuePairs = org.springframework.util.StringUtils.split(key, CacheDefUtils.CACHE_FIELD_SPLIT);
+        String[] fieldValuePairs = StringUtils.split(key, CacheDefUtils.CACHE_FIELD_SPLIT);
         if (fieldValuePairs != null && fieldValuePairs.length > 0) {
             try {
                 search = tClass.newInstance();
                 for (int i = 0; i < fieldValuePairs.length; i++) {
                     String fieldAndValue = fieldValuePairs[i];
-                    String[] pair = org.springframework.util.StringUtils.split(fieldAndValue, CacheDefUtils.FIELD_SPLIT_VALUE);
+                    String[] pair = StringUtils.split(fieldAndValue, CacheDefUtils.FIELD_SPLIT_VALUE);
                     if (pair != null && pair.length == 2) {
                         Field field = ReflectionUtils.findField(tClass, pair[0]);
                         ReflectionUtils.makeAccessible(field);

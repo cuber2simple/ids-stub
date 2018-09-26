@@ -12,9 +12,9 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 
-public class TransUtils {
+public class TransformUtils {
 
-    private static Logger logger = LoggerFactory.getLogger(TransUtils.class);
+    private static Logger logger = LoggerFactory.getLogger(TransformUtils.class);
 
     public static <T> T copyP(Object bean, Class<T> tClass, String... ignoreProperties) {
         T t = null;

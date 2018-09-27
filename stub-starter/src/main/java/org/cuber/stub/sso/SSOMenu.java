@@ -1,19 +1,37 @@
 package org.cuber.stub.sso;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.cuber.stub.json.JacksonHolder;
 
 import java.util.List;
 
+@ApiModel("菜单")
 public class SSOMenu extends SSOResource implements Comparable<SSOMenu> {
     private static final long serialVersionUID = -4014962413439164653L;
 
+    @ApiModelProperty("父菜单ID")
     private String parentId;
+
+    @ApiModelProperty("菜单排序")
     private int treeSort;
+
+    @ApiModelProperty("是否叶子项目")
     private boolean treeLeaf;
+
+    @ApiModelProperty("叶子层级")
     private int treeLevel;
+
+    @ApiModelProperty("所属域名")
     private String domain;
+
+    @ApiModelProperty("是否系统菜单")
     private boolean sys;
+
+    @ApiModelProperty("菜单状态")
     private String status;
+
+    @ApiModelProperty("子菜单")
     private List<SSOMenu> subMenus;
 
     public List<SSOMenu> getSubMenus() {

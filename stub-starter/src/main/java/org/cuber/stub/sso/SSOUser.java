@@ -1,5 +1,7 @@
 package org.cuber.stub.sso;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.cuber.stub.json.JacksonHolder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,42 +10,60 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Set;
 
+@ApiModel("登陆用户")
 public class SSOUser implements UserDetails {
 
     private static final long serialVersionUID = -3568422755366679290L;
 
+    @ApiModelProperty("用户ID")
     private String userId;
 
+    @ApiModelProperty("用户登陆名")
     private String userName;
 
+    @ApiModelProperty("用户昵称")
     private String nickName;
 
+    @ApiModelProperty("用户密码")
     private String password;
 
+    @ApiModelProperty("用户EMAIL")
     private String email;
 
+    @ApiModelProperty("用户电话")
     private String mobile;
 
+    @ApiModelProperty("性别")
     private String sex;
 
+    @ApiModelProperty("用户头像")
     private String avatar;
 
+    @ApiModelProperty("微信公开ID")
     private String wxOpenId;
 
+    @ApiModelProperty("钉钉公开ID")
     private String dingOpenId;
 
+    @ApiModelProperty("所属权限")
     private String domain;
 
+    @ApiModelProperty("登陆的ID,会发生变化")
     private String loginId;
 
+    @ApiModelProperty("用户是否被锁定")
     private String status;
 
+    @ApiModelProperty("用户过期时间")
     private LocalDateTime expireDatetime;
 
+    @ApiModelProperty("用户所属组")
     private Set<SSOUserGroup> ssoUserGroups;
 
+    @ApiModelProperty("用户权限")
     private Set<SSORole> roles;
 
+    @ApiModelProperty("用户拥有的菜单")
     private SSOMenu suitMenu;
 
     public SSOMenu getSuitMenu() {

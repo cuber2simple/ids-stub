@@ -1,27 +1,37 @@
 package org.cuber.stub.sso;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.StringUtils;
 import org.cuber.stub.json.JacksonHolder;
 
 import java.io.Serializable;
 import java.util.Objects;
 
+@ApiModel("资源")
 public class SSOResource implements Serializable {
 
     private static final long serialVersionUID = 4214349564120072593L;
 
+    @ApiModelProperty("资源ID")
     private String resourceId;
 
+    @ApiModelProperty("资源名称--英文")
     private String resourceName;
 
+    @ApiModelProperty("资源描述")
     private String resourceDesc;
 
+    @ApiModelProperty("资源URL")
     private String resourceUrl;
 
+    @ApiModelProperty("资源ICON")
     private String resourceIcon;
 
+    @ApiModelProperty("资源中文名")
     private String resourceZhName;
 
+    @ApiModelProperty("资源i18n")
     private String i18nKey;
 
     private Type resourceType;

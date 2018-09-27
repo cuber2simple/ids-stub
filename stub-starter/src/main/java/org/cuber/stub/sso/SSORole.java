@@ -1,5 +1,7 @@
 package org.cuber.stub.sso;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.StringUtils;
 import org.cuber.stub.json.JacksonHolder;
 import org.springframework.security.core.GrantedAuthority;
@@ -7,18 +9,24 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.Objects;
 import java.util.Set;
 
+@ApiModel("权限")
 public class SSORole implements GrantedAuthority {
 
     private static final long serialVersionUID = 4250602050828717462L;
 
+    @ApiModelProperty("权限ID")
     private String roleId;
 
+    @ApiModelProperty("权限名称")
     private String roleName;
 
+    @ApiModelProperty("权限描述")
     private String roleDesc;
 
-    private String roleType;
+    @ApiModelProperty("权限类型")
+    private RoleType roleType;
 
+    @ApiModelProperty("权限拥有的资源")
     private Set<SSOResource> resources;
 
     public String getRoleId() {
@@ -45,11 +53,11 @@ public class SSORole implements GrantedAuthority {
         this.roleDesc = roleDesc;
     }
 
-    public String getRoleType() {
+    public RoleType getRoleType() {
         return roleType;
     }
 
-    public void setRoleType(String roleType) {
+    public void setRoleType(RoleType roleType) {
         this.roleType = roleType;
     }
 

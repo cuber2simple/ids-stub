@@ -1,22 +1,29 @@
 package org.cuber.stub.sso;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.StringUtils;
 import org.cuber.stub.json.JacksonHolder;
 
 import java.io.Serializable;
 import java.util.Objects;
 
+@ApiModel("用户组")
 public class SSOUserGroup implements Serializable {
 
     private static final long serialVersionUID = -738941036269966983L;
 
+    @ApiModelProperty("用户组ID")
     private String userGroupId;
 
+    @ApiModelProperty("用户组名")
     private String groupName;
 
+    @ApiModelProperty("用户组描述")
     private String groupDesc;
 
-    private String groupType;
+    @ApiModelProperty("用户组类型")
+    private GroupType groupType;
 
     public String getUserGroupId() {
         return userGroupId;
@@ -42,11 +49,11 @@ public class SSOUserGroup implements Serializable {
         this.groupDesc = groupDesc;
     }
 
-    public String getGroupType() {
+    public GroupType getGroupType() {
         return groupType;
     }
 
-    public void setGroupType(String groupType) {
+    public void setGroupType(GroupType groupType) {
         this.groupType = groupType;
     }
 

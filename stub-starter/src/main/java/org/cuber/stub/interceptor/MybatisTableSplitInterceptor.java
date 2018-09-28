@@ -146,7 +146,7 @@ public class MybatisTableSplitInterceptor implements Interceptor {
         } catch (Exception e) {
             logger.error("不是正确的类名L", e);
         }
-        return null;
+        return sqlIdMappingStrategy.get(sqlId);
     }
 
     private static TableSplitStrategy loadClassStrategy(String classId) {

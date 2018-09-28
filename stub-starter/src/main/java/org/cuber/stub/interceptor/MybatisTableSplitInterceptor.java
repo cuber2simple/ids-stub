@@ -139,8 +139,10 @@ public class MybatisTableSplitInterceptor implements Interceptor {
                 }
             }
             String trueSqlId = classId + "." + methodName;
-            sqlIdMappingStrategy.putIfAbsent(trueSqlId, tableSplitStrategy);
-            sqlIdMappingStrategy.putIfAbsent(sqlId, tableSplitStrategy);
+            if (Objects.nonNull(tableSplitStrategy)) {
+                sqlIdMappingStrategy.putIfAbsent(trueSqlId, tableSplitStrategy);
+                sqlIdMappingStrategy.putIfAbsent(sqlId, tableSplitStrategy);
+            }
         } catch (Exception e) {
             logger.error("不是正确的类名L", e);
         }

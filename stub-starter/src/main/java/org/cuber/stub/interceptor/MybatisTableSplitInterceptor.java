@@ -106,7 +106,7 @@ public class MybatisTableSplitInterceptor implements Interceptor {
 
     private static MybatisTableSplitStrategy build2Mapping(String sqlId) {
         TableSplitStrategy tableSplitStrategy = sqlIdMappingStrategy.get(sqlId);
-        if (Objects.nonNull(tableSplitStrategy)) {
+        if (Objects.isNull(tableSplitStrategy)) {
             tableSplitStrategy = build2AnnoMapping(sqlId);
         }
         MybatisTableSplitStrategy mybatisTableSplitStrategy = new MybatisTableSplitStrategy();

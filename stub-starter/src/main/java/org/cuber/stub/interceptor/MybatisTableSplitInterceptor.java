@@ -119,16 +119,18 @@ public class MybatisTableSplitInterceptor implements Interceptor {
 
     private static TableSplitStrategy build2AnnoMapping(String sqlId) {
         try {
+
             String classId = StringUtils.substringBeforeLast(sqlId, ".");
+            Class target = Class.forName(classId);
             TableSplitStrategy tableSplitStrategy = loadClassStrategy(classId);
             String methodName = StringUtils.substringAfterLast(sqlId, ".");
-            Method method = ReflectionUtils.findMethod(Class.forName(classId), methodName);
+            Method method = RefUtils.findFirstNameMatch(target, methodName);
             /**
              * 避开分页自己插入的SQL ID
              */
             if (Objects.isNull(method)) {
                 methodName = StringUtils.substringBeforeLast(methodName, "_COUNT");
-                method = ReflectionUtils.findMethod(Class.forName(classId), methodName);
+                method = RefUtils.findFirstNameMatch(target, methodName);
             }
             if (Objects.nonNull(method)) {
                 TableSplitStrategy tableSplitStrategyMethod = method.getDeclaredAnnotation(TableSplitStrategy.class);

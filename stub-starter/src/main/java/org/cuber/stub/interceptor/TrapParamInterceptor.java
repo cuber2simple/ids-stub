@@ -19,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 @Intercepts(
         {
+                @Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class}),
                 @Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class}),
                 @Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class, CacheKey.class, BoundSql.class}),
         }
@@ -31,7 +32,7 @@ public class TrapParamInterceptor implements Interceptor {
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
         Object[] args = invocation.getArgs();
-        if(args != null && args.length >= 4){
+        if(args != null && args.length >= 2){
             MappedStatement mappedStatement = (MappedStatement)args[0];
             Object parameter = args[1];
             if(MybatisTableSplitInterceptor.isSplit(mappedStatement)){

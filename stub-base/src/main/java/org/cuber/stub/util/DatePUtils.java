@@ -16,6 +16,13 @@ public class DatePUtils {
         return Date.from(zonedDateTime.toInstant());
     }
 
+    public static LocalDateTime trans2DateTime(Date date) {
+        Instant instant = date.toInstant();
+        ZoneId zone = ZoneId.systemDefault();
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, zone);
+        return localDateTime;
+    }
+
     public static long trans2Mills(LocalDateTime localDateTime) {
         return trans2Date(localDateTime).getTime();
     }
@@ -38,6 +45,16 @@ public class DatePUtils {
     public static boolean isSameMonth(Calendar date, Calendar other) {
         return date.get(Calendar.MONTH) == other.get(Calendar.MONTH) &&
                 date.get(Calendar.YEAR) == other.get(Calendar.YEAR);
+    }
+
+    public static LocalDateTime trans(String dateString, String format) {
+        try {
+            Date date = DateUtils.parseDate(dateString, format);
+            return trans2LocalDateTime(date);
+        } catch (Exception e) {
+
+        }
+        return null;
     }
 
 }

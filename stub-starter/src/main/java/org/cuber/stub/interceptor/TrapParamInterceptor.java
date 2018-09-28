@@ -8,15 +8,13 @@ import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.cuber.stub.conf.SplitTableConf;
+import org.cuber.stub.util.DatePUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.expression.ExpressionParser;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Properties;
+
 @Intercepts(
         {
                 @Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class}),
@@ -32,17 +30,17 @@ public class TrapParamInterceptor implements Interceptor {
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
         Object[] args = invocation.getArgs();
-        if(args != null && args.length >= 2){
-            MappedStatement mappedStatement = (MappedStatement)args[0];
+        if (args != null && args.length >= 2) {
+            MappedStatement mappedStatement = (MappedStatement) args[0];
             Object parameter = args[1];
-            if(MybatisTableSplitInterceptor.isSplit(mappedStatement)){
+            if (MybatisTableSplitInterceptor.isSplit(mappedStatement)) {
                 paramLocal.set(parameter);
             }
         }
         return invocation.proceed();
     }
 
-    protected static Object findParam(){
+    protected static Object findParam() {
         return paramLocal.get();
     }
 
@@ -56,21 +54,17 @@ public class TrapParamInterceptor implements Interceptor {
 
     }
 
-    public static StandardEvaluationContext build(){
-        try{
+    public static StandardEvaluationContext build() {
+        try {
             StandardEvaluationContext standardEvaluationContext = new StandardEvaluationContext(TrapParamInterceptor.findParam());
-            DateTimeFormatter yyyy_MM_dd = DateTimeFormatter.ofPattern("yyyy_MM_dd");
-            DateTimeFormatter yyyy_MM = DateTimeFormatter.ofPattern("yyyy_MM");
-            standardEvaluationContext.setVariable("yyyy_MM_dd", yyyy_MM_dd);
-            standardEvaluationContext.setVariable("yyyy_MM", yyyy_MM);
             standardEvaluationContext.registerFunction("findIdTime",
-                    SplitTableConf.class.getDeclaredMethod("findIdTime", new Class[]{String.class,String.class}));
+                    SplitTableConf.class.getDeclaredMethod("findIdTime", new Class[]{String.class, String.class}));
             standardEvaluationContext.registerFunction("findIdTimeC",
-                    SplitTableConf.class.getDeclaredMethod("findIdTime", new Class[]{Class.class,String.class}));
+                    SplitTableConf.class.getDeclaredMethod("findIdTime", new Class[]{Class.class, String.class}));
             standardEvaluationContext.registerFunction("ldt_parse",
-                    LocalDateTime.class.getDeclaredMethod("parse", CharSequence.class, DateTimeFormatter.class));
+                    DatePUtils.class.getDeclaredMethod("trans", String.class, String.class));
             return standardEvaluationContext;
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("生成IP执行出错");
         }
         return null;

@@ -25,7 +25,7 @@ import java.util.Properties;
 @ConditionalOnBean({DataSource.class})
 @EnableConfigurationProperties({MybatisProperties.class})
 @AutoConfigureAfter({MybatisAutoConfiguration.class})
-@ConfigurationProperties("mybatis.pageHelper")
+@ConfigurationProperties("mybatis.page")
 public class MybatisConf extends Properties {
     @Autowired(required = false)
     private SqlSessionFactory sqlSessionFactory;

@@ -4,6 +4,7 @@ import com.github.pagehelper.util.MetaObjectUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.ibatis.executor.statement.RoutingStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -38,6 +39,9 @@ public class MybatisTableSplitInterceptor implements Interceptor {
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
         StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
+        if (statementHandler instanceof RoutingStatementHandler) {
+            statementHandler = RefUtils.findFieldValue(statementHandler, "delegate", StatementHandler.class);
+        }
         MappedStatement mappedStatement = findMappedStatement(statementHandler);
         MybatisTableSplitStrategy tableSplitStrategy = findTableStrategy(mappedStatement);
         if (Objects.nonNull(tableSplitStrategy) && tableSplitStrategy.isSplit()) {

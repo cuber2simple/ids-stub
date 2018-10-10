@@ -26,8 +26,14 @@ public class Currency extends StubConfVO {
     @ApiModelProperty("币种I18N")
     private String i18nKey;
 
-    @ApiModelProperty("币种中文名")
+    @ApiModelProperty("币种英文名")
     private String name;
+
+    @ApiModelProperty("币种本地名")
+    private String localeName;
+
+    @ApiModelProperty("币种中文")
+    private String zhName;
 
     @ApiModelProperty("币种使用实体")
     private String country;
@@ -109,6 +115,22 @@ public class Currency extends StubConfVO {
 
     public void setGrant4Settle(boolean grant4Settle) {
         this.grant4Settle = grant4Settle;
+    }
+
+    public String getLocaleName() {
+        return localeName;
+    }
+
+    public void setLocaleName(String localeName) {
+        this.localeName = localeName;
+    }
+
+    public String getZhName() {
+        return zhName;
+    }
+
+    public void setZhName(String zhName) {
+        this.zhName = zhName;
     }
 
     @Override

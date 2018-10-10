@@ -29,6 +29,12 @@ public class Country extends StubConfVO {
     @ApiModelProperty("国家名字")
     private String name;
 
+    @ApiModelProperty("国家本地名")
+    private String localeName;
+
+    @ApiModelProperty("国家中文")
+    private String zhName;
+
     @ApiModelProperty("国家地区")
     private String region;
 
@@ -141,6 +147,22 @@ public class Country extends StubConfVO {
 
     public void setIntermediateRegionCode(String intermediateRegionCode) {
         this.intermediateRegionCode = intermediateRegionCode;
+    }
+
+    public String getLocaleName() {
+        return localeName;
+    }
+
+    public void setLocaleName(String localeName) {
+        this.localeName = localeName;
+    }
+
+    public String getZhName() {
+        return zhName;
+    }
+
+    public void setZhName(String zhName) {
+        this.zhName = zhName;
     }
 
     @Override

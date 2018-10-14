@@ -49,6 +49,7 @@ public class TransCurrency {
                     logger.error("错误");
                 }
                 list.add(oneCurrency);
+                System.out.println(Arrays.asList(oneCurrency));
             }
 
             List<String> sqls = list.stream()

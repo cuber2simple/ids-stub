@@ -3,8 +3,6 @@ package org.cuber.stub.conf;
 import com.github.pagehelper.PageInterceptor;
 import org.apache.ibatis.logging.log4j2.Log4j2Impl;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.cuber.stub.interceptor.MybatisTableSplitInterceptor;
-import org.cuber.stub.interceptor.TrapParamInterceptor;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
 import org.mybatis.spring.boot.autoconfigure.MybatisProperties;

@@ -34,11 +34,7 @@ public class MybatisConf extends Properties {
         PageInterceptor pageInterceptor = new PageInterceptor();
         configuration.setLogImpl(Log4j2Impl.class);
         pageInterceptor.setProperties(this);
-        TrapParamInterceptor paramInterceptor = new TrapParamInterceptor();
-        MybatisTableSplitInterceptor interceptor = new MybatisTableSplitInterceptor();
-        configuration.addInterceptor(paramInterceptor);
         configuration.addInterceptor(pageInterceptor);
-        configuration.addInterceptor(interceptor);
     }
 
 }

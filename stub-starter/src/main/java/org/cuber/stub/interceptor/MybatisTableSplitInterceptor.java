@@ -12,7 +12,6 @@ import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.reflection.MetaObject;
 import org.cuber.anno.TableSplitStrategy;
-import org.cuber.stub.conf.SplitTableConf;
 import org.cuber.stub.util.DatePUtils;
 import org.cuber.stub.util.RefUtils;
 import org.slf4j.Logger;

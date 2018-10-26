@@ -7,7 +7,6 @@ import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
-import org.cuber.stub.conf.SplitTableConf;
 import org.cuber.stub.util.DatePUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
